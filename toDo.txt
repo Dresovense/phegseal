@@ -1,0 +1,39 @@
+Link to team history when you click on them
+    info:
+        -name
+        -logo
+        -date
+        -town (map?)
+        -stadium (capacity)
+        -rivals
+    standings
+        -regular season (with graphic?)
+        -playoff
+    Records (button -> other page)
+        -franchise Records (+ bold if league record)
+    matches
+        -last 5 matches
+        -last 5 matches against particular team
+
+Records
+Form and Power Rankings
+Rivalries
+Interesting things happening in the round
+Sort by different things
+Color for playoff certainty (or no playoff certainty)
+Arrows for the places up/down 
+
+
+conference:
+    Schedule with conferences: 
+        -round robin with everyone      (ex: 2x vs everyone)
+        -round robin with same conference (number of encounters - rounds with everyone)     (6x vs same conference --> round robin = 4)
+        -round robin same division (same as conference)
+    Standings:
+        -All teams
+        -Per conference
+        -Per division (if any)
+    Playoffs: 
+        -Wild cards?
+    Data:
+        -Change data type for conferences

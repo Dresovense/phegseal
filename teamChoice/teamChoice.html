@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="../startGame/startGame.html">Seasons</a>
+        <a href="../teamChoice/teamChoice.html">Teams</a>
+        <a href="../records/records.html">Records</a>
+    </div>
+    <span onclick="openNav()" class="menu">Menu</span>
+    <button onclick="goBack()" class="goBack">Go Back</button>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+        
+        /* Set the width of the side navigation to 250px */
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+        
+        /* Set the width of the side navigation to 0 */
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        } 
+        </script>
+    <script src="teamChoice.js"></script>
+</body>
+</html>

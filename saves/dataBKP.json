@@ -1,0 +1,57 @@
+{
+    "teams": [
+        {
+            "name": "",
+            "logo": "",
+            "color": ""
+        }
+    ],
+    "seasons": [
+        {
+            "date": "",
+            "teams": [
+                {
+                    "id": ""
+                }
+            ],
+            "schedule": [
+                {
+                    "games": [
+                        {
+                            "team1Id": "",
+                            "team2Id": "",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ]
+                }
+            ],
+            "postSeasonSchedule": [
+                {
+                    "matchups": [
+                        {
+                            "games": [
+                                {
+                                    "team1Id": "",
+                                    "team2Id": "",
+                                    "team1Goals": "",
+                                    "team2Goals": ""
+                                }
+                            ],
+                            "winner": "",
+                            "loser": ""
+                        }
+                    ]
+                }
+            ],
+            "records": {
+                "mostGoals": "",
+                "...": "a completer"
+            }
+        }
+    ],
+    "records": {
+        "mostGoals": "...",
+        "a competer": "..."
+    }
+}
