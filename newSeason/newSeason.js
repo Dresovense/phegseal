@@ -424,9 +424,6 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
     let teamsInPlayOffPerConference = postSeasonTeamsChoice.value / conferencesNumber.value;
     let postSeasonConferenceRounds = Math.log2(teamsInPlayOffPerConference);
     for(let l = 0; l < conferencesNumber.value; l++){
-        if(conferencesNumber.value == 1){
-            postSeasonConferenceRounds--;
-        }
         let postSeasonConferenceSchedule = [];
         for(let i = 0; i < postSeasonConferenceRounds; i++){
             let matchups = {
@@ -454,6 +451,9 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
                 matchups.matchups.push(games);
             }
             postSeasonConferenceSchedule.push(matchups);
+            if(conferencesNumber.value == 1){
+                i = postSeasonConferenceRounds;
+            }
         }
         newSeason.postSeasonSchedule.conference.push(postSeasonConferenceSchedule);
     }

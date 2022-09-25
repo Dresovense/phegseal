@@ -2492,6 +2492,8 @@ button.addEventListener("click", () => {
     standingsHomeButton.style.display = "inline-block";
     standingsAwayButton.style.display = "inline-block";
     round = select.value;
+    console.log(round);
+    console.log(gameData.seasons[season].schedule.length)
     if(round < gameData.seasons[season].schedule.length){
         let teamChoice = gameData.seasons[season].teams.allTeams;
         let teams = [];

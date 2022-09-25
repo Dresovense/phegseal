@@ -10,6 +10,9 @@ saveButton.addEventListener("click", () => {
         }
     });
     gameData = JSON.stringify(gameData);
+    sessionStorage.removeItem("gameData");
     sessionStorage.setItem("gameData", gameData);
+    gameData = JSON.parse(gameData);
+    window.location.reload(false);
 });
 document.body.appendChild(saveButton);
