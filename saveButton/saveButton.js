@@ -8,6 +8,8 @@ saveButton.addEventListener("click", () => {
         if(err){
             return console.log(err);
         }
-    })
+    });
+    gameData = JSON.stringify(gameData);
+    sessionStorage.setItem("gameData", gameData);
 });
 document.body.appendChild(saveButton);

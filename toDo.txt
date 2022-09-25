@@ -22,18 +22,20 @@ Interesting things happening in the round
 Sort by different things
 Color for playoff certainty (or no playoff certainty)
 Arrows for the places up/down 
+See schedule of matches
+Control that the number of teams in Playoffs equals the number of teams making in each division plus the wild cards
+Make playoff Tree
+Can't let match three play before match 2 in playoffs
+
+Conference must be a power of 2 (2,4,8,...)
+Division must be even
 
 
 conference:
-    Schedule with conferences: 
-        -round robin with everyone      (ex: 2x vs everyone)
-        -round robin with same conference (number of encounters - rounds with everyone)     (6x vs same conference --> round robin = 4)
-        -round robin same division (same as conference)
     Standings:
         -All teams
         -Per conference
         -Per division (if any)
     Playoffs: 
         -Wild cards?
-    Data:
-        -Change data type for conferences
+        -playoff per conference
