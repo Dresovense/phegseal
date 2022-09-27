@@ -31,11 +31,4 @@ Conference must be a power of 2 (2,4,8,...)
 Division must be even
 
 
-conference:
-    Standings:
-        -All teams
-        -Per conference
-        -Per division (if any)
-    Playoffs: 
-        -Wild cards?
-        -playoff per conference
+make divisional playoff (like nhl)

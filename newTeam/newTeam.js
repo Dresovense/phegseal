@@ -47,7 +47,7 @@ confirmChoicebutton.addEventListener("click", () => {
         name: teamName.value,
         logo: teamLogo.value,
         color: teamColor.value,
-        date: gameData.seasons[gameData.seasons.length - 1].endDate + "-" + gameData.seasons[gameData.seasons.length - 1].endDate + 1,
+        date: gameData.seasons[gameData.seasons.length - 1].endDate + "-" + parseInt(gameData.seasons[gameData.seasons.length - 1].endDate) + 1,
         town: teamTown.value,
         stadiumName: teamStadium.value,
         stadiumAttendence: teamStadiumAttendance.value,
@@ -68,5 +68,7 @@ confirmChoicebutton.addEventListener("click", () => {
             return console.log(err);
         }
     });
+    sessionStorage.setItem("gameData", JSON.stringify(gameData));
+    location.href = "../season/season.html";
 });
 document.body.appendChild(confirmChoicebutton);
