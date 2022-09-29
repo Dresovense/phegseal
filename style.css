@@ -64,8 +64,37 @@ h3{
 
 .teamName{
     width: 120px;
+    position: relative;
+    bottom: -18px;
     text-align: center;
     display: inline-block;
+}
+
+.teamNamePS{
+    width: 120px;
+    text-align: center;
+    display: inline-block;
+}
+
+.form{
+    position: relative;
+    width: 120px;
+    bottom: -10px;
+    text-align: center;
+    display: block;
+}
+
+.formGame{
+    display: inline-block;
+    text-align: center;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    border: 1px black solid;
+    border-radius: 5px;
+    font-style: normal;
+    font-weight: normal;
 }
 
 #spanVS{

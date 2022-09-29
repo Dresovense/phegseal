@@ -12863,18 +12863,6 @@
                                 "name": "",
                                 "teams": [
                                     {
-                                        "id": "8"
-                                    },
-                                    {
-                                        "id": "7"
-                                    },
-                                    {
-                                        "id": "6"
-                                    },
-                                    {
-                                        "id": "3"
-                                    },
-                                    {
                                         "id": "0"
                                     },
                                     {
@@ -12884,27 +12872,27 @@
                                         "id": "2"
                                     },
                                     {
+                                        "id": "3"
+                                    },
+                                    {
                                         "id": "4"
                                     },
                                     {
                                         "id": "5"
+                                    },
+                                    {
+                                        "id": "6"
+                                    },
+                                    {
+                                        "id": "7"
+                                    },
+                                    {
+                                        "id": "8"
                                     }
                                 ]
                             }
                         ],
                         "teamsInConference": [
-                            {
-                                "id": "8"
-                            },
-                            {
-                                "id": "7"
-                            },
-                            {
-                                "id": "6"
-                            },
-                            {
-                                "id": "3"
-                            },
                             {
                                 "id": "0"
                             },
@@ -12915,27 +12903,27 @@
                                 "id": "2"
                             },
                             {
+                                "id": "3"
+                            },
+                            {
                                 "id": "4"
                             },
                             {
                                 "id": "5"
+                            },
+                            {
+                                "id": "6"
+                            },
+                            {
+                                "id": "7"
+                            },
+                            {
+                                "id": "8"
                             }
                         ]
                     }
                 ],
                 "allTeams": [
-                    {
-                        "id": "8"
-                    },
-                    {
-                        "id": "7"
-                    },
-                    {
-                        "id": "6"
-                    },
-                    {
-                        "id": "3"
-                    },
                     {
                         "id": "0"
                     },
@@ -12946,10 +12934,22 @@
                         "id": "2"
                     },
                     {
+                        "id": "3"
+                    },
+                    {
                         "id": "4"
                     },
                     {
                         "id": "5"
+                    },
+                    {
+                        "id": "6"
+                    },
+                    {
+                        "id": "7"
+                    },
+                    {
+                        "id": "8"
                     }
                 ]
             },
@@ -12957,61 +12957,26 @@
                 {
                     "games": [
                         {
-                            "team1Id": "8",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "2",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
-                            "team2Id": "1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "7",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
                             "team1Id": "6",
-                            "team2Id": "2",
+                            "team2Id": "7",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "4",
+                            "team1Id": "5",
                             "team2Id": "8",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "-1",
+                            "team1Id": "2",
                             "team2Id": "3",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "5",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
                             "team1Id": "0",
-                            "team2Id": "1",
+                            "team2Id": "4",
                             "team1Goals": "",
                             "team2Goals": ""
                         }
@@ -13021,66 +12986,54 @@
                 {
                     "games": [
                         {
+                            "team1Id": "5",
+                            "team2Id": "1",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "6",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
                             "team1Id": "4",
-                            "team2Id": "8",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "3",
+                            "team2Id": "1",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "7",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
                             "team1Id": "2",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
                             "team2Id": "0",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "5",
-                            "team2Id": "1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "-1",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "0",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
-                            "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "-1",
+                            "team1Id": "4",
                             "team2Id": "5",
                             "team1Goals": "",
                             "team2Goals": ""
@@ -13090,6 +13043,12 @@
                 },
                 {
                     "games": [
+                        {
+                            "team1Id": "1",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
                         {
                             "team1Id": "7",
                             "team2Id": "8",
@@ -13098,124 +13057,13 @@
                         },
                         {
                             "team1Id": "0",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "2",
-                            "team2Id": "-1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "5",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "0",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "2",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "8",
-                            "team2Id": "1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "2",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "7",
-                            "team2Id": "1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "8",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "5",
-                            "team2Id": "-1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "4",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
                             "team2Id": "2",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "0",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "8",
-                            "team2Id": "-1",
+                            "team1Id": "5",
+                            "team2Id": "4",
                             "team1Goals": "",
                             "team2Goals": ""
                         }
@@ -13225,439 +13073,14 @@
                 {
                     "games": [
                         {
-                            "team1Id": "2",
-                            "team2Id": "6",
+                            "team1Id": "1",
+                            "team2Id": "5",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "5",
+                            "team1Id": "6",
                             "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
-                            "team2Id": "-1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "7",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "0",
-                            "team2Id": "1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "7",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
-                            "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "3",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "5",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "-1",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "8",
-                            "team2Id": "1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "8",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "-1",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "-1",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "2",
-                            "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "5",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
-                            "team2Id": "1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "8",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "5",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "3",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "0",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "-1",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "8",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "3",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "8",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "2",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "1",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "8",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "-1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "0",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "0",
-                            "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "-1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "2",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "7",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "5",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
-                            "team2Id": "1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "8",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "2",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "2",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "7",
-                            "team2Id": "-1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "0",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "6",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "5",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "8",
-                            "team2Id": "-1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "2",
-                            "team2Id": "5",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
@@ -13672,10 +13095,33 @@
                             "team2Id": "0",
                             "team1Goals": "",
                             "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "3",
+                            "team2Id": "1",
+                            "team1Goals": "",
+                            "team2Goals": ""
                         },
                         {
-                            "team1Id": "6",
-                            "team2Id": "1",
+                            "team1Id": "8",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "2",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "5",
                             "team1Goals": "",
                             "team2Goals": ""
                         }
@@ -13685,26 +13131,26 @@
                 {
                     "games": [
                         {
-                            "team1Id": "0",
+                            "team1Id": "1",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "7",
                             "team2Id": "8",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "5",
+                            "team1Id": "0",
                             "team2Id": "2",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "1",
+                            "team1Id": "5",
                             "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "7",
                             "team1Goals": "",
                             "team2Goals": ""
                         }
@@ -13715,511 +13161,33 @@
                     "games": [
                         {
                             "team1Id": "3",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "7",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "8",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "-1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "6",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "8",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
                             "team2Id": "1",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "-1",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "0",
+                            "team1Id": "8",
                             "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "1",
-                            "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "-1",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "0",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "0",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "7",
-                            "team2Id": "1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
-                            "team2Id": "5",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
                             "team1Id": "2",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "0",
-                            "team2Id": "-1",
+                            "team2Id": "0",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "7",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "8",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
+                            "team1Id": "4",
                             "team2Id": "5",
                             "team1Goals": "",
                             "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
                         }
                     ],
                     "completed": "no"
                 },
                 {
                     "games": [
-                        {
-                            "team1Id": "4",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "7",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "5",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "8",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "-1",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "0",
-                            "team2Id": "1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "0",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "5",
-                            "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "7",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "8",
-                            "team2Id": "1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "2",
-                            "team2Id": "-1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "5",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "7",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "2",
-                            "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "5",
-                            "team2Id": "-1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "7",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "8",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "-1",
-                            "team2Id": "1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "5",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "6",
-                            "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "7",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "0",
-                            "team2Id": "-1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "0",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "8",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "-1",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "-1",
-                            "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "5",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "0",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "1",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "5",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "8",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "8",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
                         {
                             "team1Id": "3",
                             "team2Id": "1",
@@ -14227,20 +13195,49 @@
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "2",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "5",
+                            "team1Id": "8",
                             "team2Id": "7",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "-1",
+                            "team1Id": "2",
                             "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "3",
+                            "team2Id": "1",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "2",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "5",
                             "team1Goals": "",
                             "team2Goals": ""
                         }
@@ -14251,60 +13248,25 @@
                     "games": [
                         {
                             "team1Id": "7",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
-                            "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "2",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "5",
                             "team2Id": "6",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "3",
-                            "team2Id": "8",
+                            "team1Id": "8",
+                            "team2Id": "5",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "7",
-                            "team2Id": "1",
+                            "team1Id": "3",
+                            "team2Id": "2",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
                             "team1Id": "4",
-                            "team2Id": "-1",
+                            "team2Id": "0",
                             "team1Goals": "",
                             "team2Goals": ""
                         }
@@ -14314,98 +13276,28 @@
                 {
                     "games": [
                         {
-                            "team1Id": "8",
+                            "team1Id": "1",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "6",
+                            "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "7",
                             "team2Id": "4",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "7",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "0",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "-1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "-1",
-                            "team2Id": "7",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "0",
-                            "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "2",
+                            "team1Id": "3",
                             "team2Id": "0",
                             "team1Goals": "",
                             "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "7",
-                            "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
                         }
                     ],
                     "completed": "no"
@@ -14413,71 +13305,7 @@
                 {
                     "games": [
                         {
-                            "team1Id": "0",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
                             "team1Id": "6",
-                            "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "2",
-                            "team2Id": "8",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "4",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "7",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "6",
-                            "team2Id": "1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "4",
-                            "team2Id": "3",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "2",
                             "team2Id": "7",
                             "team1Goals": "",
                             "team2Goals": ""
@@ -14489,14 +13317,14 @@
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "-1",
-                            "team2Id": "1",
+                            "team1Id": "2",
+                            "team2Id": "3",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
                             "team1Id": "0",
-                            "team2Id": "6",
+                            "team2Id": "4",
                             "team1Goals": "",
                             "team2Goals": ""
                         }
@@ -14506,26 +13334,95 @@
                 {
                     "games": [
                         {
-                            "team1Id": "7",
+                            "team1Id": "5",
+                            "team2Id": "1",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "6",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "1",
                             "team2Id": "3",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
+                            "team1Id": "7",
+                            "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "2",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
                             "team1Id": "5",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "3",
+                            "team2Id": "1",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "2",
                             "team2Id": "0",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
                             "team1Id": "4",
-                            "team2Id": "-1",
+                            "team2Id": "5",
                             "team1Goals": "",
                             "team2Goals": ""
-                        },
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
                         {
-                            "team1Id": "2",
-                            "team2Id": "1",
+                            "team1Id": "1",
+                            "team2Id": "5",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
@@ -14534,6 +13431,18 @@
                             "team2Id": "8",
                             "team1Goals": "",
                             "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "7",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "3",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
                         }
                     ],
                     "completed": "no"
@@ -14541,25 +13450,54 @@
                 {
                     "games": [
                         {
-                            "team1Id": "0",
+                            "team1Id": "6",
                             "team2Id": "7",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "4",
-                            "team2Id": "6",
+                            "team1Id": "5",
+                            "team2Id": "8",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
                             "team1Id": "2",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "5",
                             "team2Id": "1",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
                             "team1Id": "8",
+                            "team2Id": "6",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
                             "team2Id": "3",
                             "team1Goals": "",
                             "team2Goals": ""
@@ -14570,98 +13508,28 @@
                 {
                     "games": [
                         {
-                            "team1Id": "7",
-                            "team2Id": "-1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "2",
-                            "team2Id": "4",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "8",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
-                            "team2Id": "1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "5",
-                            "team2Id": "6",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
-                        {
-                            "team1Id": "0",
-                            "team2Id": "2",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "8",
+                            "team1Id": "6",
                             "team2Id": "7",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "3",
-                            "team2Id": "6",
+                            "team1Id": "5",
+                            "team2Id": "8",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
-                        {
-                            "team1Id": "5",
-                            "team2Id": "1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        }
-                    ],
-                    "completed": "no"
-                },
-                {
-                    "games": [
                         {
                             "team1Id": "2",
-                            "team2Id": "6",
+                            "team2Id": "3",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "8",
+                            "team1Id": "0",
                             "team2Id": "4",
                             "team1Goals": "",
                             "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "3",
-                            "team2Id": "-1",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "7",
-                            "team2Id": "5",
-                            "team1Goals": "",
-                            "team2Goals": ""
-                        },
-                        {
-                            "team1Id": "1",
-                            "team2Id": "0",
-                            "team1Goals": "",
-                            "team2Goals": ""
                         }
                     ],
                     "completed": "no"
@@ -14669,8 +13537,8 @@
                 {
                     "games": [
                         {
-                            "team1Id": "5",
-                            "team2Id": "1",
+                            "team1Id": "1",
+                            "team2Id": "3",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
@@ -14681,14 +13549,530 @@
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "-1",
+                            "team1Id": "0",
+                            "team2Id": "2",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "5",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "1",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "6",
+                            "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "7",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "3",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "7",
                             "team2Id": "6",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "3",
+                            "team2Id": "2",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "6",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "5",
+                            "team2Id": "8",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
                             "team1Id": "2",
                             "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "7",
+                            "team2Id": "6",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "3",
+                            "team2Id": "2",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "1",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "6",
+                            "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "7",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "3",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "3",
+                            "team2Id": "1",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "2",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "6",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "5",
+                            "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "2",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "5",
+                            "team2Id": "1",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "6",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "5",
+                            "team2Id": "1",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "6",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "1",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "7",
+                            "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "2",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "5",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "1",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "7",
+                            "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "2",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "5",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "1",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "6",
+                            "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "7",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "3",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "3",
+                            "team2Id": "1",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "2",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "7",
+                            "team2Id": "6",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "3",
+                            "team2Id": "2",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "6",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "5",
+                            "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "2",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "3",
+                            "team2Id": "1",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "2",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "1",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "7",
+                            "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "2",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "5",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "7",
+                            "team2Id": "6",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "3",
+                            "team2Id": "2",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
@@ -14705,31 +14089,431 @@
                     "games": [
                         {
                             "team1Id": "7",
+                            "team2Id": "6",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "3",
+                            "team2Id": "2",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "6",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "5",
+                            "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "2",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "1",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "6",
+                            "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "7",
                             "team2Id": "4",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
                             "team1Id": "3",
-                            "team2Id": "6",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "1",
+                            "team2Id": "5",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "2",
+                            "team1Id": "6",
+                            "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "7",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "3",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "5",
                             "team2Id": "1",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "5",
-                            "team2Id": "0",
+                            "team1Id": "8",
+                            "team2Id": "6",
                             "team1Goals": "",
                             "team2Goals": ""
                         },
                         {
-                            "team1Id": "-1",
+                            "team1Id": "4",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "5",
+                            "team2Id": "1",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "6",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "1",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "7",
                             "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "2",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "5",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "7",
+                            "team2Id": "6",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "3",
+                            "team2Id": "2",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "1",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "7",
+                            "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "2",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "5",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "1",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "6",
+                            "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "7",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "3",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "6",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "5",
+                            "team2Id": "8",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "2",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "4",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "5",
+                            "team2Id": "1",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "6",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "7",
+                            "team2Id": "6",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "3",
+                            "team2Id": "2",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "0",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "5",
+                            "team2Id": "1",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "6",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "7",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "0",
+                            "team2Id": "3",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        }
+                    ],
+                    "completed": "no"
+                },
+                {
+                    "games": [
+                        {
+                            "team1Id": "7",
+                            "team2Id": "6",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "8",
+                            "team2Id": "5",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "3",
+                            "team2Id": "2",
+                            "team1Goals": "",
+                            "team2Goals": ""
+                        },
+                        {
+                            "team1Id": "4",
+                            "team2Id": "0",
                             "team1Goals": "",
                             "team2Goals": ""
                         }

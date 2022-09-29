@@ -13,21 +13,13 @@ document.body.appendChild(seasonTitle);
 let numberRounds = 0;
 let postSeasonRounds = 0;
 
-/* let divRoundsChoice = document.createElement("div");
-divRoundsChoice.className = "scheduleChoice";
-divRoundsChoice.innerText = "Number of Rounds:";
-document.body.appendChild(divRoundsChoice);
-let roundsChoice = document.createElement("input");
-roundsChoice.type = "number";
-roundsChoice.className = "scheduleChoice";
-document.body.appendChild(roundsChoice); */
-
 let divConferencesNumber = document.createElement("div");
 divConferencesNumber.className = "scheduleChoice";
 divConferencesNumber.innerText = "Number of conferences:";
 document.body.appendChild(divConferencesNumber);
 let conferencesNumber = document.createElement("input");
 conferencesNumber.type = "number";
+conferencesNumber.min = "0";
 conferencesNumber.className = "scheduleChoice";
 document.body.appendChild(conferencesNumber);
 
@@ -37,6 +29,7 @@ divDivisionsPerConferenceNumber.innerText = "Number of divisions per conference:
 document.body.appendChild(divDivisionsPerConferenceNumber);
 let divisionsPerConferenceNumber = document.createElement("input");
 divisionsPerConferenceNumber.type = "number";
+divisionsPerConferenceNumber.min = "0";
 divisionsPerConferenceNumber.className = "scheduleChoice";
 document.body.appendChild(divisionsPerConferenceNumber);
 
@@ -46,6 +39,7 @@ divDivisionMatches.innerText = "Division rounds:";
 document.body.appendChild(divDivisionMatches);
 let divisionMatches = document.createElement("input");
 divisionMatches.type = "number";
+divisionMatches.min = "0";
 divisionMatches.className = "scheduleChoice";
 document.body.appendChild(divisionMatches);
 
@@ -55,6 +49,7 @@ divConferenceMatches.innerText = "Conference rounds:";
 document.body.appendChild(divConferenceMatches);
 let conferenceMatches = document.createElement("input");
 conferenceMatches.type = "number";
+conferenceMatches.min = "0";
 conferenceMatches.className = "scheduleChoice";
 document.body.appendChild(conferenceMatches);
 
@@ -64,6 +59,7 @@ divInterConferenceMatches.innerText = "Inter-Conference rounds:";
 document.body.appendChild(divInterConferenceMatches);
 let interConferenceMatches = document.createElement("input");
 interConferenceMatches.type = "number";
+interConferenceMatches.min = "0";
 interConferenceMatches.className = "scheduleChoice";
 document.body.appendChild(interConferenceMatches);
 
@@ -73,6 +69,7 @@ divPostSeasonTeamsChoice.innerText = "Number of teams in Post-Season:";    //cha
 document.body.appendChild(divPostSeasonTeamsChoice);
 let postSeasonTeamsChoice = document.createElement("input");
 postSeasonTeamsChoice.type = "number";
+postSeasonTeamsChoice.min = "0";
 postSeasonTeamsChoice.className = "scheduleChoice";
 document.body.appendChild(postSeasonTeamsChoice);
 
@@ -397,6 +394,8 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
     for(let i = 0; i < numberOfConferences; i++){
         for(let k = 0; k < numberOfDivisionsPerConference; k++){
             if(i!=0 || k!=0){
+                console.log(divisionTeams[i][k])
+                console.log("here")
                 let divisionSchedule = roundRobin(divisionTeams[i][k], divisionRounds - interConferenceRounds - (conferenceRounds - interConferenceRounds));
                 for(let j = 0; j < divisionSchedule.length; j++){
                     for(let l = 0; l < divisionSchedule[j].games.length; l++){
@@ -566,12 +565,14 @@ function roundRobin (teamList, numberRounds){
     let firstPartOfRound = [];
     let schedule = [];
     for(let i = 0; i < numberRounds; i++){
+        console.log(teamList)
         if(i % 2 == 0){
             firstPartOfRound = createFirstPartOfRound(shuffleArray(teamList));
         }
         else{
             firstPartOfRound = swapHomeAway(firstPartOfRound);
         }
+        console.log(firstPartOfRound)
         for(let j = 0; j < firstPartOfRound.length; j++){
             schedule.push(firstPartOfRound[j]);
         }
@@ -619,30 +620,37 @@ function createFirstPartOfRound(teamList){
         return firstPartOfRound;
     } 
     else{
-        teamList.push(-1);
+        console.log(teamList)
+        let teamListOdd = []; // meme array et pas array avec memes éléments
+        for(let a = 0; a < teamList.length; a++){
+            teamListOdd.push(teamList[a]);
+        }
+        teamListOdd.push(-1);
+        console.log(teamList)
         let firstPartOfRound = []; //schedule
-        for(let i = 0; i < teamList.length - 1; i++){
+        for(let i = 0; i < teamListOdd.length - 1; i++){
             let fixtures = {    //schedule objects
                 "games": [],
                 "completed": "no"
             }
-            for(let j = 0; j < teamList.length / 2; j++){
+            for(let j = 0; j < teamListOdd.length / 2; j++){
                 if(i % 2 == 0){ //change Home-Away every match
-                    if(teamList[teamList.length - 1 - j] != -1 && teamList[j] != -1){
+                    if(teamListOdd[teamListOdd.length - 1 - j] != -1 && teamListOdd[j] != -1){
                         let match = {
-                            "team1Id": `${teamList[j]}`,
-                            "team2Id": `${teamList[teamList.length - 1 - j]}`,
+                            "team1Id": `${teamListOdd[j]}`,
+                            "team2Id": `${teamListOdd[teamListOdd.length - 1 - j]}`,
                             "team1Goals": "",
                             "team2Goals": ""
                         }
+                        console.log(match)
                         fixtures.games.push(match);
                     }
                 }
                 else{
-                    if(teamList[teamList.length - 1 - j] != -1 && teamList[j] != -1){
+                    if(teamListOdd[teamListOdd.length - 1 - j] != -1 && teamListOdd[j] != -1){
                         let match = {
-                            "team1Id": `${teamList[teamList.length - 1 - j]}`,
-                            "team2Id": `${teamList[j]}`,
+                            "team1Id": `${teamListOdd[teamListOdd.length - 1 - j]}`,
+                            "team2Id": `${teamListOdd[j]}`,
                             "team1Goals": "",
                             "team2Goals": ""
                         }    
@@ -701,9 +709,3 @@ function shuffleArray(array) {
     return array;
 }
 
-function powerOf2(n) {
-    if (typeof n !== 'number'){
-        return 'Not a number'; 
-    }
-    return n && (n & (n - 1)) === 0;
-}
