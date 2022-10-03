@@ -1,4 +1,5 @@
 //import * as records from './records.mjs';
+const dice = require("./dice.js");
 const records = require("./records.js");
 let gameData = JSON.parse(sessionStorage.getItem("gameData"));
 let season = sessionStorage.getItem("season");
@@ -1096,10 +1097,11 @@ function gamesRound (gameData, season, round){
 
     for(let i = 0; i < matches.length; i++){
         if(matches[i].team1Goals == ""){
+
             let divMatch = document.createElement("div");
             divMatch.id = "divMatch";
             gamesDiv.appendChild(divMatch);
-
+            
             let team1LogoContainer = document.createElement("div");
             team1LogoContainer.className = "teamLogoContainer";
             divMatch.appendChild(team1LogoContainer);
@@ -1108,7 +1110,7 @@ function gamesRound (gameData, season, round){
             TeamLogoImg1.src = ".." + teams[matches[i].team1Id].logo + ".png";
             TeamLogoImg1.className = "teamLogo";
             team1LogoContainer.appendChild(TeamLogoImg1);
-
+            
             let divTeam1 = document.createElement("span");
             divTeam1.className = "teamName";
             divTeam1.innerText = " " + teams[matches[i].team1Id].name + " ";
@@ -1117,7 +1119,7 @@ function gamesRound (gameData, season, round){
                 location.href = "../team/team.html";
             });
             divMatch.appendChild(divTeam1);
-
+            
             //form
             let formTeam1 = document.createElement("div");
             divTeam1.appendChild(formTeam1);
@@ -1235,6 +1237,17 @@ function gamesRound (gameData, season, round){
             spanVS.innerText = "VS";
             spanVS.id = "spanVS";
             divMatch.appendChild(spanVS);
+            
+            for(let j = 0; j < teams[matches[i].team1Id].rivalries.length; j++){
+                if(matches[i].team2Id == teams[matches[i].team1Id].rivalries[j].teamId && teams[matches[i].team1Id].rivalries[j].rivalType == "Sporting"){
+                    spanVS.style.border = "2px solid red";
+                    spanVS.style.borderRadius = "2px";
+                }
+                else if(matches[i].team2Id == teams[matches[i].team1Id].rivalries[j].teamId && teams[matches[i].team1Id].rivalries[j].rivalType == "Derby"){
+                    spanVS.style.border = "2px solid blue";
+                    spanVS.style.borderRadius = "2px";
+                }
+            }
 
             let inputGoalsTeam2 = document.createElement("input");
             inputGoalsTeam2.min = "0";
@@ -1538,6 +1551,17 @@ function gamesRound (gameData, season, round){
             spanVS.innerText = " VS ";
             spanVS.id = "spanVS";
             divMatch.appendChild(spanVS);
+
+            for(let j = 0; j < teams[matches[i].team1Id].rivalries.length; j++){
+                if(matches[i].team2Id == teams[matches[i].team1Id].rivalries[j].teamId && teams[matches[i].team1Id].rivalries[j].rivalType == "Sporting"){
+                    spanVS.style.border = "2px solid red";
+                    spanVS.style.borderRadius = "2px";
+                }
+                else if(matches[i].team2Id == teams[matches[i].team1Id].rivalries[j].teamId && teams[matches[i].team1Id].rivalries[j].rivalType == "Derby"){
+                    spanVS.style.border = "2px solid blue";
+                    spanVS.style.borderRadius = "2px";
+                }
+            }
 
             let inputGoalsTeam2 = document.createElement("span");
             inputGoalsTeam2.className = "goalInput";
@@ -2892,7 +2916,7 @@ if(divisionNumber > 1 || conferenceNumber > 1){
     document.body.appendChild(leagueStandingsChoice);
 }
 
-
+dice.dice()
 let round = select.value;
 let boolRegularSeason = true;
 let button = document.createElement("button");

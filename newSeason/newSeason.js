@@ -136,7 +136,6 @@ roundsChoiceButton.addEventListener("click", () => {
                     conference.push(division);
                 }
                 teamList.push(conference);
-                console.log(teamList);
             }
             
         }
@@ -219,7 +218,6 @@ for(let i = 0; i < gameData.teams.length; i++){
                 teamList[0].splice(index, 1);
             }
             teamList[1][0].push(i);
-            console.log(teamList);
             team.style.backgroundColor = `hsl(0, 100%, 30%)`;
         }
         else{
@@ -247,7 +245,6 @@ for(let i = 0; i < gameData.teams.length; i++){
                     }
                 }
             }
-            console.log(teamList);
         }
     });
     divTeams.appendChild(team);
@@ -290,10 +287,9 @@ confirmChoicebutton.addEventListener("click", () => {
                 return console.log(err);
             }
         });
-        sessionStorage.setItem("season", gameData.seasons.length - 1);
         gameData = JSON.stringify(gameData);
         sessionStorage.setItem("gameData", gameData);
-        location.href = "../season/season.html";
+        location.href = "../startGame/startGame.html";
     
 });
 document.body.appendChild(confirmChoicebutton);
@@ -394,8 +390,6 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
     for(let i = 0; i < numberOfConferences; i++){
         for(let k = 0; k < numberOfDivisionsPerConference; k++){
             if(i!=0 || k!=0){
-                console.log(divisionTeams[i][k])
-                console.log("here")
                 let divisionSchedule = roundRobin(divisionTeams[i][k], divisionRounds - interConferenceRounds - (conferenceRounds - interConferenceRounds));
                 for(let j = 0; j < divisionSchedule.length; j++){
                     for(let l = 0; l < divisionSchedule[j].games.length; l++){
@@ -540,7 +534,6 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
             }
             if (divisionName.length != 0){
                 if(divisionName[j].value != undefined){
-                    console.log(j + (teamList.length - 1) * (i - 1))
                     division.name = divisionName[j + (teamList.length - 1) * (i - 1)].value
                 }
             }
@@ -565,14 +558,12 @@ function roundRobin (teamList, numberRounds){
     let firstPartOfRound = [];
     let schedule = [];
     for(let i = 0; i < numberRounds; i++){
-        console.log(teamList)
         if(i % 2 == 0){
             firstPartOfRound = createFirstPartOfRound(shuffleArray(teamList));
         }
         else{
             firstPartOfRound = swapHomeAway(firstPartOfRound);
         }
-        console.log(firstPartOfRound)
         for(let j = 0; j < firstPartOfRound.length; j++){
             schedule.push(firstPartOfRound[j]);
         }
@@ -620,13 +611,11 @@ function createFirstPartOfRound(teamList){
         return firstPartOfRound;
     } 
     else{
-        console.log(teamList)
         let teamListOdd = []; // meme array et pas array avec memes éléments
         for(let a = 0; a < teamList.length; a++){
             teamListOdd.push(teamList[a]);
         }
         teamListOdd.push(-1);
-        console.log(teamList)
         let firstPartOfRound = []; //schedule
         for(let i = 0; i < teamListOdd.length - 1; i++){
             let fixtures = {    //schedule objects
@@ -642,7 +631,6 @@ function createFirstPartOfRound(teamList){
                             "team1Goals": "",
                             "team2Goals": ""
                         }
-                        console.log(match)
                         fixtures.games.push(match);
                     }
                 }
@@ -660,12 +648,14 @@ function createFirstPartOfRound(teamList){
             }
             firstPartOfRound.push(fixtures);
             //team rotation
-            let pivot = teamList[teamList.length - 1];  
-            for(let j = 0; j < teamList.length - 1; j++){
-                teamList[teamList.length - 1 - j] = teamList [teamList.length - j - 2];
+            console.log(teamListOdd);
+            let pivot = teamListOdd[teamListOdd.length - 1];  
+            for(let j = 0; j < teamListOdd.length - 1; j++){
+                teamListOdd[teamListOdd.length - 1 - j] = teamListOdd[teamListOdd.length - j - 2];
 
             }
-            teamList[1] = pivot;
+            teamListOdd[1] = pivot;
+            console.log(teamListOdd)
         }
         
         return firstPartOfRound;
@@ -686,7 +676,6 @@ function swapHomeAway(firstPartOfRound){
                 "team1Goals": "",
                 "team2Goals": ""
             }    
-            //console.log(match);
             fixtures.games.push(match);
         }
         secondPartOfRound.push(fixtures);

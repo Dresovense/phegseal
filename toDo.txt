@@ -17,10 +17,10 @@ Link to team history when you click on them
 
 Records
 Power Rankings
-Rivalries
+Rivalries (change with time)
 Interesting things happening in the round
 Sort by different things
-Color for playoff certainty (or no playoff certainty)
+Color for playoff certainty (or no playoff certainty)-+
 Arrows for the places up/down 
 See schedule of matches
 Control that the number of teams in Playoffs equals the number of teams making in each division plus the wild cards
