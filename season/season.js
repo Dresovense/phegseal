@@ -13,6 +13,8 @@ document.body.appendChild(seasonTitle);
 const conferenceNumber = gameData.seasons[season].teams.conference.length;
 const divisionNumber = gameData.seasons[season].teams.conference[0].divisions.length;
 
+let sortingType = "Pts";
+
 function count(gameData, season, round, teamId, countType){
     let victoriesHome = 0;
     let victoriesAway = 0;
@@ -79,7 +81,7 @@ function count(gameData, season, round, teamId, countType){
     }
 }
 
-function standings (gameData, teamChoice, season, round){
+function standings (gameData, teamChoice, season, round, sortingType){
     let teams = [];
     for(let i = 0; i < teamChoice.length; i++){
         teamId = teamChoice[i].id;
@@ -119,33 +121,303 @@ function standings (gameData, teamChoice, season, round){
         teams.push(teamData);
     }
 
-    teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
-        if(left.points() > right.points()){
-            return -1;
-        }
-        else if (left.points() < right.points()){
-            return 1;
-        }
-        else{
-            if(left.goalDifferential() > right.goalDifferential()){
+    if(sortingType == "Pts"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.points() > right.points()){
                 return -1;
             }
-            else if(left.goalDifferential() < right.goalDifferential()){
+            else if (left.points() < right.points()){
                 return 1;
             }
             else{
-                if(left.goalsScored() > right.goalsScored()){
+                if(left.goalDifferential() > right.goalDifferential()){
                     return -1;
                 }
-                else if(left.goalsScored() < right.goalsScored()){
+                else if(left.goalDifferential() < right.goalDifferential()){
                     return 1;
                 }
                 else{
-                    return -1; //à approfondir éventuellement
+                    if(left.goalsScored() > right.goalsScored()){
+                        return -1;
+                    }
+                    else if(left.goalsScored() < right.goalsScored()){
+                        return 1;
+                    }
+                    else{
+                        return -1; //à approfondir éventuellement
+                    }
                 }
             }
-        }
-    });
+        });
+    }
+    else if(sortingType == "Pts%"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if((left.points() / left.gamesPlayed()) > (right.points() / right.gamesPlayed())){
+                return -1;
+            }
+            else if ((left.points() / left.gamesPlayed()) < (right.points() / right.gamesPlayed())){
+                return 1;
+            }
+            else{
+                if(left.goalDifferential() > right.goalDifferential()){
+                    return -1;
+                }
+                else if(left.goalDifferential() < right.goalDifferential()){
+                    return 1;
+                }
+                else{
+                    if(left.goalsScored() > right.goalsScored()){
+                        return -1;
+                    }
+                    else if(left.goalsScored() < right.goalsScored()){
+                        return 1;
+                    }
+                    else{
+                        return -1; //à approfondir éventuellement
+                    }
+                }
+            }
+        });
+    }
+    else if(sortingType == "V"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.victories() > right.victories()){
+                return -1;
+            }
+            else if (left.victories() < right.victories()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "D"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.ties() > right.ties()){
+                return -1;
+            }
+            else if (left.ties() < right.ties()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "L"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.defeats() > right.defeats()){
+                return -1;
+            }
+            else if (left.defeats() < right.defeats()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GD"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalDifferential() > right.goalDifferential()){
+                return -1;
+            }
+            else if (left.goalDifferential() < right.goalDifferential()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GP"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.gamesPlayed() > right.gamesPlayed()){
+                return -1;
+            }
+            else if (left.gamesPlayed() < right.gamesPlayed()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GF"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalsScored() > right.goalsScored()){
+                return -1;
+            }
+            else if(left.goalsScored() < right.goalsScored()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GA"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalsAgainst() > right.goalsAgainst()){
+                return -1;
+            }
+            else if (left.goalsAgainst() < right.goalsAgainst()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "SO"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.shutouts() > right.shutouts()){
+                return -1;
+            }
+            else if (left.shutouts() < right.shutouts()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "Team1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.name > right.name){
+                return -1;
+            }
+            else if (left.name < right.name){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "Pts1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.points() < right.points()){
+                return -1;
+            }
+            else if (left.points() > right.points()){
+                return 1;
+            }
+            else{
+                if(left.goalDifferential() < right.goalDifferential()){
+                    return -1;
+                }
+                else if(left.goalDifferential() > right.goalDifferential()){
+                    return 1;
+                }
+                else{
+                    if(left.goalsScored() < right.goalsScored()){
+                        return -1;
+                    }
+                    else if(left.goalsScored() > right.goalsScored()){
+                        return 1;
+                    }
+                    else{
+                        return -1; //à approfondir éventuellement
+                    }
+                }
+            }
+        });
+    }
+    else if(sortingType == "Pts%1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if((left.points() / left.gamesPlayed()) < (right.points() / right.gamesPlayed())){
+                return -1;
+            }
+            else if ((left.points() / left.gamesPlayed()) > (right.points() / right.gamesPlayed())){
+                return 1;
+            }
+            else{
+                if(left.goalDifferential() < right.goalDifferential()){
+                    return -1;
+                }
+                else if(left.goalDifferential() > right.goalDifferential()){
+                    return 1;
+                }
+                else{
+                    if(left.goalsScored() < right.goalsScored()){
+                        return -1;
+                    }
+                    else if(left.goalsScored() > right.goalsScored()){
+                        return 1;
+                    }
+                    else{
+                        return -1; //à approfondir éventuellement
+                    }
+                }
+            }
+        });
+    }
+    else if(sortingType == "V1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.victories() < right.victories()){
+                return -1;
+            }
+            else if (left.victories() > right.victories()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "D1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.ties() < right.ties()){
+                return -1;
+            }
+            else if (left.ties() > right.ties()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "L1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.defeats() < right.defeats()){
+                return -1;
+            }
+            else if (left.defeats() > right.defeats()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GD1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalDifferential() < right.goalDifferential()){
+                return -1;
+            }
+            else if (left.goalDifferential() > right.goalDifferential()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GP1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.gamesPlayed() < right.gamesPlayed()){
+                return -1;
+            }
+            else if (left.gamesPlayed() > right.gamesPlayed()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GF1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalsScored() < right.goalsScored()){
+                return -1;
+            }
+            else if(left.goalsScored() > right.goalsScored()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GA1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalsAgainst() < right.goalsAgainst()){
+                return -1;
+            }
+            else if (left.goalsAgainst() > right.goalsAgainst()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "SO1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.shutouts() < right.shutouts()){
+                return -1;
+            }
+            else if (left.shutouts() > right.shutouts()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "Team"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.name < right.name){
+                return -1;
+            }
+            else if (left.name > right.name){
+                return 1;
+            }
+        });
+    }
+
 
     return teams;
 }
@@ -301,7 +573,7 @@ function teamsPlayOffBound (gameData, season, round){
             for(let j = 0; j < conferenceNumber; j++){
                 for(let k = 0; k < divisionNumber; k++){
                     let teamChoice = gameData.seasons[season].teams.conference[j].divisions[k].teams;
-                    let teams = standings(gameData, teamChoice, season, round);
+                    let teams = standings(gameData, teamChoice, season, round, "Pts");
                     teamListPlayOffBound.push(teams[i].id);
                 }
             }
@@ -315,7 +587,7 @@ function teamsPlayOffBound (gameData, season, round){
             for(let j = 0; j < conferenceNumber; j++){
                 for(let k = 0; k < divisionNumber; k++){
                     let teamChoice = gameData.seasons[season].teams.conference[j].divisions[k].teams;
-                    let teams = standings(gameData, teamChoice, season, round);
+                    let teams = standings(gameData, teamChoice, season, round, "Pts");
                     teamListPlayOffBound.push(teams[i].id);
                 }
             }
@@ -323,7 +595,7 @@ function teamsPlayOffBound (gameData, season, round){
         for(let i = 0; i < wildCardsPerConference; i++){
             for(let j = 0; j < conferenceNumber; j++){
                 let teamChoice = gameData.seasons[season].teams.conference[j].teamsInConference;
-                let teams = standings(gameData, teamChoice, season, round);
+                let teams = standings(gameData, teamChoice, season, round, "Pts");
                 let teamAdded = false;
                 let teamList = 0;
                 while(teamAdded == false){
@@ -360,6 +632,16 @@ function printStandings(teams){
             let place = document.createElement("div");
             place.className = "gridsquare";
             place.id = "place";
+            place.addEventListener("click", () => {
+                if(sortingType == "Pts"){
+                    sortingType = "Pts1";
+                    button.dispatchEvent(new Event("click"));
+                }
+                else{
+                    sortingType = "Pts";
+                    button.dispatchEvent(new Event("click"));
+                }
+            })
             place.innerText = "Pos";
             place.style.backgroundColor = "lightgray";
             standingsRow.appendChild(place);  
@@ -367,12 +649,32 @@ function printStandings(teams){
             let name = document.createElement("div");
             name.className = "gridsquare";
             name.id = "name";
+            name.addEventListener("click", () => {
+                if(sortingType == "Team"){
+                    sortingType = "Team1";
+                    button.dispatchEvent(new Event("click"));
+                }
+                else{
+                    sortingType = "Team";
+                    button.dispatchEvent(new Event("click"));
+                }
+            })
             name.innerText = "Team";
             standingsRow.appendChild(name);
             //games of team
             let games = document.createElement("div");
             games.className = "gridsquare";
             games.id = "games";
+            games.addEventListener("click", () => {
+                if(sortingType == "GP"){
+                    sortingType = "GP1";
+                    button.dispatchEvent(new Event("click"));
+                }
+                else{
+                    sortingType = "GP";
+                    button.dispatchEvent(new Event("click"));
+                }
+            })
             games.innerText = "GP";
             games.style.backgroundColor = "lightgray";
             standingsRow.appendChild(games); 
@@ -380,12 +682,32 @@ function printStandings(teams){
             let victories = document.createElement("div");
             victories.className = "gridsquare";
             victories.id = "victories";
+            victories.addEventListener("click", () => {
+                if(sortingType == "V"){
+                    sortingType = "V1";
+                    button.dispatchEvent(new Event("click"));
+                }
+                else{
+                    sortingType = "V";
+                    button.dispatchEvent(new Event("click"));
+                }
+            })
             victories.innerText = "V";
             standingsRow.appendChild(victories);
             //ties of team
             let ties = document.createElement("div");
             ties.className = "gridsquare";
             ties.id = "ties";
+            ties.addEventListener("click", () => {
+                if(sortingType == "D"){
+                    sortingType = "D1";
+                    button.dispatchEvent(new Event("click"));
+                }
+                else{
+                    sortingType = "D";
+                    button.dispatchEvent(new Event("click"));
+                }
+            })
             ties.innerText = "D";
             ties.style.backgroundColor = "lightgray";
             standingsRow.appendChild(ties);
@@ -393,6 +715,16 @@ function printStandings(teams){
             let defeats = document.createElement("div");
             defeats.className = "gridsquare";
             defeats.id = "defeats";
+            defeats.addEventListener("click", () => {
+                if(sortingType == "L"){
+                    sortingType = "L1";
+                    button.dispatchEvent(new Event("click"));
+                }
+                else{
+                    sortingType = "L";
+                    button.dispatchEvent(new Event("click"));
+                }
+            })
             defeats.innerText = "L";
             standingsRow.appendChild(defeats);
             //goalDifferential of team
@@ -400,12 +732,32 @@ function printStandings(teams){
             goalDifferential.className = "gridsquare";
             goalDifferential.id = "goalDifferential";
             goalDifferential.innerText = "GD";
+            goalDifferential.addEventListener("click", () => {
+                if(sortingType == "GD"){
+                    sortingType = "GD1";
+                    button.dispatchEvent(new Event("click"));
+                }
+                else{
+                    sortingType = "GD";
+                    button.dispatchEvent(new Event("click"));
+                }
+            })
             goalDifferential.style.backgroundColor = "lightgray";
             standingsRow.appendChild(goalDifferential);
             //goalsScored of team
             let goalsScored = document.createElement("div");
             goalsScored.className = "gridsquare";
             goalsScored.id = "goalsScored";
+            goalsScored.addEventListener("click", () => {
+                if(sortingType == "GF"){
+                    sortingType = "GF1";
+                    button.dispatchEvent(new Event("click"));
+                }
+                else{
+                    sortingType = "GF";
+                    button.dispatchEvent(new Event("click"));
+                }
+            })
             goalsScored.innerText = "GF";
             standingsRow.appendChild(goalsScored);
             //goalsAgainst of team
@@ -413,18 +765,48 @@ function printStandings(teams){
             goalsAgainst.className = "gridsquare";
             goalsAgainst.id = "goalsAgainst";
             goalsAgainst.innerText = "GA";
+            goalsAgainst.addEventListener("click", () => {
+                if(sortingType == "GA"){
+                    sortingType = "GA1";
+                    button.dispatchEvent(new Event("click"));
+                }
+                else{
+                    sortingType = "GA";
+                    button.dispatchEvent(new Event("click"));
+                }
+            })
             goalsAgainst.style.backgroundColor = "lightgray";
             standingsRow.appendChild(goalsAgainst);      
             //shutouts of team
             let shutouts = document.createElement("div");
             shutouts.className = "gridsquare";
             shutouts.id = "shutouts";
+            shutouts.addEventListener("click", () => {
+                if(sortingType == "SO"){
+                    sortingType = "SO1";
+                    button.dispatchEvent(new Event("click"));
+                }
+                else{
+                    sortingType = "SO";
+                    button.dispatchEvent(new Event("click"));
+                }
+            })
             shutouts.innerText = "SO";
             standingsRow.appendChild(shutouts); 
             //points of team
             let points = document.createElement("div");
             points.className = "gridsquare";
             points.id = "points";
+            points.addEventListener("click", () => {
+                if(sortingType == "Pts"){
+                    sortingType = "Pts1";
+                    button.dispatchEvent(new Event("click"));
+                }
+                else{
+                    sortingType = "Pts";
+                    button.dispatchEvent(new Event("click"));
+                }
+            })
             points.innerText = "Pts";
             points.style.backgroundColor = "lightgray";
             standingsRow.appendChild(points);
@@ -432,6 +814,16 @@ function printStandings(teams){
             let pointPercentage = document.createElement("div");
             pointPercentage.className = "gridsquare";
             pointPercentage.id = "pointPercentage";
+            pointPercentage.addEventListener("click", () => {
+                if(sortingType == "Pts%"){
+                    sortingType = "Pts%1";
+                    button.dispatchEvent(new Event("click"));
+                }
+                else{
+                    sortingType = "Pts%";
+                    button.dispatchEvent(new Event("click"));
+                }
+            })
             pointPercentage.innerText = "Pts%";
             standingsRow.appendChild(pointPercentage);
         }
@@ -446,8 +838,8 @@ function printStandings(teams){
             placeChangement.id = "placeChangement";
             let numberOfPlaces = 0;
             if(round != 0){
-                let standingsRound = standings(gameData, teams, season, round);
-                let standingsPreviousRound = standings(gameData, teams, season, round - 1);
+                let standingsRound = standings(gameData, teams, season, round, sortingType);
+                let standingsPreviousRound = standings(gameData, teams, season, round - 1, sortingType);
                 let indexOfRound = 0;
                 let indexOfPreviousRound = 0;
                 for(let j = 0; j < standingsRound.length; j++){
@@ -1019,7 +1411,7 @@ function layOutPostSeason(gameData, season){
         }
         teamChoice.push(team);
     }
-    let standingsSeason = standings(gameData, teamChoice, season, gameData.seasons[season].schedule.length - 1);
+    let standingsSeason = standings(gameData, teamChoice, season, gameData.seasons[season].schedule.length - 1, sortingType);
     gameData.seasons[season].postSeasonSchedule.seeds.sort(function(left, right){
         let standingsId = [];
         for(let i = 0; i < standingsSeason.length; i++){
@@ -2834,7 +3226,7 @@ if(conferenceNumber > 1){
             standingsContainer.appendChild(conferenceName);
             let teamChoice = gameData.seasons[season].teams.conference[i].teamsInConference;
             if(homeAwayFactor == "All"){
-                let teams = standings(gameData,teamChoice, season, round);
+                let teams = standings(gameData,teamChoice, season, round, sortingType);
                 printStandings(teams);
             }
             else if(homeAwayFactor == "Home"){
@@ -2867,7 +3259,7 @@ if(divisionNumber > 1){
                 standingsContainer.appendChild(divisionName);
                 let teamChoice = gameData.seasons[season].teams.conference[i].divisions[j].teams;
                 if(homeAwayFactor == "All"){
-                    let teams = standings(gameData,teamChoice, season, round);
+                    let teams = standings(gameData,teamChoice, season, round, sortingType);
                     printStandings(teams);
                 }
                 else if(homeAwayFactor == "Home"){
@@ -2897,7 +3289,7 @@ if(divisionNumber > 1 || conferenceNumber > 1){
         //league Standings
         let teamChoice = gameData.seasons[season].teams.allTeams;
         if(homeAwayFactor == "All"){
-            let teams = standings(gameData,teamChoice, season, round);
+            let teams = standings(gameData,teamChoice, season, round, sortingType);
             printStandings(teams);
         }
         else if(homeAwayFactor == "Home"){
@@ -2943,7 +3335,7 @@ button.addEventListener("click", () => {
     if(round < gameData.seasons[season].schedule.length){
         let teamChoice = gameData.seasons[season].teams.allTeams;
         let teams = [];
-        teams = standings(gameData, teamChoice, season, round);
+        teams = standings(gameData, teamChoice, season, round, sortingType);
         printStandings(teams);
         gamesRound(gameData, season, round);
         boolRegularSeason = true;
@@ -3003,7 +3395,7 @@ previousRound.addEventListener("click", () =>{
         //if(conferenceNumber == 1 && divisionNumber == 1){
             let teamChoice = gameData.seasons[season].teams.allTeams;
             let teams = [];
-            teams = standings(gameData, teamChoice, season, round);
+            teams = standings(gameData, teamChoice, season, round, sortingType);
             printStandings(teams);
             gamesRound(gameData, season, round);
             boolRegularSeason = true;
@@ -3108,7 +3500,7 @@ nextRound.addEventListener("click", () => {
         //if(conferenceNumber == 1 && divisionNumber == 1){
             let teamChoice = gameData.seasons[season].teams.allTeams;
             let teams = [];
-            teams = standings(gameData, teamChoice, season, round);
+            teams = standings(gameData, teamChoice, season, round, sortingType);
             printStandings(teams);
             gamesRound(gameData, season, round);
             boolRegularSeason = true;
@@ -3136,7 +3528,7 @@ if(select.value < gameData.seasons[season].schedule.length){
     //if(conferenceNumber == 1 && divisionNumber == 1){
         let teamChoice = gameData.seasons[season].teams.allTeams;
         let teams = [];
-        teams = standings(gameData, teamChoice, season, round);
+        teams = standings(gameData, teamChoice, season, round, sortingType);
         printStandings(teams)
         gamesRound(gameData, season, round);
         boolRegularSeason = true;
@@ -3241,7 +3633,7 @@ standingsAllButton.addEventListener("click", () => {
     //if(conferenceNumber == 1 && divisionNumber == 1){
         if(divisionsFactor == "league"){
             let teamChoice = gameData.seasons[season].teams.allTeams;
-            let teams = standings(gameData, teamChoice, season, round);
+            let teams = standings(gameData, teamChoice, season, round, sortingType);
             printStandings(teams);
         }
         else if(divisionsFactor == "conference"){
@@ -3250,7 +3642,7 @@ standingsAllButton.addEventListener("click", () => {
                 conferenceName.innerText = `${gameData.seasons[season].teams.conference[i].name} Conference`;
                 standingsContainer.appendChild(conferenceName);
                 let teamChoice = gameData.seasons[season].teams.conference[i].teamsInConference;
-                let teams = standings(gameData, teamChoice, season, round);
+                let teams = standings(gameData, teamChoice, season, round, sortingType);
                 printStandings(teams);
             }
         }
@@ -3261,7 +3653,7 @@ standingsAllButton.addEventListener("click", () => {
                     divisionName.innerText = `${gameData.seasons[season].teams.conference[i].divisions[j].name} Division`;
                     standingsContainer.appendChild(divisionName);
                     let teamChoice = gameData.seasons[season].teams.conference[i].divisions[j].teams;
-                    let teams = standings(gameData, teamChoice, season, round);
+                    let teams = standings(gameData, teamChoice, season, round, sortingType);
                     printStandings(teams);
                 }
             }
