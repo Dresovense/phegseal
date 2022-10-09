@@ -1,4 +1,4 @@
-//import * as records from './records.mjs';
+
 const dice = require("./dice.js");
 const records = require("./records.js");
 let gameData = JSON.parse(sessionStorage.getItem("gameData"));
@@ -418,7 +418,6 @@ function standings (gameData, teamChoice, season, round, sortingType){
         });
     }
 
-
     return teams;
 }
 
@@ -564,6 +563,25 @@ function standingsAway (gameData, teamChoice, season, round){
     return teams;
 }
 
+function outOfPlayOffs(gameData, season, round){
+    if(season >= 12){
+        let teamsOutOfPlayoffs = [];
+        let numberOfTeamsInPlayOffs = gameData.seasons[season].postSeasonSchedule.rules.postSeasonTeams;
+        let numberOfMatches = gameData.seasons[season].schedule.length - (gameData.seasons[season].teams.allTeams.length % 2) * (gameData.seasons[season].schedule.length / gameData.seasons[season].teams.allTeams.length)
+        for(let j = 0; j < conferenceNumber; j++){      //!!CHANGE!! for how many wild cards and how playoff works
+            for(let i = numberOfTeamsInPlayOffs / conferenceNumber; i < gameData.seasons[season].teams.conference[j].teamsInConference.length; i++){ 
+                let teamChoice = gameData.seasons[season].teams.conference[j].teamsInConference;
+                let teams = standings(gameData, teamChoice, season, round, "Pts");
+                if(teams[numberOfTeamsInPlayOffs / conferenceNumber - 1].points() > (teams[i].points() + 3 * (numberOfMatches - teams[i].gamesPlayed()))){
+                    teamsOutOfPlayoffs.push(teams[i].id);
+                }
+            }
+        }
+        return teamsOutOfPlayoffs;
+    }
+    return [];
+}
+
 function teamsPlayOffBound (gameData, season, round){
     let teamListPlayOffBound = [];
     if(season <= 11){
@@ -603,9 +621,24 @@ function teamsPlayOffBound (gameData, season, round){
                         teamList++;
                     }
                     else{
-                        teamListPlayOffBound.push(teams[teamList].id);
+                        teamListPlayOffBound.push([teams[teamList].id]);
                         teamAdded = true;
                     }
+                }
+            }
+        }
+        //see if team is already qualified
+        let numberOfTeamsInPlayOffs = teamListPlayOffBound.length;
+        let numberOfMatches = gameData.seasons[season].schedule.length - (gameData.seasons[season].teams.allTeams.length % 2) * (gameData.seasons[season].schedule.length / gameData.seasons[season].teams.allTeams.length)
+        for(let j = 0; j < conferenceNumber; j++){      //!!CHANGE!! for how many wild cards and how playoff works
+            for(let i = 0; i < numberOfTeamsInPlayOffs; i++){ 
+                let teamChoice = gameData.seasons[season].teams.conference[j].teamsInConference;
+                let teams = standings(gameData, teamChoice, season, round, "Pts");
+                if(teams[i].points() > (teams[numberOfTeamsInPlayOffs].points() + 3 * (numberOfMatches - teams[numberOfTeamsInPlayOffs].gamesPlayed()))){
+                    teamListPlayOffBound.push(true);
+                }
+                else{
+                    teamListPlayOffBound.push(false);
                 }
             }
         }
@@ -615,6 +648,7 @@ function teamsPlayOffBound (gameData, season, round){
 
 function printStandings(teams){
     let playOffTeams = teamsPlayOffBound(gameData, season, round);
+    let nonPlayOffTeams = outOfPlayOffs(gameData, season, round);
     //let playOffPlaces = gameData.seasons[season].postSeasonSchedule[0].matchups.length * 2;
     for(let i = -1; i < teams.length; i++){
         if(i == -1){
@@ -877,7 +911,15 @@ function printStandings(teams){
             name.id = "name";
             name.innerText = teams[i].name;
             if(playOffTeams.includes(teams[i].id)){
-                name.style.backgroundColor = "lightgreen";
+                if(playOffTeams[playOffTeams.indexOf(teams[i].id) + playOffTeams.length / 2] == true){
+                    name.style.backgroundColor = "rgb(0, 204, 0)";
+                }
+                else{
+                    name.style.backgroundColor = "lightgreen";
+                }
+            }
+            if(nonPlayOffTeams.includes(teams[i].id)){
+                name.style.backgroundColor = "rgb(255, 153, 153)";
             }
             name.addEventListener("click", () => { //go to team page
                 sessionStorage.setItem("team", teams[i].id);
@@ -1403,7 +1445,12 @@ function printStandingsAway(teams){
 
 function layOutPostSeason(gameData, season){
     //seeding
-    gameData.seasons[season].postSeasonSchedule.seeds = teamsPlayOffBound(gameData, season, gameData.seasons[season].schedule.length - 1);
+    let teamsPlayOffBound2 = teamsPlayOffBound(gameData, season, gameData.seasons[season].schedule.length - 1);
+    for(let i = 0; i < teamsPlayOffBound2.length / 2 + 1; i++){
+        teamsPlayOffBound2.pop();
+    }
+    console.log(teamsPlayOffBound2)
+    gameData.seasons[season].postSeasonSchedule.seeds = teamsPlayOffBound2;
     let teamChoice = [];
     for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.seeds.length; i++){
         let team = {
@@ -1520,15 +1567,10 @@ function gamesRound (gameData, season, round){
                 formTeam1.innerHTML = "&nbsp;"
             }
             else if(round < 5){
-                console.log("here")
                 for(let j = round; j > 0; j--){
                     let game = document.createElement("div");
                     game.className = "formGame";
                     for(let k = 0; k < Math.floor(gameData.seasons[season].teams.allTeams.length / 2); k++){
-                        console.log("here2")
-                        console.log(gameData.seasons[season].schedule[round - j].games[k].team1Id);
-                        console.log(gameData.seasons[season].schedule[round - j].games[k].team2Id)
-                        console.log(matches[i].team1Id)
                         if(gameData.seasons[season].schedule[round - j].games[k].team1Id == matches[i].team1Id){
                             if(gameData.seasons[season].schedule[round - j].games[k].team1Goals > gameData.seasons[season].schedule[round - j].games[k].team2Goals){
                                 game.innerText = "V";
@@ -1547,7 +1589,6 @@ function gamesRound (gameData, season, round){
                             }
                         }
                         else if(gameData.seasons[season].schedule[round - j].games[k].team2Id == matches[i].team1Id){
-                            console.log("here3")
                             if(gameData.seasons[season].schedule[round - j].games[k].team1Goals < gameData.seasons[season].schedule[round - j].games[k].team2Goals){
                                 game.innerText = "V";
                                 game.style.backgroundColor = "lightgreen";
@@ -1572,10 +1613,6 @@ function gamesRound (gameData, season, round){
                     let game = document.createElement("div");
                     game.className = "formGame";
                     for(let k = 0; k < Math.floor(gameData.seasons[season].teams.allTeams.length / 2); k++){
-                        console.log("here2")
-                        console.log(gameData.seasons[season].schedule[round - j].games[k].team1Id);
-                        console.log(gameData.seasons[season].schedule[round - j].games[k].team2Id)
-                        console.log(matches[i].team1Id)
                         if(gameData.seasons[season].schedule[round - j].games[k].team1Id == matches[i].team1Id){
                             if(gameData.seasons[season].schedule[round - j].games[k].team1Goals > gameData.seasons[season].schedule[round - j].games[k].team2Goals){
                                 game.innerText = "V";
@@ -1594,7 +1631,6 @@ function gamesRound (gameData, season, round){
                             }
                         }
                         else if(gameData.seasons[season].schedule[round - j].games[k].team2Id == matches[i].team1Id){
-                            console.log("here3")
                             if(gameData.seasons[season].schedule[round - j].games[k].team1Goals < gameData.seasons[season].schedule[round - j].games[k].team2Goals){
                                 game.innerText = "V";
                                 game.style.backgroundColor = "lightgreen";
@@ -1614,7 +1650,6 @@ function gamesRound (gameData, season, round){
                     }
                 }
             }
-            console.log(divTeam1.children.innerHTML)
             if(divTeam1.children[0].innerHTML == ""){
                 formTeam1.innerHTML = "&nbsp;"
             }
@@ -1664,15 +1699,10 @@ function gamesRound (gameData, season, round){
                 formTeam2.innerHTML = "&nbsp;"
             }
             else if(round < 5){
-                console.log("here")
                 for(let j = round; j > 0; j--){
                     let game = document.createElement("div");
                     game.className = "formGame";
                     for(let k = 0; k < Math.floor(gameData.seasons[season].teams.allTeams.length / 2); k++){
-                        console.log("here2")
-                        console.log(gameData.seasons[season].schedule[round - j].games[k].team1Id);
-                        console.log(gameData.seasons[season].schedule[round - j].games[k].team2Id)
-                        console.log(matches[i].team1Id)
                         if(gameData.seasons[season].schedule[round - j].games[k].team1Id == matches[i].team2Id){
                             if(gameData.seasons[season].schedule[round - j].games[k].team1Goals > gameData.seasons[season].schedule[round - j].games[k].team2Goals){
                                 game.innerText = "V";
@@ -1691,7 +1721,6 @@ function gamesRound (gameData, season, round){
                             }
                         }
                         else if(gameData.seasons[season].schedule[round - j].games[k].team2Id == matches[i].team2Id){
-                            console.log("here3")
                             if(gameData.seasons[season].schedule[round - j].games[k].team1Goals < gameData.seasons[season].schedule[round - j].games[k].team2Goals){
                                 game.innerText = "V";
                                 game.style.backgroundColor = "lightgreen";
@@ -1716,10 +1745,6 @@ function gamesRound (gameData, season, round){
                     let game = document.createElement("div");
                     game.className = "formGame";
                     for(let k = 0; k < Math.floor(gameData.seasons[season].teams.allTeams.length / 2); k++){
-                        console.log("here2")
-                        console.log(gameData.seasons[season].schedule[round - j].games[k].team1Id);
-                        console.log(gameData.seasons[season].schedule[round - j].games[k].team2Id)
-                        console.log(matches[i].team1Id)
                         if(gameData.seasons[season].schedule[round - j].games[k].team1Id == matches[i].team2Id){
                             if(gameData.seasons[season].schedule[round - j].games[k].team1Goals > gameData.seasons[season].schedule[round - j].games[k].team2Goals){
                                 game.innerText = "V";
@@ -1738,7 +1763,6 @@ function gamesRound (gameData, season, round){
                             }
                         }
                         else if(gameData.seasons[season].schedule[round - j].games[k].team2Id == matches[i].team2Id){
-                            console.log("here3")
                             if(gameData.seasons[season].schedule[round - j].games[k].team1Goals < gameData.seasons[season].schedule[round - j].games[k].team2Goals){
                                 game.innerText = "V";
                                 game.style.backgroundColor = "lightgreen";
@@ -1835,15 +1859,10 @@ function gamesRound (gameData, season, round){
                 formTeam1.innerHTML = "&nbsp;"
             }
             else if(round < 5){
-                console.log("here")
                 for(let j = round; j > 0; j--){
                     let game = document.createElement("div");
                     game.className = "formGame";
                     for(let k = 0; k < Math.floor(gameData.seasons[season].teams.allTeams.length / 2); k++){
-                        console.log("here2")
-                        console.log(gameData.seasons[season].schedule[round - j].games[k].team1Id);
-                        console.log(gameData.seasons[season].schedule[round - j].games[k].team2Id)
-                        console.log(matches[i].team1Id)
                         if(gameData.seasons[season].schedule[round - j].games[k].team1Id == matches[i].team1Id){
                             if(gameData.seasons[season].schedule[round - j].games[k].team1Goals > gameData.seasons[season].schedule[round - j].games[k].team2Goals){
                                 game.innerText = "V";
@@ -1862,7 +1881,6 @@ function gamesRound (gameData, season, round){
                             }
                         }
                         else if(gameData.seasons[season].schedule[round - j].games[k].team2Id == matches[i].team1Id){
-                            console.log("here3")
                             if(gameData.seasons[season].schedule[round - j].games[k].team1Goals < gameData.seasons[season].schedule[round - j].games[k].team2Goals){
                                 game.innerText = "V";
                                 game.style.backgroundColor = "lightgreen";
@@ -1887,10 +1905,6 @@ function gamesRound (gameData, season, round){
                     let game = document.createElement("div");
                     game.className = "formGame";
                     for(let k = 0; k < Math.floor(gameData.seasons[season].teams.allTeams.length / 2); k++){
-                        console.log("here2")
-                        console.log(gameData.seasons[season].schedule[round - j].games[k].team1Id);
-                        console.log(gameData.seasons[season].schedule[round - j].games[k].team2Id)
-                        console.log(matches[i].team1Id)
                         if(gameData.seasons[season].schedule[round - j].games[k].team1Id == matches[i].team1Id){
                             if(gameData.seasons[season].schedule[round - j].games[k].team1Goals > gameData.seasons[season].schedule[round - j].games[k].team2Goals){
                                 game.innerText = "V";
@@ -1909,7 +1923,6 @@ function gamesRound (gameData, season, round){
                             }
                         }
                         else if(gameData.seasons[season].schedule[round - j].games[k].team2Id == matches[i].team1Id){
-                            console.log("here3")
                             if(gameData.seasons[season].schedule[round - j].games[k].team1Goals < gameData.seasons[season].schedule[round - j].games[k].team2Goals){
                                 game.innerText = "V";
                                 game.style.backgroundColor = "lightgreen";
@@ -1929,13 +1942,13 @@ function gamesRound (gameData, season, round){
                     }
                 }
             }
-            console.log(divTeam1.children.innerHTML)
             if(divTeam1.children[0].innerHTML == ""){
                 formTeam1.innerHTML = "&nbsp;"
             }
 
             let inputGoalsTeam1 = document.createElement("span");
             inputGoalsTeam1.className = "goalInput";
+            inputGoalsTeam1.style.width = "34px";
             inputGoalsTeam1.innerText = matches[i].team1Goals;
             divMatch.appendChild(inputGoalsTeam1);
 
@@ -1957,6 +1970,7 @@ function gamesRound (gameData, season, round){
 
             let inputGoalsTeam2 = document.createElement("span");
             inputGoalsTeam2.className = "goalInput";
+            inputGoalsTeam2.style.width = "34px";
             inputGoalsTeam2.innerText = matches[i].team2Goals;
             divMatch.appendChild(inputGoalsTeam2);
 
@@ -1977,15 +1991,10 @@ function gamesRound (gameData, season, round){
                 formTeam2.innerHTML = "&nbsp;"
             }
             else if(round < 5){
-                console.log("here")
                 for(let j = round; j > 0; j--){
                     let game = document.createElement("div");
                     game.className = "formGame";
                     for(let k = 0; k < Math.floor(gameData.seasons[season].teams.allTeams.length / 2); k++){
-                        console.log("here2")
-                        console.log(gameData.seasons[season].schedule[round - j].games[k].team1Id);
-                        console.log(gameData.seasons[season].schedule[round - j].games[k].team2Id)
-                        console.log(matches[i].team1Id)
                         if(gameData.seasons[season].schedule[round - j].games[k].team1Id == matches[i].team2Id){
                             if(gameData.seasons[season].schedule[round - j].games[k].team1Goals > gameData.seasons[season].schedule[round - j].games[k].team2Goals){
                                 game.innerText = "V";
@@ -2004,7 +2013,6 @@ function gamesRound (gameData, season, round){
                             }
                         }
                         else if(gameData.seasons[season].schedule[round - j].games[k].team2Id == matches[i].team2Id){
-                            console.log("here3")
                             if(gameData.seasons[season].schedule[round - j].games[k].team1Goals < gameData.seasons[season].schedule[round - j].games[k].team2Goals){
                                 game.innerText = "V";
                                 game.style.backgroundColor = "lightgreen";
@@ -2029,10 +2037,6 @@ function gamesRound (gameData, season, round){
                     let game = document.createElement("div");
                     game.className = "formGame";
                     for(let k = 0; k < Math.floor(gameData.seasons[season].teams.allTeams.length / 2); k++){
-                        console.log("here2")
-                        console.log(gameData.seasons[season].schedule[round - j].games[k].team1Id);
-                        console.log(gameData.seasons[season].schedule[round - j].games[k].team2Id)
-                        console.log(matches[i].team1Id)
                         if(gameData.seasons[season].schedule[round - j].games[k].team1Id == matches[i].team2Id){
                             if(gameData.seasons[season].schedule[round - j].games[k].team1Goals > gameData.seasons[season].schedule[round - j].games[k].team2Goals){
                                 game.innerText = "V";
@@ -2051,7 +2055,6 @@ function gamesRound (gameData, season, round){
                             }
                         }
                         else if(gameData.seasons[season].schedule[round - j].games[k].team2Id == matches[i].team2Id){
-                            console.log("here3")
                             if(gameData.seasons[season].schedule[round - j].games[k].team1Goals < gameData.seasons[season].schedule[round - j].games[k].team2Goals){
                                 game.innerText = "V";
                                 game.style.backgroundColor = "lightgreen";
@@ -2316,12 +2319,14 @@ function gamesPostSeason (gameData, season, round){
     
                     let inputGoalsTeam1 = document.createElement("span");
                     inputGoalsTeam1.className = "goalInput";
+                    inputGoalsTeam1.style.width = "34px";
                     inputGoalsTeam1.innerText = matchups[i].games[j].team1Goals;
                     divMatch.appendChild(inputGoalsTeam1);
     
                     if(matchups[i].games[j].team1GoalsAddTime != "" && matchups[i].games[j].team1GoalsAddTime != undefined){
                         let inputGoalsAddTimeTeam1 = document.createElement("span");
                         inputGoalsAddTimeTeam1.className = "goalInput";
+                        inputGoalsTeam1.style.width = "34px";
                         inputGoalsAddTimeTeam1.style.fontSize = "12px";
                         inputGoalsAddTimeTeam1.style.width = "25px";
                         inputGoalsAddTimeTeam1.innerText = matchups[i].games[j].team1GoalsAddTime;
@@ -2349,6 +2354,7 @@ function gamesPostSeason (gameData, season, round){
     
                     let inputGoalsTeam2 = document.createElement("span");
                     inputGoalsTeam2.className = "goalInput";
+                    inputGoalsTeam2.style.width = "34px";
                     inputGoalsTeam2.innerText = matchups[i].games[j].team2Goals;
                     divMatch.appendChild(inputGoalsTeam2);
     
@@ -2665,6 +2671,7 @@ function gamesPostSeason (gameData, season, round){
                 
                                 let inputGoalsTeam1 = document.createElement("span");
                                 inputGoalsTeam1.className = "goalInput";
+                                inputGoalsTeam1.style.width = "34px";
                                 inputGoalsTeam1.innerText = conferenceMatchups[i].games[j].team1Goals;
                                 divMatch.appendChild(inputGoalsTeam1);
                 
@@ -2698,6 +2705,7 @@ function gamesPostSeason (gameData, season, round){
                 
                                 let inputGoalsTeam2 = document.createElement("span");
                                 inputGoalsTeam2.className = "goalInput";
+                                inputGoalsTeam2.style.width = "34px";
                                 inputGoalsTeam2.innerText = conferenceMatchups[i].games[j].team2Goals;
                                 divMatch.appendChild(inputGoalsTeam2);
                 
@@ -2772,7 +2780,6 @@ function gamesPostSeason (gameData, season, round){
                 let matchupdiv = document.createElement("div");
                 round = round - gameData.seasons[season].postSeasonSchedule.conference[0].length;
                 gamesDiv.appendChild(matchupdiv);
-                console.log(round)
                 let finalMatchups = gameData.seasons[season].postSeasonSchedule.finals[round].matchups;
                 for(let j = 0; j < finalMatchups[round].games.length; j++){
                     if(finalMatchups[round].games[j].team1Goals == ""){  // si match pas joué
@@ -2935,8 +2942,6 @@ function gamesPostSeason (gameData, season, round){
                                         //finals
                                         //for(let a = 0; a < gameData.seasons[season].postSeasonSchedule.finals.length; a++){
                                         if(round < gameData.seasons[season].postSeasonSchedule.finals.length - 1){
-                                            console.log(round);
-                                            console.log(gameData.seasons[season].postSeasonSchedule.finals.length - 1)
                                             for(let b = 0; b < gameData.seasons[season].postSeasonSchedule.finals[round + 1].matchups.length; b++){
                                                 let teamSeeds = gameData.seasons[season].postSeasonSchedule.seeds;
                                                 for(let j = 0; j < 3; j++){
@@ -2987,6 +2992,7 @@ function gamesPostSeason (gameData, season, round){
         
                         let inputGoalsTeam1 = document.createElement("span");
                         inputGoalsTeam1.className = "goalInput";
+                        inputGoalsTeam1.style.width = "34px";
                         inputGoalsTeam1.innerText = finalMatchups[round].games[j].team1Goals;
                         divMatch.appendChild(inputGoalsTeam1);
         
@@ -3020,6 +3026,7 @@ function gamesPostSeason (gameData, season, round){
         
                         let inputGoalsTeam2 = document.createElement("span");
                         inputGoalsTeam2.className = "goalInput";
+                        inputGoalsTeam2.style.width = "34px";
                         inputGoalsTeam2.innerText = finalMatchups[round].games[j].team2Goals;
                         divMatch.appendChild(inputGoalsTeam2);
         
@@ -3175,29 +3182,24 @@ function selectionOptions (gameData, season){
         else{
             for(let i = 0; i < Math.log2(gameData.seasons[season].postSeasonSchedule.rules.postSeasonTeams); i++){
                 let option = document.createElement("option");
-                console.log(i)
                 ///text for conference finals and finals !!!CHANGE!!!
                 option.innerText = `Post-season ${i + 1} Round`;
                 option.value = i + gameData.seasons[season].schedule.length;
                 select.appendChild(option);
                 if(i >= gameData.seasons[season].postSeasonSchedule.conference[0].length){
                     if(gameData.seasons[season].postSeasonSchedule.finals[i - gameData.seasons[season].postSeasonSchedule.conference[0].length].completed == "no"){
-                        console.log("a")
                         option.selected = "selected";
                         i = gameData.seasons[season].postSeasonSchedule.length;
                     }
                     else{
-                        console.log("b")
                         option.selected = "selected";
                     }
                 }
                 else if(gameData.seasons[season].postSeasonSchedule.conference[0][i].completed == "no"){
-                    console.log("c")
                     option.selected = "selected";
                     i = gameData.seasons[season].postSeasonSchedule.length;
                 }
                 else{ 
-                    console.log("d")
                     option.selected = "selected";
                 }
             }
@@ -3330,8 +3332,6 @@ button.addEventListener("click", () => {
     standingsHomeButton.style.display = "inline-block";
     standingsAwayButton.style.display = "inline-block";
     round = select.value;
-    console.log(round);
-    console.log(gameData.seasons[season].schedule.length)
     if(round < gameData.seasons[season].schedule.length){
         let teamChoice = gameData.seasons[season].teams.allTeams;
         let teams = [];

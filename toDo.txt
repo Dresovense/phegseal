@@ -19,8 +19,6 @@ Records
 Power Rankings
 Rivalries (change with time)
 Interesting things happening in the round
-Sort by different things
-Color for playoff certainty (or no playoff certainty)-+
 Arrows for the places up/down 
 See schedule of matches
 Control that the number of teams in Playoffs equals the number of teams making in each division plus the wild cards
@@ -31,4 +29,4 @@ Conference must be a power of 2 (2,4,8,...)
 Division must be even
 
 
-make divisional playoff (like nhl)
+make divisional playoff (like nhl) 

@@ -15,6 +15,9 @@ module.exports = {
         die.appendChild(die2); 
 
         die.addEventListener("click", () => {
+            randomColor = "#" + (Math.floor(Math.random()*16777215).toString(16));
+            die1.style.border = "solid 2px" + randomColor
+            die2.style.border = "solid 2px" + randomColor
             let die1Result = Math.random();
             let die2Result = Math.random();
             if(die1Result < 0.2265){
