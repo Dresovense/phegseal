@@ -1,6 +1,7 @@
 
 const dice = require("./dice.js");
-const records = require("./records.js");
+const recordsPostSeason = require("./recordsPostSeason.js");
+const recordsSeason = require("./recordsSeason.js");
 let gameData = JSON.parse(sessionStorage.getItem("gameData"));
 let season = sessionStorage.getItem("season");
 
@@ -12,6 +13,14 @@ document.body.appendChild(seasonTitle);
 
 const conferenceNumber = gameData.seasons[season].teams.conference.length;
 const divisionNumber = gameData.seasons[season].teams.conference[0].divisions.length;
+
+let lastYearWinner
+if(season <= 12 && season != 0){
+    lastYearWinner = gameData.seasons[season - 1].postSeasonSchedule[1].matchups[0].winner;
+}
+else if(season > 11){
+    lastYearWinner = gameData.seasons[season - 1].postSeasonSchedule.finals[gameData.seasons[season - 1].postSeasonSchedule.finals.length - 1].matchups[0].winner;
+}
 
 let sortingType = "Pts";
 
@@ -421,7 +430,7 @@ function standings (gameData, teamChoice, season, round, sortingType){
     return teams;
 }
 
-function standingsHome (gameData, teamChoice, season, round){
+function standingsHome (gameData, teamChoice, season, round, sortingType){
     let teams = [];
     for(let i = 0; i < teamChoice.length; i++){
         teamId = teamChoice[i].id;
@@ -461,38 +470,307 @@ function standingsHome (gameData, teamChoice, season, round){
         teams.push(teamData);
     }
 
-    teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
-        if((left.pointsHome() / left.gamesPlayedHome()) > (right.pointsHome() / right.gamesPlayedHome())){
-            return -1;
-        }
-        else if ((left.pointsHome() / left.gamesPlayedHome()) < (right.pointsHome() / right.gamesPlayedHome())){
-            return 1;
-        }
-        else{
-            if(left.goalDifferentialHome() > right.goalDifferentialHome()){
+    if(sortingType == "Pts"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.pointsHome() > right.pointsHome()){
                 return -1;
             }
-            else if(left.goalDifferentialHome() < right.goalDifferentialHome()){
+            else if (left.pointsHome() < right.pointsHome()){
                 return 1;
             }
             else{
-                if(left.goalsScoredHome > right.goalsScoredHome){
+                if(left.goalDifferentialHome() > right.goalDifferentialHome()){
                     return -1;
                 }
-                else if(left.goalsScoredHome < right.goalsScoredHome){
+                else if(left.goalDifferentialHome() < right.goalDifferentialHome()){
                     return 1;
                 }
                 else{
-                    return -1; //à approfondir éventuellement
+                    if(left.goalsScoredHome > right.goalsScoredHome){
+                        return -1;
+                    }
+                    else if(left.goalsScoredHome < right.goalsScoredHome){
+                        return 1;
+                    }
+                    else{
+                        return -1; //à approfondir éventuellement
+                    }
                 }
             }
-        }
-    });
+        });
+    }
+    else if(sortingType == "Pts%"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if((left.pointsHome() / left.gamesPlayedHome()) > (right.pointsHome() / right.gamesPlayedHome())){
+                return -1;
+            }
+            else if ((left.pointsHome() / left.gamesPlayedHome()) < (right.pointsHome() / right.gamesPlayedHome())){
+                return 1;
+            }
+            else{
+                if(left.goalDifferentialHome() > right.goalDifferentialHome()){
+                    return -1;
+                }
+                else if(left.goalDifferentialHome() < right.goalDifferentialHome()){
+                    return 1;
+                }
+                else{
+                    if(left.goalsScoredHome > right.goalsScoredHome){
+                        return -1;
+                    }
+                    else if(left.goalsScoredHome < right.goalsScoredHome){
+                        return 1;
+                    }
+                    else{
+                        return -1; //à approfondir éventuellement
+                    }
+                }
+            }
+        });
+    }
+    else if(sortingType == "V"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.victoriesHome > right.victoriesHome){
+                return -1;
+            }
+            else if (left.victoriesHome < right.victoriesHome){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "D"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.tiesHome > right.tiesHome){
+                return -1;
+            }
+            else if (left.tiesHome < right.tiesHome){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "L"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.defeatsHome > right.defeatsHome){
+                return -1;
+            }
+            else if (left.defeatsHome < right.defeatsHome){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GD"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalDifferentialHome() > right.goalDifferentialHome()){
+                return -1;
+            }
+            else if (left.goalDifferentialHome() < right.goalDifferentialHome()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GP"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.gamesPlayedHome() > right.gamesPlayedHome()){
+                return -1;
+            }
+            else if (left.gamesPlayedHome() < right.gamesPlayedHome()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GF"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalsScoredHome > right.goalsScoredHome){
+                return -1;
+            }
+            else if(left.goalsScoredHome < right.goalsScoredHome){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GA"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalsAgainstHome > right.goalsAgainstHome){
+                return -1;
+            }
+            else if (left.goalsAgainstHome < right.goalsAgainstHome){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "SO"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.shutoutsHome > right.shutoutsHome){
+                return -1;
+            }
+            else if (left.shutoutsHome < right.shutoutsHome){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "Team"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.name > right.name){
+                return -1;
+            }
+            else if (left.name < right.name){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "Pts1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.pointsHome() < right.pointsHome()){
+                return -1;
+            }
+            else if (left.pointsHome() > right.pointsHome()){
+                return 1;
+            }
+            else{
+                if(left.goalDifferentialHome() < right.goalDifferentialHome()){
+                    return -1;
+                }
+                else if(left.goalDifferentialHome() > right.goalDifferentialHome()){
+                    return 1;
+                }
+                else{
+                    if(left.goalsScoredHome < right.goalsScoredHome){
+                        return -1;
+                    }
+                    else if(left.goalsScoredHome > right.goalsScoredHome){
+                        return 1;
+                    }
+                    else{
+                        return -1; //à approfondir éventuellement
+                    }
+                }
+            }
+        });
+    }
+    else if(sortingType == "Pts%1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if((left.pointsHome() / left.gamesPlayedHome()) < (right.pointsHome() / right.gamesPlayedHome())){
+                return -1;
+            }
+            else if ((left.pointsHome() / left.gamesPlayedHome()) > (right.pointsHome() / right.gamesPlayedHome())){
+                return 1;
+            }
+            else{
+                if(left.goalDifferentialHome() < right.goalDifferentialHome()){
+                    return -1;
+                }
+                else if(left.goalDifferentialHome() > right.goalDifferentialHome()){
+                    return 1;
+                }
+                else{
+                    if(left.goalsScoredHome < right.goalsScoredHome){
+                        return -1;
+                    }
+                    else if(left.goalsScoredHome > right.goalsScoredHome){
+                        return 1;
+                    }
+                    else{
+                        return -1; //à approfondir éventuellement
+                    }
+                }
+            }
+        });
+    }
+    else if(sortingType == "V1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.victoriesHome < right.victoriesHome){
+                return -1;
+            }
+            else if (left.victoriesHome > right.victoriesHome){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "D1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.tiesHome < right.tiesHome){
+                return -1;
+            }
+            else if (left.tiesHome > right.tiesHome){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "L1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.defeatsHome < right.defeatsHome){
+                return -1;
+            }
+            else if (left.defeatsHome > right.defeatsHome){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GD1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalDifferentialHome() < right.goalDifferentialHome()){
+                return -1;
+            }
+            else if (left.goalDifferentialHome() > right.goalDifferentialHome()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GP1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.gamesPlayedHome() < right.gamesPlayedHome()){
+                return -1;
+            }
+            else if (left.gamesPlayedHome() > right.gamesPlayedHome()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GF1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalsScoredHome < right.goalsScoredHome){
+                return -1;
+            }
+            else if(left.goalsScoredHome > right.goalsScoredHome){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GA1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalsAgaistHome < right.goalsAgaistHome){
+                return -1;
+            }
+            else if (left.goalsAgaistHome > right.goalsAgaistHome){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "SO1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.shutoutsHome < right.shutoutsHome){
+                return -1;
+            }
+            else if (left.shutoutsHome > right.shutoutsHome){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "Team1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.name < right.name){
+                return -1;
+            }
+            else if (left.name > right.name){
+                return 1;
+            }
+        });
+    }
 
     return teams;
 }
 
-function standingsAway (gameData, teamChoice, season, round){
+function standingsAway (gameData, teamChoice, season, round, sortingType){
     let teams = [];
     for(let i = 0; i < teamChoice.length; i++){
         teamId = teamChoice[i].id;
@@ -532,33 +810,302 @@ function standingsAway (gameData, teamChoice, season, round){
         teams.push(teamData);
     }
 
-    teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
-        if((left.pointsAway() / left.gamesPlayedAway()) > (right.pointsAway() / right.gamesPlayedAway())){
-            return -1;
-        }
-        else if ((left.pointsAway() / left.gamesPlayedAway()) < (right.pointsAway() / right.gamesPlayedAway())){
-            return 1;
-        }
-        else{
-            if(left.goalDifferentialAway() > right.goalDifferentialAway()){
+    if(sortingType == "Pts"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.pointsAway() > right.pointsAway()){
                 return -1;
             }
-            else if(left.goalDifferentialAway() < right.goalDifferentialAway()){
+            else if (left.pointsAway() < right.pointsAway()){
                 return 1;
             }
             else{
-                if(left.goalsScoredAway > right.goalsScoredAway){
+                if(left.goalDifferentialAway() > right.goalDifferentialAway()){
                     return -1;
                 }
-                else if(left.goalsScoredAway < right.goalsScoredAway){
+                else if(left.goalDifferentialAway() < right.goalDifferentialAway()){
                     return 1;
                 }
                 else{
-                    return -1; //à approfondir éventuellement
+                    if(left.goalsScoredAway > right.goalsScoredAway){
+                        return -1;
+                    }
+                    else if(left.goalsScoredAway < right.goalsScoredAway){
+                        return 1;
+                    }
+                    else{
+                        return -1; //à approfondir éventuellement
+                    }
                 }
             }
-        }
-    });
+        });
+    }
+    else if(sortingType == "Pts%"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if((left.pointsAway() / left.gamesPlayedAway()) > (right.pointsAway() / right.gamesPlayedAway())){
+                return -1;
+            }
+            else if ((left.pointsAway() / left.gamesPlayedAway()) < (right.pointsAway() / right.gamesPlayedAway())){
+                return 1;
+            }
+            else{
+                if(left.goalDifferentialAway() > right.goalDifferentialAway()){
+                    return -1;
+                }
+                else if(left.goalDifferentialAway() < right.goalDifferentialAway()){
+                    return 1;
+                }
+                else{
+                    if(left.goalsScoredAway > right.goalsScoredAway){
+                        return -1;
+                    }
+                    else if(left.goalsScoredAway < right.goalsScoredAway){
+                        return 1;
+                    }
+                    else{
+                        return -1; //à approfondir éventuellement
+                    }
+                }
+            }
+        });
+    }
+    else if(sortingType == "V"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.victoriesAway > right.victoriesAway){
+                return -1;
+            }
+            else if (left.victoriesAway < right.victoriesAway){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "D"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.tiesAway > right.tiesAway){
+                return -1;
+            }
+            else if (left.tiesAway < right.tiesAway){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "L"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.defeatsAway > right.defeatsAway){
+                return -1;
+            }
+            else if (left.defeatsAway < right.defeatsAway){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GD"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalDifferentialAway() > right.goalDifferentialAway()){
+                return -1;
+            }
+            else if (left.goalDifferentialAway() < right.goalDifferentialAway()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GP"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.gamesPlayedAway() > right.gamesPlayedAway()){
+                return -1;
+            }
+            else if (left.gamesPlayedAway() < right.gamesPlayedAway()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GF"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalsScoredAway > right.goalsScoredAway){
+                return -1;
+            }
+            else if(left.goalsScoredAway < right.goalsScoredAway){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GA"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalsAgainstAway > right.goalsAgainstAway){
+                return -1;
+            }
+            else if (left.goalsAgainstAway < right.goalsAgainstAway){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "SO"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.shutoutsAway > right.shutoutsAway){
+                return -1;
+            }
+            else if (left.shutoutsAway < right.shutoutsAway){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "Team1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.name > right.name){
+                return -1;
+            }
+            else if (left.name < right.name){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "Pts1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.pointsAway() < right.pointsAway()){
+                return -1;
+            }
+            else if (left.pointsAway() > right.pointsAway()){
+                return 1;
+            }
+            else{
+                if(left.goalDifferentialAway() < right.goalDifferentialAway()){
+                    return -1;
+                }
+                else if(left.goalDifferentialAway() > right.goalDifferentialAway()){
+                    return 1;
+                }
+                else{
+                    if(left.goalsScoredAway < right.goalsScoredAway){
+                        return -1;
+                    }
+                    else if(left.goalsScoredAway > right.goalsScoredAway){
+                        return 1;
+                    }
+                    else{
+                        return -1; //à approfondir éventuellement
+                    }
+                }
+            }
+        });
+    }
+    else if(sortingType == "Pts%1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if((left.pointsAway() / left.gamesPlayedAway()) < (right.pointsAway() / right.gamesPlayedAway())){
+                return -1;
+            }
+            else if ((left.pointsAway() / left.gamesPlayedAway()) > (right.pointsAway() / right.gamesPlayedAway())){
+                return 1;
+            }
+            else{
+                if(left.goalDifferentialAway() < right.goalDifferentialAway()){
+                    return -1;
+                }
+                else if(left.goalDifferentialAway() > right.goalDifferentialAway()){
+                    return 1;
+                }
+                else{
+                    if(left.goalsScoredAway < right.goalsScoredAway){
+                        return -1;
+                    }
+                    else if(left.goalsScoredAway > right.goalsScoredAway){
+                        return 1;
+                    }
+                    else{
+                        return -1; //à approfondir éventuellement
+                    }
+                }
+            }
+        });
+    }
+    else if(sortingType == "V1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.victoriesAway < right.victoriesAway){
+                return -1;
+            }
+            else if (left.victoriesAway > right.victoriesAway){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "D1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.tiesAway < right.tiesAway){
+                return -1;
+            }
+            else if (left.tiesAway > right.tiesAway){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "L1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.defeatsAway < right.defeatsAway){
+                return -1;
+            }
+            else if (left.defeatsAway > right.defeatsAway){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GD1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalDifferentialAway() < right.goalDifferentialAway()){
+                return -1;
+            }
+            else if (left.goalDifferentialAway() > right.goalDifferentialAway()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GP1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.gamesPlayedAway() < right.gamesPlayedAway()){
+                return -1;
+            }
+            else if (left.gamesPlayedAway() > right.gamesPlayedAway()){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GF1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalsScoredAway < right.goalsScoredAway){
+                return -1;
+            }
+            else if(left.goalsScoredAway > right.goalsScoredAway){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "GA1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.goalsAgaistAway < right.goalsAgaistAway){
+                return -1;
+            }
+            else if (left.goalsAgaistAway > right.goalsAgaistAway){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "SO1"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.shutoutsAway < right.shutoutsAway){
+                return -1;
+            }
+            else if (left.shutoutsAway > right.shutoutsAway){
+                return 1;
+            }
+        });
+    }
+    else if(sortingType == "Team"){
+        teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
+            if(left.name < right.name){
+                return -1;
+            }
+            else if (left.name > right.name){
+                return 1;
+            }
+        });
+    }
 
     return teams;
 }
@@ -610,18 +1157,18 @@ function teamsPlayOffBound (gameData, season, round){
                 }
             }
         }
-        for(let i = 0; i < wildCardsPerConference; i++){
-            for(let j = 0; j < conferenceNumber; j++){
+        for(let j = 0; j < conferenceNumber; j++){
+            let teamList = 0;
+            for(let i = 0; i < wildCardsPerConference; i++){
                 let teamChoice = gameData.seasons[season].teams.conference[j].teamsInConference;
                 let teams = standings(gameData, teamChoice, season, round, "Pts");
                 let teamAdded = false;
-                let teamList = 0;
                 while(teamAdded == false){
                     if(teamListPlayOffBound.includes(teams[teamList].id)){
                         teamList++;
                     }
                     else{
-                        teamListPlayOffBound.push([teams[teamList].id]);
+                        teamListPlayOffBound.push(teams[teamList].id);
                         teamAdded = true;
                     }
                 }
@@ -646,7 +1193,7 @@ function teamsPlayOffBound (gameData, season, round){
     }
 }
 
-function printStandings(teams){
+function printStandings(teams, placeTeams){
     let playOffTeams = teamsPlayOffBound(gameData, season, round);
     let nonPlayOffTeams = outOfPlayOffs(gameData, season, round);
     //let playOffPlaces = gameData.seasons[season].postSeasonSchedule[0].matchups.length * 2;
@@ -903,7 +1450,11 @@ function printStandings(teams){
             place.className = "gridsquare";
             place.id = "place";
             place.style.backgroundColor = "lightgray";
-            place.innerText = i + 1;
+            for(let j = 0; j < placeTeams.length; j++){
+                if(placeTeams[j].id == teams[i].id){
+                    place.innerText = j + 1;
+                }
+            }
             standingsRow.appendChild(place);
             //name of team
             let name = document.createElement("div");
@@ -932,6 +1483,14 @@ function printStandings(teams){
             logo.id = "logo";
             logo.src = ".." + teams[i].logo + ".png";
             name.appendChild(logo);  
+            if(teams[i].id == lastYearWinner){
+                //last year winner logo
+                let lastYearWinnerLogo = document.createElement("img");
+                lastYearWinnerLogo.className = "logo";
+                lastYearWinnerLogo.id = "logo";
+                lastYearWinnerLogo.src = "../graphics/trophy/trophy.png";
+                name.appendChild(lastYearWinnerLogo);  
+            }
             //games of team
             let games = document.createElement("div");
             games.className = "gridsquare";
@@ -1105,8 +1664,8 @@ function printStandingsHome(teams){
             placeChangement.id = "placeChangement";
             let numberOfPlaces = 0;
             if(round != 0){
-                let standingsRound = standingsHome(gameData, teams, season, round);
-                let standingsPreviousRound = standingsHome(gameData, teams, season, round - 1);
+                let standingsRound = standingsHome(gameData, teams, season, round, "Pts%");
+                let standingsPreviousRound = standingsHome(gameData, teams, season, round - 1, "Pts%");
                 let indexOfRound = 0;
                 let indexOfPreviousRound = 0;
                 for(let j = 0; j < standingsRound.length; j++){
@@ -1326,8 +1885,8 @@ function printStandingsAway(teams){
             placeChangement.id = "placeChangement";
             let numberOfPlaces = 0;
             if(round != 0){
-                let standingsRound = standingsAway(gameData, teams, season, round);
-                let standingsPreviousRound = standingsAway(gameData, teams, season, round - 1);
+                let standingsRound = standingsAway(gameData, teams, season, round, "Pts%");
+                let standingsPreviousRound = standingsAway(gameData, teams, season, round - 1, "Pts%");
                 let indexOfRound = 0;
                 let indexOfPreviousRound = 0;
                 for(let j = 0; j < standingsRound.length; j++){
@@ -1510,23 +2069,29 @@ function layOutPostSeason(gameData, season){
                 }
             }
         }
-    }
-   /*  let teamsList = [];
-    teamsList = standings(gameData, teams, season, round);
-    let numberOfTeamsInPlayOffs = gameData.seasons[season].postSeasonSchedule[0].matchups.length * 2;
-    for(let i = 0; i < gameData.seasons[season].postSeasonSchedule[0].matchups.length; i++){
-        for(let j = 0; j < 3; j++){
-            if(j != 1){
-                gameData.seasons[season].postSeasonSchedule[0].matchups[i].games[j].team1Id = teamsList[i].id;
-                gameData.seasons[season].postSeasonSchedule[0].matchups[i].games[j].team2Id = teamsList[numberOfTeamsInPlayOffs - 1 - i].id;
-            }
-            else{
-                gameData.seasons[season].postSeasonSchedule[0].matchups[i].games[j].team2Id = teamsList[i].id;
-                gameData.seasons[season].postSeasonSchedule[0].matchups[i].games[j].team1Id = teamsList[numberOfTeamsInPlayOffs - 1 - i].id;
-            }
+    }    
+
+    //create Records:
+    for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.seeds.length; i++){
+        console.log(gameData.seasons[season].postSeasonSchedule.seeds)
+        let records = gameData.seasons[season].records.postSeason;
+        let team = {
+            teamId: `${gameData.seasons[season].postSeasonSchedule.seeds[i]}`,
+            record: 0
         }
-    } */
-    
+        records.victories.mostPlayoffVictories.teams.push(team);
+        records.victories.mostPlayoffVictoriesHome.teams.push(team);
+        records.victories.mostPlayoffVictoriesAway.teams.push(team);
+        records.victories.mostAddTimeVictories.teams.push(team);
+        records.victories.mostAddTimeVictoriesHome.teams.push(team);
+        records.victories.mostAddTimeVictoriesAway.teams.push(team);
+        records.goals.mostGoalsScoredInPlayoffs.teams.push(team);
+        records.goals.mostGoalsScoredHomeInPlayoffs.teams.push(team);
+        records.goals.mostGoalsScoredAwayInPlayoffs.teams.push(team);
+        records.goals.mostShutoutsInPlayoffs.teams.push(team);
+        records.goals.mostShutoutsHomeInPlayoffs.teams.push(team);
+        records.goals.mostShutoutsAwayInPlayoffs.teams.push(team);
+    }
 }
 
 function gamesRound (gameData, season, round){    
@@ -1806,7 +2371,8 @@ function gamesRound (gameData, season, round){
                     matches[i].team1Goals = inputGoalsTeam1.value;
                     matches[i].team2Goals = inputGoalsTeam2.value;
                     //test records
-                    records.testSeasonRecords();
+                    console.log(standings(gameData, gameData.seasons[season].teams.allTeams, season, round, "Pts"))
+                    recordsSeason.testSeasonRecords(gameData, season, round, matches[i].team1Id, matches[i].team2Id);
                     let matchEnded = 0;
                     for(let j = 0; j < matches.length; j++){
                         if(matches[j].team1Goals != ""){
@@ -2526,6 +3092,7 @@ function gamesPostSeason (gameData, season, round){
                                             window.alert("This match can't finished tied")
                                         }
                                         else{
+                                            recordsPostSeason.testPostSeasonRecords(gameData, season, conferenceMatchups[i].games[j]);
                                             conferenceMatchups[i].games[j].team1Goals = inputGoalsTeam1.value;
                                             conferenceMatchups[i].games[j].team2Goals = inputGoalsTeam2.value;
                                             conferenceMatchups[i].games[j].team1GoalsAddTime = inputGoalsAddTimeTeam1.value;
@@ -2873,6 +3440,7 @@ function gamesPostSeason (gameData, season, round){
                                     window.alert("This match can't finished tied")
                                 }
                                 else{
+                                    recordsPostSeason.testPostSeasonRecords(gameData, season, finalMatchups[round].games[j]);
                                     finalMatchups[round].games[j].team1Goals = inputGoalsTeam1.value;
                                     finalMatchups[round].games[j].team2Goals = inputGoalsTeam2.value;
                                     finalMatchups[round].games[j].team1GoalsAddTime = inputGoalsAddTimeTeam1.value;
@@ -3229,14 +3797,15 @@ if(conferenceNumber > 1){
             let teamChoice = gameData.seasons[season].teams.conference[i].teamsInConference;
             if(homeAwayFactor == "All"){
                 let teams = standings(gameData,teamChoice, season, round, sortingType);
-                printStandings(teams);
+                let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
+                printStandings(teams, placeTeams);
             }
             else if(homeAwayFactor == "Home"){
-                let teams = standingsHome(gameData, teamChoice, season, round);
+                let teams = standingsHome(gameData, teamChoice, season, round, "Pts%");
                 printStandingsHome(teams);
             }
             else if(homeAwayFactor == "Away"){
-                let teams = standingsAway(gameData,teamChoice, season, round);
+                let teams = standingsAway(gameData,teamChoice, season, round, "Pts%");
                 printStandingsAway(teams);
             }
             let br = document.createElement("br");
@@ -3262,14 +3831,15 @@ if(divisionNumber > 1){
                 let teamChoice = gameData.seasons[season].teams.conference[i].divisions[j].teams;
                 if(homeAwayFactor == "All"){
                     let teams = standings(gameData,teamChoice, season, round, sortingType);
-                    printStandings(teams);
+                    let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
+                    printStandings(teams, placeTeams);
                 }
                 else if(homeAwayFactor == "Home"){
-                    let teams = standingsHome(gameData, teamChoice, season, round);
+                    let teams = standingsHome(gameData, teamChoice, season, round, "Pts%");
                     printStandingsHome(teams);
                 }
                 else if(homeAwayFactor == "Away"){
-                    let teams = standingsAway(gameData,teamChoice, season, round);
+                    let teams = standingsAway(gameData,teamChoice, season, round, "Pts%");
                     printStandingsAway(teams);
                 }
                 let br = document.createElement("br");
@@ -3292,14 +3862,15 @@ if(divisionNumber > 1 || conferenceNumber > 1){
         let teamChoice = gameData.seasons[season].teams.allTeams;
         if(homeAwayFactor == "All"){
             let teams = standings(gameData,teamChoice, season, round, sortingType);
-            printStandings(teams);
+            let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
+            printStandings(teams, placeTeams);
         }
         else if(homeAwayFactor == "Home"){
-            let teams = standingsHome(gameData, teamChoice, season, round);
+            let teams = standingsHome(gameData, teamChoice, season, round, "Pts%");
             printStandingsHome(teams);
         }
         else if(homeAwayFactor == "Away"){
-            let teams = standingsAway(gameData,teamChoice, season, round);
+            let teams = standingsAway(gameData,teamChoice, season, round, "Pts%");
             printStandingsAway(teams);
         }
         divisionStandingsChoice.style.display = "inline-block";
@@ -3336,7 +3907,8 @@ button.addEventListener("click", () => {
         let teamChoice = gameData.seasons[season].teams.allTeams;
         let teams = [];
         teams = standings(gameData, teamChoice, season, round, sortingType);
-        printStandings(teams);
+        let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
+        printStandings(teams, placeTeams);
         gamesRound(gameData, season, round);
         boolRegularSeason = true;
         standingsHomeButton.style.display = "inline-block";
@@ -3396,7 +3968,8 @@ previousRound.addEventListener("click", () =>{
             let teamChoice = gameData.seasons[season].teams.allTeams;
             let teams = [];
             teams = standings(gameData, teamChoice, season, round, sortingType);
-            printStandings(teams);
+            let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
+            printStandings(teams, placeTeams);
             gamesRound(gameData, season, round);
             boolRegularSeason = true;
             standingsHomeButton.style.display = "inline-block";
@@ -3501,7 +4074,8 @@ nextRound.addEventListener("click", () => {
             let teamChoice = gameData.seasons[season].teams.allTeams;
             let teams = [];
             teams = standings(gameData, teamChoice, season, round, sortingType);
-            printStandings(teams);
+            let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
+            printStandings(teams, placeTeams);
             gamesRound(gameData, season, round);
             boolRegularSeason = true;
             standingsHomeButton.style.display = "inline-block";
@@ -3529,7 +4103,8 @@ if(select.value < gameData.seasons[season].schedule.length){
         let teamChoice = gameData.seasons[season].teams.allTeams;
         let teams = [];
         teams = standings(gameData, teamChoice, season, round, sortingType);
-        printStandings(teams)
+        let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
+        printStandings(teams, placeTeams)
         gamesRound(gameData, season, round);
         boolRegularSeason = true;
     //}
@@ -3554,7 +4129,7 @@ standingsHomeButton.addEventListener("click", () =>{
     //if(conferenceNumber == 1 && divisionNumber == 1){
         if(divisionsFactor == "league"){
             let teamChoice = gameData.seasons[season].teams.allTeams;
-            let teams = standingsHome(gameData, teamChoice, season, round);
+            let teams = standingsHome(gameData, teamChoice, season, round, "Pts%");
             printStandingsHome(teams);
         }
         else if(divisionsFactor == "conference"){
@@ -3563,7 +4138,7 @@ standingsHomeButton.addEventListener("click", () =>{
                 conferenceName.innerText = `${gameData.seasons[season].teams.conference[i].name} Conference`;
                 standingsContainer.appendChild(conferenceName);
                 let teamChoice = gameData.seasons[season].teams.conference[i].teamsInConference;
-                let teams = standingsHome(gameData, teamChoice, season, round);
+                let teams = standingsHome(gameData, teamChoice, season, round, "Pts%");
                 printStandingsHome(teams);
             }
         }
@@ -3574,7 +4149,7 @@ standingsHomeButton.addEventListener("click", () =>{
                     divisionName.innerText = `${gameData.seasons[season].teams.conference[i].divisions[j].name} Division`;
                     standingsContainer.appendChild(divisionName);
                     let teamChoice = gameData.seasons[season].teams.conference[i].divisions[j].teams;
-                    let teams = standingsHome(gameData, teamChoice, season, round);
+                    let teams = standingsHome(gameData, teamChoice, season, round, "Pts%");
                     printStandingsHome(teams);
                 }
             }
@@ -3593,7 +4168,7 @@ standingsAwayButton.addEventListener("click", () =>{
     //if(conferenceNumber == 1 && divisionNumber == 1){
         if(divisionsFactor == "league"){
             let teamChoice = gameData.seasons[season].teams.allTeams;
-            let teams = standingsAway(gameData, teamChoice, season, round);
+            let teams = standingsAway(gameData, teamChoice, season, round, "Pts%");
             printStandingsAway(teams);
         }
         else if(divisionsFactor == "conference"){
@@ -3602,7 +4177,7 @@ standingsAwayButton.addEventListener("click", () =>{
                 conferenceName.innerText = `${gameData.seasons[season].teams.conference[i].name} Conference`;
                 standingsContainer.appendChild(conferenceName);
                 let teamChoice = gameData.seasons[season].teams.conference[i].teamsInConference;
-                let teams = standingsAway(gameData, teamChoice, season, round);
+                let teams = standingsAway(gameData, teamChoice, season, round, "Pts%");
                 printStandingsAway(teams);
             }
         }
@@ -3613,7 +4188,7 @@ standingsAwayButton.addEventListener("click", () =>{
                     divisionName.innerText = `${gameData.seasons[season].teams.conference[i].divisions[j].name} Division`;
                     standingsContainer.appendChild(divisionName);
                     let teamChoice = gameData.seasons[season].teams.conference[i].divisions[j].teams;
-                    let teams = standingsAway(gameData, teamChoice, season, round);
+                    let teams = standingsAway(gameData, teamChoice, season, round, "Pts%");
                     printStandingsAway(teams);
                 }
             }
@@ -3634,7 +4209,8 @@ standingsAllButton.addEventListener("click", () => {
         if(divisionsFactor == "league"){
             let teamChoice = gameData.seasons[season].teams.allTeams;
             let teams = standings(gameData, teamChoice, season, round, sortingType);
-            printStandings(teams);
+            let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
+            printStandings(teams, placeTeams);
         }
         else if(divisionsFactor == "conference"){
             for(let i = 0; i < conferenceNumber; i++){
@@ -3643,7 +4219,8 @@ standingsAllButton.addEventListener("click", () => {
                 standingsContainer.appendChild(conferenceName);
                 let teamChoice = gameData.seasons[season].teams.conference[i].teamsInConference;
                 let teams = standings(gameData, teamChoice, season, round, sortingType);
-                printStandings(teams);
+                let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
+                printStandings(teams, placeTeams);
             }
         }
         else if(divisionsFactor == "division"){
@@ -3654,7 +4231,8 @@ standingsAllButton.addEventListener("click", () => {
                     standingsContainer.appendChild(divisionName);
                     let teamChoice = gameData.seasons[season].teams.conference[i].divisions[j].teams;
                     let teams = standings(gameData, teamChoice, season, round, sortingType);
-                    printStandings(teams);
+                    let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
+                    printStandings(teams, placeTeams);
                 }
             }
         }
