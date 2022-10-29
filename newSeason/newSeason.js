@@ -250,20 +250,6 @@ for(let i = 0; i < gameData.teams.length; i++){
     divTeams.appendChild(team);
 }
 
-/* let selectAllButton = document.createElement("button");     //display
-selectAllButton.style.display = "none";
-selectAllButton.innerText = "Select All";
-selectAllButton.className = "teamChoice";
-selectAllButton.addEventListener("click", () => {
-    teamList = [];
-    let teams = document.querySelectorAll("div")
-    for(let i = 0; i < gameData.teams.length; i++){
-        teamList.push(i);
-        teams[i + 2].style.backgroundColor = "lightblue";
-    }
-});
-document.body.appendChild(selectAllButton); */
-
 let confirmChoicebutton = document.createElement("button");     //display
 confirmChoicebutton.style.display = "none";
 confirmChoicebutton.innerText = "Confirm Choice";
@@ -331,7 +317,1512 @@ let newSeason = {
         "seeds": []
     },
     "records": {
-        "a completer": "..."
+        "regularSeason": {
+            "points": {
+                "mostPoints": {
+                    "name": `Most points in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessPoints": {
+                    "name": `Less points in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                }
+            },
+            "victories": {
+                "mostVictories": {
+                    "name": `Most victories in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessVictories": {
+                    "name": `Less victories in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostVictoriesHome": {
+                    "name": `Most victories home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessVictoriesHome": {
+                    "name": `Less victories home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostVictoriesAway": {
+                    "name": `Most victories away in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessVictoriesAway": {
+                    "name": `Less victories away in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostConsecutiveVictories": {
+                    "name": `Most consecutive victories in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "-1",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "-1",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "-1",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "-1",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "-1",
+                            "record": "-1",
+                            "endRound": "0"
+                        }
+                    ]
+                },
+                "consecutiveNoWinMatches": {
+                    "name": `Most consecutive matches without winning in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        }
+                    ]
+                },
+                "mostConsecutiveVictoriesHome": {
+                    "name": `Most consecutive victories home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        }
+                    ]
+                },
+                "mostConsecutiveVictoriesAway": {
+                    "name": `Most consecutive victories away in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        }
+                    ]
+                }
+            },
+            "defeats": {
+                "mostDefeats": {
+                    "name": `Most defeats in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessDefeats": {
+                    "name": `Less defeats in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostDefeatsHome": {
+                    "name": `Most defeats home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessDefeatsHome": {
+                    "name": `Less defeats home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostDefeatsAway": {
+                    "name": `Most defeats away in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessDefeatsAway": {
+                    "name": `Less defeats away in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostConsecutiveDefeats": {
+                    "name": `Most consecutive defeats in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        }
+                    ]
+                },
+                "consecutiveNoLossMatches": {
+                    "name": `Most consecutive matches without losing in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        }
+                    ]
+                },
+                "mostConsecutiveDefeatsHome": {
+                    "name": `Most consecutive defeats home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        }
+                    ]
+                },
+                "mostConsecutiveDefeatsAway": {
+                    "name": `Most consecutive defeats away in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        }
+                    ]
+                }
+            },
+            "ties": {
+                "mostTies": {
+                    "name": `Most ties in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessTies": {
+                    "name": `Less ties in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostTiesHome": {
+                    "name": `Most ties home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessTiesHome": {
+                    "name": `Less ties home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostTiesAway": {
+                    "name": `Most ties away in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessTiesAway": {
+                    "name": `Less ties away in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostConsecutiveTies": {
+                    "name": `Most consecutive ties in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        }
+                    ]
+                },
+                "mostConsecutiveTiesHome": {
+                    "name": `Most consecutive ties home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        }
+                    ]
+                },
+                "mostConsecutiveTiesAway": {
+                    "name": `Most consecutive ties away in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "-1",
+                            "endRound": "0"
+                        }
+                    ]
+                }
+            },
+            "goals": {
+                "mostGoalsScored": {
+                    "name": `Most goals scored in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessGoalsScored": {
+                    "name": `Less goals scored in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostGoalsScoredHome": {
+                    "name": `Most goals scored home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostGoalsScoredAway": {
+                    "name": `Most goals scored away in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessGoalsScoredHome": {
+                    "name": `Less goals scored home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessGoalsScoredAway": {
+                    "name": `Less goals scored away in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostGoalsAgainst": {
+                    "name": `Most goals agaisnt in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessGoalsAgainst": {
+                    "name": `Less goals agaist in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostGoalsAgainstHome": {
+                    "name": `Most goals against home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostGoalsAgainstAway": {
+                    "name": `Most goals against away in${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessGoalsAgainstHome": {
+                    "name": `Less goals against home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "207"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessGoalsAgainstAway": {
+                    "name": `Less goals against away in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "bestGoalDifference": {
+                    "name": `Best goal difference in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "worstGoalDifference": {
+                    "name": `Worst goal difference in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "bestGoalDifferenceHome": {
+                    "name": `Best goal difference home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "bestGoalDifferenceAway": {
+                    "name": `Best goal difference away in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "2",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "worstGoalDifferenceHome": {
+                    "name": `Worst goal difference home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "worstGoalDifferenceAway": {
+                    "name": `Worst goal difference away in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostShutouts": {
+                    "name": `Most shutouts in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessShutouts": {
+                    "name": `Less shutouts in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostShutoutsHome": {
+                    "name": `Most shutouts home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "mostShutoutsAway": {
+                    "name": `Most shutouts away in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessShutoutsHome": {
+                    "name": `Less shutouts home in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                },
+                "lessShutoutsAway": {
+                    "name": `Less shutouts away in ${startDate + "-" + endDate} season`,
+                    "teams": [
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        },
+                        {
+                            "teamId": "0",
+                            "record": "0"
+                        }
+                    ]
+                }
+            }
+        },
+        "postSeason": {
+            "victories": {
+                "mostPlayoffVictories": {
+                    "name": `Most victories in the ${startDate + "-" + endDate} play-offs`,
+                    "teams": [
+                    ]
+                },
+                "mostPlayoffVictoriesHome": {
+                    "name": `Most victories home in the ${startDate + "-" + endDate} play-offs`,
+                    "teams": [
+                    ]
+                },
+                "mostPlayoffVictoriesAway": {
+                    "name": `Most victories away in the ${startDate + "-" + endDate} play-offs`,
+                    "teams": [
+                    ]
+                },
+                "mostAddTimeVictories": {
+                    "name": `Most victories in add time in the ${startDate + "-" + endDate} play-offs`,
+                    "teams": [
+                    ]
+                },
+                "mostAddTimeVictoriesHome": {
+                    "name": `Most victories home in add time in the ${startDate + "-" + endDate} play-offs`,
+                    "teams": [
+                    ]
+                },
+                "mostAddTimeVictoriesAway": {
+                    "name": `Most victories away in add time in the ${startDate + "-" + endDate} play-offs`,
+                    "teams": [
+                    ]
+                }
+            },
+            "goals": {
+                "mostGoalsScoredInPlayoffs": {
+                    "name": `Most goals scored in the ${startDate + "-" + endDate} play-offs`,
+                    "teams": [
+                    ]
+                },
+                "mostGoalsScoredHomeInPlayoffs": {
+                    "name": `Most goals scored at home in the ${startDate + "-" + endDate} play-offs`,
+                    "teams": [
+                    ]
+                },
+                "mostGoalsScoredAwayInPlayoffs": {
+                    "name": `Most goals scored away in the ${startDate + "-" + endDate} play-offs`,
+                    "teams": [
+                    ]
+                },
+                "mostShutoutsInPlayoffs": {
+                    "name": `Most shutouts in the ${startDate + "-" + endDate} play-offs`,
+                    "teams": [
+                    ]
+                },
+                "mostShutoutsHomeInPlayoffs": {
+                    "name": `Most shutouts at home in the ${startDate + "-" + endDate} play-offs`,
+                    "teams": []
+                },
+                "mostShutoutsAwayInPlayoffs": {
+                    "name": `Most shutouts away in the ${startDate + "-" + endDate} play-offs`,
+                    "teams": []
+                }
+            }
+        }
     }
 };
 
