@@ -5,6 +5,7 @@ const recordsSeason = require("./recordsSeason.js");
 let gameData = JSON.parse(sessionStorage.getItem("gameData"));
 let season = sessionStorage.getItem("season");
 
+let homeAwayFactor = "All";
 let endDate = gameData.seasons[season].endDate;
 let startDate = parseInt(gameData.seasons[season].endDate) - 1;
 let seasonTitle = document.createElement("h3");
@@ -1178,10 +1179,10 @@ function teamsPlayOffBound (gameData, season, round){
         let numberOfTeamsInPlayOffs = teamListPlayOffBound.length;
         let numberOfMatches = gameData.seasons[season].schedule.length - (gameData.seasons[season].teams.allTeams.length % 2) * (gameData.seasons[season].schedule.length / gameData.seasons[season].teams.allTeams.length)
         for(let j = 0; j < conferenceNumber; j++){      //!!CHANGE!! for how many wild cards and how playoff works
-            for(let i = 0; i < numberOfTeamsInPlayOffs; i++){ 
+            for(let i = 0; i < teamsQualifiedPerDivision; i++){ 
                 let teamChoice = gameData.seasons[season].teams.conference[j].teamsInConference;
                 let teams = standings(gameData, teamChoice, season, round, "Pts");
-                if(teams[i].points() > (teams[numberOfTeamsInPlayOffs].points() + 3 * (numberOfMatches - teams[numberOfTeamsInPlayOffs].gamesPlayed()))){
+                if(teams[i].points() > (teams[teamsQualifiedPerDivision].points() + 3 * (numberOfMatches - teams[teamsQualifiedPerDivision].gamesPlayed()))){
                     teamListPlayOffBound.push(true);
                 }
                 else{
@@ -1216,10 +1217,12 @@ function printStandings(teams, placeTeams){
             place.addEventListener("click", () => {
                 if(sortingType == "Pts"){
                     sortingType = "Pts1";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
                 else{
                     sortingType = "Pts";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
             })
@@ -1233,10 +1236,12 @@ function printStandings(teams, placeTeams){
             name.addEventListener("click", () => {
                 if(sortingType == "Team"){
                     sortingType = "Team1";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
                 else{
                     sortingType = "Team";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
             })
@@ -1249,10 +1254,12 @@ function printStandings(teams, placeTeams){
             games.addEventListener("click", () => {
                 if(sortingType == "GP"){
                     sortingType = "GP1";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
                 else{
                     sortingType = "GP";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
             })
@@ -1266,10 +1273,12 @@ function printStandings(teams, placeTeams){
             victories.addEventListener("click", () => {
                 if(sortingType == "V"){
                     sortingType = "V1";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
                 else{
                     sortingType = "V";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
             })
@@ -1282,10 +1291,12 @@ function printStandings(teams, placeTeams){
             ties.addEventListener("click", () => {
                 if(sortingType == "D"){
                     sortingType = "D1";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
                 else{
                     sortingType = "D";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
             })
@@ -1299,10 +1310,12 @@ function printStandings(teams, placeTeams){
             defeats.addEventListener("click", () => {
                 if(sortingType == "L"){
                     sortingType = "L1";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
                 else{
                     sortingType = "L";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
             })
@@ -1316,10 +1329,12 @@ function printStandings(teams, placeTeams){
             goalDifferential.addEventListener("click", () => {
                 if(sortingType == "GD"){
                     sortingType = "GD1";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
                 else{
                     sortingType = "GD";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
             })
@@ -1332,10 +1347,12 @@ function printStandings(teams, placeTeams){
             goalsScored.addEventListener("click", () => {
                 if(sortingType == "GF"){
                     sortingType = "GF1";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
                 else{
                     sortingType = "GF";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
             })
@@ -1349,10 +1366,12 @@ function printStandings(teams, placeTeams){
             goalsAgainst.addEventListener("click", () => {
                 if(sortingType == "GA"){
                     sortingType = "GA1";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
                 else{
                     sortingType = "GA";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
             })
@@ -1365,10 +1384,12 @@ function printStandings(teams, placeTeams){
             shutouts.addEventListener("click", () => {
                 if(sortingType == "SO"){
                     sortingType = "SO1";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
                 else{
                     sortingType = "SO";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
             })
@@ -1381,10 +1402,12 @@ function printStandings(teams, placeTeams){
             points.addEventListener("click", () => {
                 if(sortingType == "Pts"){
                     sortingType = "Pts1";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
                 else{
                     sortingType = "Pts";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
             })
@@ -1398,10 +1421,12 @@ function printStandings(teams, placeTeams){
             pointPercentage.addEventListener("click", () => {
                 if(sortingType == "Pts%"){
                     sortingType = "Pts%1";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
                 else{
                     sortingType = "Pts%";
+                    eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
             })
@@ -2005,10 +2030,10 @@ function printStandingsAway(teams){
 function layOutPostSeason(gameData, season){
     //seeding
     let teamsPlayOffBound2 = teamsPlayOffBound(gameData, season, gameData.seasons[season].schedule.length - 1);
-    for(let i = 0; i < teamsPlayOffBound2.length / 2 + 1; i++){
+    let numberOfTeamsToPop = teamsPlayOffBound2.length / 2;
+    for(let i = 0; i < numberOfTeamsToPop; i++){
         teamsPlayOffBound2.pop();
     }
-    console.log(teamsPlayOffBound2)
     gameData.seasons[season].postSeasonSchedule.seeds = teamsPlayOffBound2;
     let teamChoice = [];
     for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.seeds.length; i++){
@@ -2073,7 +2098,6 @@ function layOutPostSeason(gameData, season){
 
     //create Records:
     for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.seeds.length; i++){
-        console.log(gameData.seasons[season].postSeasonSchedule.seeds)
         let records = gameData.seasons[season].records.postSeason;
         let team = {
             teamId: `${gameData.seasons[season].postSeasonSchedule.seeds[i]}`,
@@ -2371,7 +2395,6 @@ function gamesRound (gameData, season, round){
                     matches[i].team1Goals = inputGoalsTeam1.value;
                     matches[i].team2Goals = inputGoalsTeam2.value;
                     //test records
-                    console.log(standings(gameData, gameData.seasons[season].teams.allTeams, season, round, "Pts"))
                     recordsSeason.testSeasonRecords(gameData, season, round, matches[i].team1Id, matches[i].team2Id);
                     let matchEnded = 0;
                     for(let j = 0; j < matches.length; j++){
@@ -2664,6 +2687,8 @@ function gamesRound (gameData, season, round){
 
         }
         let br = document.createElement("br");
+        
+        br.id ="2";
         gamesDiv.appendChild(br);
     }
 }
@@ -2984,6 +3009,7 @@ function gamesPostSeason (gameData, season, round){
                 }
             }
             let br = document.createElement("br");
+            br.id ="3";
             gamesDiv.appendChild(br);
             if(round == gameData.seasons[season].postSeasonSchedule.length - 1 && gameData.seasons[season].postSeasonSchedule[round].completed == "yes"){
                 printChampion(gameData.seasons[season].postSeasonSchedule[round].matchups[0].winner);
@@ -3337,6 +3363,7 @@ function gamesPostSeason (gameData, season, round){
                         }
                         let br = document.createElement("br");
                         gamesDiv.appendChild(br);
+                        br.id ="4";
                     }
                 //}
             }
@@ -3658,6 +3685,7 @@ function gamesPostSeason (gameData, season, round){
                     }
                 }
                 let br = document.createElement("br");
+                br.id ="5";
                 gamesDiv.appendChild(br);
                 if(round == gameData.seasons[season].postSeasonSchedule.finals.length - 1 && gameData.seasons[season].postSeasonSchedule.finals[round].completed == "yes"){
                     printChampion(gameData.seasons[season].postSeasonSchedule.finals[round].matchups[0].winner);
@@ -3808,8 +3836,9 @@ if(conferenceNumber > 1){
                 let teams = standingsAway(gameData,teamChoice, season, round, "Pts%");
                 printStandingsAway(teams);
             }
-            let br = document.createElement("br");
-            document.body.appendChild(br);
+            /* let br = document.createElement("br");
+            br.id ="6";
+            document.body.appendChild(br); */
         }
         divisionStandingsChoice.style.display = "inline-block";
         leagueStandingsChoice.style.display = "inline-block";
@@ -3843,6 +3872,7 @@ if(divisionNumber > 1){
                     printStandingsAway(teams);
                 }
                 let br = document.createElement("br");
+                br.id ="7";
                 document.body.appendChild(br);
             }
         }
@@ -3888,11 +3918,13 @@ let button = document.createElement("button");
 button.innerText = "Change Round";
 document.body.appendChild(button);
 let gamesDiv = document.createElement("div");
+gamesDiv.className = "gamesDiv";
 document.body.appendChild(gamesDiv);
 let standingsContainer = document.createElement("div");
 standingsContainer.className = "gridContainer";
 document.body.appendChild(standingsContainer);
 
+let eventDispatched = false;
 button.addEventListener("click", () => {
     standingsContainer.innerHTML = "";
     gamesDiv.innerHTML = "";
@@ -3915,6 +3947,12 @@ button.addEventListener("click", () => {
         standingsAwayButton.style.display = "inline-block";
         conferenceStandingsChoice.style.display = "inline-block";
         divisionStandingsChoice.style.display = "inline-block";
+        if(eventDispatched == false){
+            conferenceStandingsChoice.dispatchEvent(new Event("click"));
+        }
+        else{
+            eventDispatched == false;
+        }
     }
     else{
         round = round - gameData.seasons[season].schedule.length
@@ -3976,6 +4014,8 @@ previousRound.addEventListener("click", () =>{
             standingsAwayButton.style.display = "inline-block";
             conferenceStandingsChoice.style.display = "inline-block";
             divisionStandingsChoice.style.display = "inline-block";
+            conferenceStandingsChoice.dispatchEvent(new Event("click"));
+            
         //}
     }
     else{
@@ -4082,6 +4122,7 @@ nextRound.addEventListener("click", () => {
             standingsAwayButton.style.display = "inline-block";
             conferenceStandingsChoice.style.display = "inline-block";
             divisionStandingsChoice.style.display = "inline-block";
+            conferenceStandingsChoice.dispatchEvent(new Event("click"));
         //}
     }
     else{
@@ -4107,6 +4148,8 @@ if(select.value < gameData.seasons[season].schedule.length){
         printStandings(teams, placeTeams)
         gamesRound(gameData, season, round);
         boolRegularSeason = true;
+        homeAwayFactor = "All";
+        conferenceStandingsChoice.dispatchEvent(new Event("click"));
     //}
 }
 else{
@@ -4117,7 +4160,7 @@ else{
 
 
 //standings Home and Away
-let homeAwayFactor = "All";
+
 
 let standingsHomeButton = document.createElement("button");
 let standingsAwayButton = document.createElement("button");

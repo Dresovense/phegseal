@@ -1308,7 +1308,7 @@ let newSeason = {
                     ]
                 },
                 "mostGoalsAgainst": {
-                    "name": `Most goals agaisnt in ${startDate + "-" + endDate} season`,
+                    "name": `Most goals against in ${startDate + "-" + endDate} season`,
                     "teams": [
                         {
                             "teamId": "0",
@@ -1333,7 +1333,7 @@ let newSeason = {
                     ]
                 },
                 "lessGoalsAgainst": {
-                    "name": `Less goals agaist in ${startDate + "-" + endDate} season`,
+                    "name": `Less goals against in ${startDate + "-" + endDate} season`,
                     "teams": [
                         {
                             "teamId": "0",

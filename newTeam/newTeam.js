@@ -42,12 +42,13 @@ document.body.appendChild(teamStadiumAttendance);
 let confirmChoicebutton = document.createElement("button");
 confirmChoicebutton.innerText = "Confirm Choice";
 confirmChoicebutton.className = "teamChoice";
+let endDate = gameData.seasons[gameData.seasons.length - 1].endDate + 1;
 confirmChoicebutton.addEventListener("click", () => {
     let teamObject = {
         name: teamName.value,
         logo: teamLogo.value,
         color: teamColor.value,
-        date: gameData.seasons[gameData.seasons.length - 1].endDate + "-" + parseInt(gameData.seasons[gameData.seasons.length - 1].endDate) + 1,
+        date: gameData.seasons[gameData.seasons.length - 1].endDate + "-" + endDate,
         town: teamTown.value,
         stadiumName: teamStadium.value,
         stadiumAttendence: teamStadiumAttendance.value,
@@ -69,6 +70,6 @@ confirmChoicebutton.addEventListener("click", () => {
         }
     });
     sessionStorage.setItem("gameData", JSON.stringify(gameData));
-    location.href = "../season/season.html";
+    location.href = "../teamChoice/teamChoice.html";
 });
 document.body.appendChild(confirmChoicebutton);

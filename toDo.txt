@@ -15,7 +15,7 @@ Link to team history when you click on them
         -last 5 matches
         -last 5 matches against particular team
 
-Records
+Records (All-time + team)
 Power Rankings
 Rivalries (change with time)
 Interesting things happening in the round
