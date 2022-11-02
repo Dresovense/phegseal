@@ -11,7 +11,7 @@ let startDate = parseInt(gameData.seasons[season].endDate) - 1;
 let seasonTitle = document.createElement("h3");
 seasonTitle.innerText = startDate + "-" + endDate + " Season";
 document.body.appendChild(seasonTitle);
-
+ 
 const conferenceNumber = gameData.seasons[season].teams.conference.length;
 const divisionNumber = gameData.seasons[season].teams.conference[0].divisions.length;
 
@@ -2249,19 +2249,24 @@ function gamesRound (gameData, season, round){
             inputGoalsTeam1.type = "number";
             divMatch.appendChild(inputGoalsTeam1);
 
-            let spanVS = document.createElement("span");
-            spanVS.innerText = "VS";
-            spanVS.id = "spanVS";
-            divMatch.appendChild(spanVS);
+            let buttonVS = document.createElement("button");
+            buttonVS.innerText = "VS";
+            buttonVS.addEventListener("click", () => {
+                let result = dice.diceRoll(teams[matches[i].team1Id].power, teams[matches[i].team2Id].power);
+                inputGoalsTeam1.value = result[0];
+                inputGoalsTeam2.value = result[1];
+                gameButton.dispatchEvent(new Event("click"))
+            })
+            divMatch.appendChild(buttonVS);
             
             for(let j = 0; j < teams[matches[i].team1Id].rivalries.length; j++){
                 if(matches[i].team2Id == teams[matches[i].team1Id].rivalries[j].teamId && teams[matches[i].team1Id].rivalries[j].rivalType == "Sporting"){
-                    spanVS.style.border = "2px solid red";
-                    spanVS.style.borderRadius = "2px";
+                    buttonVS.style.border = "2px solid red";
+                    buttonVS.style.borderRadius = "2px";
                 }
                 else if(matches[i].team2Id == teams[matches[i].team1Id].rivalries[j].teamId && teams[matches[i].team1Id].rivalries[j].rivalType == "Derby"){
-                    spanVS.style.border = "2px solid blue";
-                    spanVS.style.borderRadius = "2px";
+                    buttonVS.style.border = "2px solid blue";
+                    buttonVS.style.borderRadius = "2px";
                 }
             }
 
@@ -2386,7 +2391,7 @@ function gamesRound (gameData, season, round){
 
             let gameButton = document.createElement("button");
             gameButton.innerText = "Confirm match";
-            gameButton.style.marginLeft = "3px";
+            gameButton.style.display = "none";
             gameButton.addEventListener("click", function(){
                 if(inputGoalsTeam1.value == "" || inputGoalsTeam2.value == ""){
                     window.alert("The fields are empty");
@@ -2402,17 +2407,20 @@ function gamesRound (gameData, season, round){
                             matchEnded++
                         }
                     }
+                    button.dispatchEvent(new Event("click"));
                     if(matchEnded == matches.length){
+                        console.log("here")
                         gameData.seasons[season].schedule[round].completed = "yes";
                         selectionOptions(gameData, season);
+                        select.options[select.options.length - 2].selected = true;
                     }
                     //lay-out post season       
                     if(gameData.seasons[season].schedule[gameData.seasons[season].schedule.length - 1].completed == "yes"){
                         layOutPostSeason(gameData, season);
                     }
+                    
                     gameDataJson = JSON.stringify(gameData);
                     sessionStorage.setItem("gameData", gameDataJson);
-                    button.dispatchEvent(new Event("click"));
                 }
             });
             divMatch.appendChild(gameButton);
@@ -2781,6 +2789,7 @@ function gamesPostSeason (gameData, season, round){
             
                         let gameButton = document.createElement("button");
                         gameButton.innerText = "Confirm match";
+                        gameButton.style.display = "none";
                         gameButton.style.marginLeft = "3px";
                         gameButton.addEventListener("click", function(){
                             if(inputGoalsTeam1.value == "" || inputGoalsTeam2.value == ""){
@@ -3066,10 +3075,29 @@ function gamesPostSeason (gameData, season, round){
                                     inputGoalsAddTimeTeam1.style.marginLeft = "1px";
                                     divMatch.appendChild(inputGoalsAddTimeTeam1);
                     
-                                    let spanVS = document.createElement("span");
-                                    spanVS.innerText = "VS";
-                                    spanVS.id = "spanVS";
-                                    divMatch.appendChild(spanVS);
+                                    let buttonVS = document.createElement("button");
+                                    buttonVS.innerText = "VS";
+                                    buttonVS.addEventListener("click", () => {
+                                        let result = dice.diceRoll(teams[conferenceMatchups[i].games[j].team1Id].power, teams[conferenceMatchups[i].games[j].team1Id].power);
+                                        inputGoalsTeam1.value = result[0];
+                                        inputGoalsTeam2.value = result[1];
+                                        if(result[0] == result[1]){
+                                            let resultAddTime = [0,0]
+                                            while(resultAddTime[0] == resultAddTime[1]){
+                                                resultAddTime = dice.diceRoll(teams[conferenceMatchups[i].games[j].team1Id].power, teams[conferenceMatchups[i].games[j].team1Id].power);
+                                                if(resultAddTime[0] > resultAddTime[1]){
+                                                    inputGoalsAddTimeTeam1.value = 1;
+                                                    inputGoalsAddTimeTeam2.value = 0;
+                                                }
+                                                else if (resultAddTime[1] > resultAddTime[0]){
+                                                    inputGoalsAddTimeTeam1.value = 0;
+                                                    inputGoalsAddTimeTeam2.value = 1;
+                                                }
+                                            }
+                                        }
+                                        gameButton.dispatchEvent(new Event("click"))
+                                    })
+                                    divMatch.appendChild(buttonVS);
                     
                                     let inputGoalsAddTimeTeam2 = document.createElement("input");
                                     inputGoalsAddTimeTeam2.min = "0";
@@ -3106,7 +3134,7 @@ function gamesPostSeason (gameData, season, round){
                         
                                     let gameButton = document.createElement("button");
                                     gameButton.innerText = "Confirm match";
-                                    gameButton.style.marginLeft = "3px";
+                                    gameButton.style.display = "none";
                                     gameButton.addEventListener("click", function(){
                                         if(inputGoalsTeam1.value == "" || inputGoalsTeam2.value == ""){
                                             window.alert("The fields are empty");
@@ -3415,10 +3443,29 @@ function gamesPostSeason (gameData, season, round){
                             inputGoalsAddTimeTeam1.style.marginLeft = "1px";
                             divMatch.appendChild(inputGoalsAddTimeTeam1);
             
-                            let spanVS = document.createElement("span");
-                            spanVS.innerText = "VS";
-                            spanVS.id = "spanVS";
-                            divMatch.appendChild(spanVS);
+                            let buttonVS = document.createElement("button");
+                                    buttonVS.innerText = "VS";
+                                    buttonVS.addEventListener("click", () => {
+                                        let result = dice.diceRoll(teams[finalMatchups[round].games[j].team1Id].power, teams[finalMatchups[round].games[j].team1Id].power);
+                                        inputGoalsTeam1.value = result[0];
+                                        inputGoalsTeam2.value = result[1];
+                                        if(result[0] == result[1]){
+                                            let resultAddTime = [0,0]
+                                            while(resultAddTime[0] == resultAddTime[1]){
+                                                resultAddTime = dice.diceRoll(teams[finalMatchups[round].games[j].team1Id].power, teams[finalMatchups[round].games[j].team1Id].power);
+                                                if(resultAddTime[0] > resultAddTime[1]){
+                                                    inputGoalsAddTimeTeam1.value = 1;
+                                                    inputGoalsAddTimeTeam2.value = 0;
+                                                }
+                                                else if (resultAddTime[1] > resultAddTime[0]){
+                                                    inputGoalsAddTimeTeam1.value = 0;
+                                                    inputGoalsAddTimeTeam2.value = 1;
+                                                }
+                                            }
+                                        }
+                                        gameButton.dispatchEvent(new Event("click"))
+                                    })
+                                    divMatch.appendChild(buttonVS);
             
                             let inputGoalsAddTimeTeam2 = document.createElement("input");
                             inputGoalsAddTimeTeam2.min = "0";
@@ -3455,7 +3502,7 @@ function gamesPostSeason (gameData, season, round){
                 
                             let gameButton = document.createElement("button");
                             gameButton.innerText = "Confirm match";
-                            gameButton.style.marginLeft = "3px";
+                            gameButton.style.display = "none";
                             gameButton.addEventListener("click", function(){
                                 if(inputGoalsTeam1.value == "" || inputGoalsTeam2.value == ""){
                                     window.alert("The fields are empty");
@@ -3911,7 +3958,6 @@ if(divisionNumber > 1 || conferenceNumber > 1){
     document.body.appendChild(leagueStandingsChoice);
 }
 
-dice.dice()
 let round = select.value;
 let boolRegularSeason = true;
 let button = document.createElement("button");
