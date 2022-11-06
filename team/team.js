@@ -28,5 +28,19 @@ let team = sessionStorage.getItem("team");
     let teamStadium = document.createElement("div");
     teamStadium.innerText = "Stadium (attendance): " + gameData.teams[team].stadiumName + " (" + gameData.teams[team].stadiumAttendence + ")";
     teamInfos.appendChild(teamStadium);
+    //expectations
+    let expectationsDiv = document.createElement("div");
+    let expectations;
+    if(gameData.teams[team].power < 0.8){
+        expectations = "None";
+    }
+    else if (gameData.teams[team].power < 1.2){
+        expectations = "Playoff Team";
+    }
+    else{
+        expectations = "Contender";
+    }
+    expectationsDiv.innerText = "Expectations: " + expectations;
+    teamInfos.appendChild(expectationsDiv);
     
     

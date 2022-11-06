@@ -61,7 +61,18 @@ confirmChoicebutton.addEventListener("click", () => {
         ],
         records:{
 
-        }
+        },
+        power: "0",
+        seasonsAbove1: "0",
+        seasonsBelow1: "0",
+        projectedPowerNextSeasons: [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ]
     }
     gameData.teams.push(teamObject);
     fs.writeFile('saves/data.json', JSON.stringify(gameData, null, 4), function(err) {

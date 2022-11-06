@@ -254,3 +254,32 @@ h3{
     align-items:center;
     justify-content:center;
 }
+
+/* draft.js */
+.draftRoundRow{
+    display: inline-grid;
+    grid-auto-flow: line;
+    grid-template-columns:repeat(12, 50px);
+    height: 50px;
+}
+.draftRoundSquare{
+    border: 1px solid black;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.draftGrid{
+    margin-top: 20px;
+    display: inline-grid;
+    grid-template-columns: 50px 200px 200px 50px;
+}
+.draftGridSquare{
+    border: 1px solid black;
+    display: flex;
+    height: 30px;
+    align-items:center;
+    justify-content:center;
+}

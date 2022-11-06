@@ -1823,6 +1823,10 @@ let newSeason = {
                 }
             }
         }
+    },
+    "draft": {
+        "completed": "no",
+        "picks": []
     }
 };
 

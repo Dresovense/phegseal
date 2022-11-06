@@ -1,4 +1,6 @@
-const fs = require('fs');
+if(typeof fs === 'undefined'){
+    const fs = require('fs');
+}
 
 let saveButton = document.createElement("button");
 saveButton.innerText = "Save game";
