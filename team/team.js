@@ -34,8 +34,11 @@ let team = sessionStorage.getItem("team");
     if(gameData.teams[team].power < 0.8){
         expectations = "None";
     }
-    else if (gameData.teams[team].power < 1.2){
+    else if (gameData.teams[team].power < 1.05){
         expectations = "Playoff Team";
+    }
+    else if(gameData.teams[team].power < 1.3){
+        expectations = "Challenge for title"
     }
     else{
         expectations = "Contender";

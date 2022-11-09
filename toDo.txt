@@ -21,9 +21,11 @@ Rivalries (change with time)
 Interesting things happening in the round
 Arrows for the places up/down 
 See schedule of matches
-Control that the number of teams in Playoffs equals the number of teams making in each division plus the wild cards
+Control that the number of teams in Playoffs equals the number of teams making in each division plus the wild cards + division matches > conference matches > interconference matches
 Make playoff Tree
 Can't let match three play before match 2 in playoffs
+Make expectations vary by : number of teams that make the playoffs, strength, ownership, ...
+
 
 Conference must be a power of 2 (2,4,8,...)
 Division must be even

@@ -33,8 +33,8 @@ let button = document.createElement("button");
 button.innerText = "New Season";
 button.style.display = "none";
 button.addEventListener("click", () => {
-  gameData = JSON.stringify(gameData);
-  sessionStorage.setItem("gameData", gameData);
+  let gameDataJson = JSON.stringify(gameData);
+  sessionStorage.setItem("gameData", gameDataJson);
   location.href = "../newSeason/newSeason.html";
 });
 document.body.appendChild(button);
@@ -43,8 +43,8 @@ let newDraftButton = document.createElement("button");
 newDraftButton.innerHTML = `${gameData.seasons[gameData.seasons.length - 1].endDate} draft`;
 newDraftButton.style.display = "none";
 newDraftButton.addEventListener("click", () => {
-  gameData = JSON.stringify(gameData);
-  sessionStorage.setItem("gameData", gameData);
+  gameDataJson = JSON.stringify(gameData);
+  sessionStorage.setItem("gameData", gameDataJson);
   sessionStorage.setItem("season", gameData.seasons.length - 1);
   location.href = "../draft/draft.html";
 });

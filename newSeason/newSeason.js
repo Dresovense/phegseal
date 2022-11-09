@@ -314,7 +314,8 @@ let newSeason = {
         },
         "conference": [],
         "finals": [],
-        "seeds": []
+        "seeds": [],
+        "teamsInPlayoffs": []
     },
     "records": {
         "regularSeason": {

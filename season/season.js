@@ -1498,6 +1498,8 @@ function printStandings(teams, placeTeams){
                 name.style.backgroundColor = "rgb(255, 153, 153)";
             }
             name.addEventListener("click", () => { //go to team page
+                gameDataJson = JSON.stringify(gameData);
+                sessionStorage.setItem("gameData", gameDataJson);
                 sessionStorage.setItem("team", teams[i].id);
                 location.href = "../team/team.html";
             });
@@ -2055,6 +2057,7 @@ function layOutPostSeason(gameData, season){
             return -1;
         }
     });
+    gameData.seasons[season].postSeasonSchedule.teamsInPlayoffs = gameData.seasons[season].postSeasonSchedule.seeds; 
 
     let playOffOrganisation = gameData.seasons[season].postSeasonSchedule.rules.playOffOrganisation;
     let postSeasonTeams = gameData.seasons[season].postSeasonSchedule.rules.postSeasonTeams;
@@ -2143,6 +2146,8 @@ function gamesRound (gameData, season, round){
             divTeam1.className = "teamName";
             divTeam1.innerText = " " + teams[matches[i].team1Id].name + " ";
             divTeam1.addEventListener("click", () => { //go to team page
+                gameDataJson = JSON.stringify(gameData);
+                sessionStorage.setItem("gameData", gameDataJson);
                 sessionStorage.setItem("team", matches[i].team1Id);
                 location.href = "../team/team.html";
             });
@@ -2280,6 +2285,8 @@ function gamesRound (gameData, season, round){
             divTeam2.className = "teamName";
             divTeam2.innerText = " " + teams[matches[i].team2Id].name + " ";
             divTeam2.addEventListener("click", () => { //go to team page
+                gameDataJson = JSON.stringify(gameData);
+                sessionStorage.setItem("gameData", gameDataJson);
                 sessionStorage.setItem("team", matches[i].team2Id);
                 location.href = "../team/team.html";
             });
@@ -2443,6 +2450,8 @@ function gamesRound (gameData, season, round){
             divTeam1.className = "teamName";
             divTeam1.innerText = teams[matches[i].team1Id].name;
             divTeam1.addEventListener("click", () => { //go to team page
+                gameDataJson = JSON.stringify(gameData);
+                sessionStorage.setItem("gameData", gameDataJson);
                 sessionStorage.setItem("team", matches[i].team1Id);
                 location.href = "../team/team.html";
             });
@@ -2575,6 +2584,8 @@ function gamesRound (gameData, season, round){
             divTeam2.className = "teamName";
             divTeam2.innerText = teams[matches[i].team2Id].name;
             divTeam2.addEventListener("click", () => { //go to team page
+                gameDataJson = JSON.stringify(gameData);
+                sessionStorage.setItem("gameData", gameDataJson);
                 sessionStorage.setItem("team", matches[i].team2Id);
                 location.href = "../team/team.html";
             });
@@ -2729,6 +2740,8 @@ function gamesPostSeason (gameData, season, round){
                         divTeam1.className = "teamNamePS";
                         divTeam1.innerText = " " + teams[matchups[i].games[j].team1Id].name + " ";
                         divTeam1.addEventListener("click", () => { //go to team page
+                            gameDataJson = JSON.stringify(gameData);
+                            sessionStorage.setItem("gameData", gameDataJson);
                             sessionStorage.setItem("team", matchups[i].games[j].team1Id);
                             location.href = "../team/team.html";
                         });
@@ -2773,6 +2786,8 @@ function gamesPostSeason (gameData, season, round){
                         divTeam2.className = "teamNamePS";
                         divTeam2.innerText = " " + teams[matchups[i].games[j].team2Id].name + " ";
                         divTeam2.addEventListener("click", () => { //go to team page
+                            gameDataJson = JSON.stringify(gameData);
+                            sessionStorage.setItem("gameData", gameDataJson);
                             sessionStorage.setItem("team", matchups[i].games[j].team2Id);
                             location.href = "../team/team.html";
                         });
@@ -2868,8 +2883,8 @@ function gamesPostSeason (gameData, season, round){
                                         allRoundsFinished++;
                                     }
                                 }
+                                button.dispatchEvent(new Event("click"));
                                 if(allRoundsFinished == matchups.length){
-                                    gameData.seasons[season].postSeasonSchedule[round].completed = "yes";
                                     if(round != gameData.seasons[season].postSeasonSchedule.length - 1){
                                         //lay-out next round
                                         let teamSeeds = gameData.seasons[season].postSeasonSchedule[round + 1].seeds.filter(n => n);
@@ -2885,10 +2900,11 @@ function gamesPostSeason (gameData, season, round){
                                                 }
                                             }
                                         }
-                                        selectionOptions(gameData, season); 
                                     }
+                                    gameData.seasons[season].postSeasonSchedule[round].completed = "yes";
+                                    selectionOptions(gameData, season); 
+                                    select.options[select.options.length - 2].selected = true;
                                 }
-                                button.dispatchEvent(new Event("click"));
                             }
                         });
                         divMatch.appendChild(gameButton);
@@ -2912,6 +2928,8 @@ function gamesPostSeason (gameData, season, round){
                     divTeam1.className = "teamNamePS";
                     divTeam1.innerText = teams[matchups[i].games[j].team1Id].name;
                     divTeam1.addEventListener("click", () => { //go to team page
+                        gameDataJson = JSON.stringify(gameData);
+                        sessionStorage.setItem("gameData", gameDataJson);
                         sessionStorage.setItem("team", matchups[i].games[j].team1Id);
                         location.href = "../team/team.html";
                     });
@@ -2966,6 +2984,8 @@ function gamesPostSeason (gameData, season, round){
                     divTeam2.className = "teamNamePS";
                     divTeam2.innerText = teams[matchups[i].games[j].team2Id].name;
                     divTeam2.addEventListener("click", () => { //go to team page
+                        gameDataJson = JSON.stringify(gameData);
+                        sessionStorage.setItem("gameData", gameDataJson);
                         sessionStorage.setItem("team", matchups[i].games[j].team2Id);
                         location.href = "../team/team.html";
                     });
@@ -3055,6 +3075,8 @@ function gamesPostSeason (gameData, season, round){
                                     divTeam1.className = "teamNamePS";
                                     divTeam1.innerText = " " + teams[conferenceMatchups[i].games[j].team1Id].name + " ";
                                     divTeam1.addEventListener("click", () => { //go to team page
+                                        gameDataJson = JSON.stringify(gameData);
+                                        sessionStorage.setItem("gameData", gameDataJson);
                                         sessionStorage.setItem("team", conferenceMatchups[i].games[j].team1Id);
                                         location.href = "../team/team.html";
                                     });
@@ -3118,6 +3140,8 @@ function gamesPostSeason (gameData, season, round){
                                     divTeam2.className = "teamNamePS";
                                     divTeam2.innerText = " " + teams[conferenceMatchups[i].games[j].team2Id].name + " ";
                                     divTeam2.addEventListener("click", () => { //go to team page
+                                        gameDataJson = JSON.stringify(gameData);
+                                        sessionStorage.setItem("gameData", gameDataJson);
                                         sessionStorage.setItem("team", conferenceMatchups[i].games[j].team2Id);
                                         location.href = "../team/team.html";
                                     });
@@ -3146,11 +3170,11 @@ function gamesPostSeason (gameData, season, round){
                                             window.alert("This match can't finished tied")
                                         }
                                         else{
-                                            recordsPostSeason.testPostSeasonRecords(gameData, season, conferenceMatchups[i].games[j]);
-                                            conferenceMatchups[i].games[j].team1Goals = inputGoalsTeam1.value;
+                                            conferenceMatchups[i].games[j].team1Goals = inputGoalsTeam1.value; 
                                             conferenceMatchups[i].games[j].team2Goals = inputGoalsTeam2.value;
                                             conferenceMatchups[i].games[j].team1GoalsAddTime = inputGoalsAddTimeTeam1.value;
                                             conferenceMatchups[i].games[j].team2GoalsAddTime = inputGoalsAddTimeTeam2.value;
+                                            recordsPostSeason.testPostSeasonRecords(gameData, season, conferenceMatchups[i].games[j]);
                                             //confirm who won and check if the matchup has ended
                                             let team1Wins = 0;
                                             let team2Wins = 0;
@@ -3260,8 +3284,9 @@ function gamesPostSeason (gameData, season, round){
                                                     }
                                                 }
                                             }
-                                            selectionOptions(gameData, season);
                                             button.dispatchEvent(new Event("click"));
+                                            selectionOptions(gameData, season);
+                                            select.options[select.options.length - 2].selected = true;
                                         }
                                     });
                                     divMatch.appendChild(gameButton);
@@ -3285,6 +3310,8 @@ function gamesPostSeason (gameData, season, round){
                                 divTeam1.className = "teamNamePS";
                                 divTeam1.innerText = teams[conferenceMatchups[i].games[j].team1Id].name;
                                 divTeam1.addEventListener("click", () => { //go to team page
+                                    gameDataJson = JSON.stringify(gameData);
+                                    sessionStorage.setItem("gameData", gameDataJson);
                                     sessionStorage.setItem("team", conferenceMatchups[i].games[j].team1Id);
                                     location.href = "../team/team.html";
                                 });
@@ -3338,6 +3365,8 @@ function gamesPostSeason (gameData, season, round){
                                 divTeam2.className = "teamNamePS";
                                 divTeam2.innerText = teams[conferenceMatchups[i].games[j].team2Id].name;
                                 divTeam2.addEventListener("click", () => { //go to team page
+                                    gameDataJson = JSON.stringify(gameData);
+                                    sessionStorage.setItem("gameData", gameDataJson);
                                     sessionStorage.setItem("team", conferenceMatchups[i].games[j].team2Id);
                                     location.href = "../team/team.html";
                                 });
@@ -3423,6 +3452,8 @@ function gamesPostSeason (gameData, season, round){
                             divTeam1.className = "teamNamePS";
                             divTeam1.innerText = " " + teams[finalMatchups[round].games[j].team1Id].name + " ";
                             divTeam1.addEventListener("click", () => { //go to team page
+                                gameDataJson = JSON.stringify(gameData);
+                                sessionStorage.setItem("gameData", gameDataJson);
                                 sessionStorage.setItem("team", finalMatchups[round].games[j].team1Id);
                                 location.href = "../team/team.html";
                             });
@@ -3486,6 +3517,8 @@ function gamesPostSeason (gameData, season, round){
                             divTeam2.className = "teamNamePS";
                             divTeam2.innerText = " " + teams[finalMatchups[round].games[j].team2Id].name + " ";
                             divTeam2.addEventListener("click", () => { //go to team page
+                                gameDataJson = JSON.stringify(gameData);
+                                sessionStorage.setItem("gameData", gameDataJson);
                                 sessionStorage.setItem("team", finalMatchups[round].games[j].team2Id);
                                 location.href = "../team/team.html";
                             });
@@ -3514,11 +3547,11 @@ function gamesPostSeason (gameData, season, round){
                                     window.alert("This match can't finished tied")
                                 }
                                 else{
-                                    recordsPostSeason.testPostSeasonRecords(gameData, season, finalMatchups[round].games[j]);
                                     finalMatchups[round].games[j].team1Goals = inputGoalsTeam1.value;
                                     finalMatchups[round].games[j].team2Goals = inputGoalsTeam2.value;
                                     finalMatchups[round].games[j].team1GoalsAddTime = inputGoalsAddTimeTeam1.value;
                                     finalMatchups[round].games[j].team2GoalsAddTime = inputGoalsAddTimeTeam2.value;
+                                    recordsPostSeason.testPostSeasonRecords(gameData, season, finalMatchups[round].games[j]);
                                     //confirm who won and check if the matchup has ended
                                     let team1Wins = 0;
                                     let team2Wins = 0;
@@ -3627,6 +3660,8 @@ function gamesPostSeason (gameData, season, round){
                         divTeam1.className = "teamNamePS";
                         divTeam1.innerText = teams[finalMatchups[round].games[j].team1Id].name;
                         divTeam1.addEventListener("click", () => { //go to team page
+                            gameDataJson = JSON.stringify(gameData);
+                            sessionStorage.setItem("gameData", gameDataJson);
                             sessionStorage.setItem("team", finalMatchups[round].games[j].team1Id);
                             location.href = "../team/team.html";
                         });
@@ -3680,6 +3715,8 @@ function gamesPostSeason (gameData, season, round){
                         divTeam2.className = "teamNamePS";
                         divTeam2.innerText = teams[finalMatchups[round].games[j].team2Id].name;
                         divTeam2.addEventListener("click", () => { //go to team page
+                            gameDataJson = JSON.stringify(gameData);
+                            sessionStorage.setItem("gameData", gameDataJson);
                             sessionStorage.setItem("team", finalMatchups[round].games[j].team2Id);
                             location.href = "../team/team.html";
                         });
@@ -3787,7 +3824,7 @@ function selectionOptions (gameData, season){
     for(let i = 0; i < gameData.seasons[season].schedule.length; i++){
         if(gameData.seasons[season].schedule[i].completed == "yes"){
             let option = document.createElement("option");
-            option.innerText = `Round ${i + 1}`;
+            option.innerText = `Round ${i + 1} / ${gameData.seasons[season].schedule.length}`;
             option.value = i;
             select.appendChild(option);
             if(i == gameData.seasons[season].schedule.length - 1){
@@ -3799,7 +3836,7 @@ function selectionOptions (gameData, season){
         }
         else{
             let option = document.createElement("option");
-            option.innerText = `Round ${i + 1}`;
+            option.innerText = `Round ${i + 1} / ${gameData.seasons[season].schedule.length}`;
             option.value = i;
             option.selected = "selected";
             select.appendChild(option);
