@@ -78,5 +78,67 @@ module.exports = {
             }
         });
 
+    },
+    diceRoll: function diceTest(powerTeam1, powerTeam2) {
+        let die1Result = Math.random();
+        let die2Result = Math.random();
+        let result = [0,0];
+        if(die1Result < Math.pow(0.2265,powerTeam1)){
+            result[0] = "0";
+        }
+        else if(die1Result >= Math.pow(0.2265,powerTeam1) && die1Result < Math.pow(0.5515,powerTeam1)){
+            result[0] = "1";
+        }
+        else if(die1Result >= Math.pow(0.5515,powerTeam1) && die1Result < Math.pow(0.7942,powerTeam1)){
+            result[0] = "2";
+        }
+        else if(die1Result >= Math.pow(0.7942,powerTeam1) && die1Result < Math.pow(0.9204,powerTeam1)){
+            result[0] = "3";
+        }
+        else if(die1Result >= Math.pow(0.9204,powerTeam1) && die1Result < Math.pow(0.9731,powerTeam1)){
+            result[0] = "4";
+        }
+        else if(die1Result >= Math.pow(0.9732,powerTeam1) && die1Result < Math.pow(0.9918,powerTeam1)){
+            result[0] = "5";
+        }
+        else if(die1Result >= Math.pow(0.9918,powerTeam1) && die1Result < Math.pow(0.9979,powerTeam1)){
+            result[0] = "6";
+        }
+        else if(die1Result >= Math.pow(0.9979,powerTeam1) && die1Result < Math.pow(0.9999,powerTeam1)){
+            result[0] = "7";
+        }
+        else if(die1Result >= Math.pow(0.9999,powerTeam1)){
+            result[0] = "8";
+        }
+
+        if(die2Result < Math.pow(0.3359,powerTeam2)){
+            result[1] = "0";
+        }
+        else if(die2Result >= Math.pow(0.3359,powerTeam2) && die2Result < Math.pow(0.6835,powerTeam2)){
+            result[1] = "1";
+        }
+        else if(die2Result >= Math.pow(0.6835,powerTeam2) && die2Result < Math.pow(0.879,powerTeam2)){
+            result[1] = "2";
+        }
+        else if(die2Result >= Math.pow(0.879,powerTeam2) && die2Result < Math.pow(0.9604,powerTeam2)){
+            result[1] = "3";
+        }
+        else if(die2Result >= Math.pow(0.9604,powerTeam2) && die2Result < Math.pow(0.9891,powerTeam2)){
+            result[1] = "4";
+        }
+        else if(die2Result >= Math.pow(0.9891,powerTeam2) && die2Result < Math.pow(0.9971,powerTeam2)){
+            result[1] = "5";
+        }
+        else if(die2Result >= Math.pow(0.9971,powerTeam2) && die2Result < Math.pow(0.9994,powerTeam2)){
+            result[1] = "6";
+        }
+        else if(die2Result >= Math.pow(0.9994,powerTeam2) && die2Result < Math.pow(0.9998,powerTeam2)){
+            result[1] = "7";
+        }
+        else if(die2Result >= Math.pow(0.9998,powerTeam2)){
+            result[1] = "8";
+        }
+        console.log(result)
+        return result;
     }
 }

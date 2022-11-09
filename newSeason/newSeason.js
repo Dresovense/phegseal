@@ -314,7 +314,8 @@ let newSeason = {
         },
         "conference": [],
         "finals": [],
-        "seeds": []
+        "seeds": [],
+        "teamsInPlayoffs": []
     },
     "records": {
         "regularSeason": {
@@ -1823,6 +1824,10 @@ let newSeason = {
                 }
             }
         }
+    },
+    "draft": {
+        "completed": "no",
+        "picks": []
     }
 };
 
