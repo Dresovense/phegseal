@@ -1112,7 +1112,22 @@ function standingsAway (gameData, teamChoice, season, round, sortingType){
 }
 
 function outOfPlayOffs(gameData, season, round){
-    if(season >= 12){
+    if(season < 12){
+        let teamsOutOfPlayoffs = [];
+        let numberOfTeamsInPlayOffs = 4;
+        let numberOfMatches = gameData.seasons[season].schedule.length - (gameData.seasons[season].teams.allTeams.length % 2) * (gameData.seasons[season].schedule.length / gameData.seasons[season].teams.allTeams.length)
+        
+        for(let i = numberOfTeamsInPlayOffs; i < gameData.seasons[season].teams.conference[0].teamsInConference.length; i++){ 
+            let teamChoice = gameData.seasons[season].teams.conference[0].teamsInConference;
+            let teams = standings(gameData, teamChoice, season, round, "Pts");
+            console.log(numberOfMatches)
+            if(teams[numberOfTeamsInPlayOffs - 1].points() > (teams[i].points() + 3 * (numberOfMatches - teams[i].gamesPlayed())) || numberOfMatches - teams[i].gamesPlayed() == 0){
+                teamsOutOfPlayoffs.push(teams[i].id);
+            }
+        }
+        return teamsOutOfPlayoffs;
+    }
+    else{
         let teamsOutOfPlayoffs = [];
         let numberOfTeamsInPlayOffs = gameData.seasons[season].postSeasonSchedule.rules.postSeasonTeams;
         let numberOfMatches = gameData.seasons[season].schedule.length - (gameData.seasons[season].teams.allTeams.length % 2) * (gameData.seasons[season].schedule.length / gameData.seasons[season].teams.allTeams.length)
@@ -1120,7 +1135,7 @@ function outOfPlayOffs(gameData, season, round){
             for(let i = numberOfTeamsInPlayOffs / conferenceNumber; i < gameData.seasons[season].teams.conference[j].teamsInConference.length; i++){ 
                 let teamChoice = gameData.seasons[season].teams.conference[j].teamsInConference;
                 let teams = standings(gameData, teamChoice, season, round, "Pts");
-                if(teams[numberOfTeamsInPlayOffs / conferenceNumber - 1].points() > (teams[i].points() + 3 * (numberOfMatches - teams[i].gamesPlayed()))){
+                if(teams[numberOfTeamsInPlayOffs / conferenceNumber - 1].points() > (teams[i].points() + 3 * (numberOfMatches - teams[i].gamesPlayed())) || numberOfMatches - teams[i].gamesPlayed() == 0){
                     teamsOutOfPlayoffs.push(teams[i].id);
                 }
             }
@@ -1175,28 +1190,106 @@ function teamsPlayOffBound (gameData, season, round){
                 }
             }
         }
-        //see if team is already qualified
-        let numberOfTeamsInPlayOffs = teamListPlayOffBound.length;
-        let numberOfMatches = gameData.seasons[season].schedule.length - (gameData.seasons[season].teams.allTeams.length % 2) * (gameData.seasons[season].schedule.length / gameData.seasons[season].teams.allTeams.length)
-        for(let j = 0; j < conferenceNumber; j++){      //!!CHANGE!! for how many wild cards and how playoff works
-            for(let i = 0; i < teamsQualifiedPerDivision; i++){ 
-                let teamChoice = gameData.seasons[season].teams.conference[j].teamsInConference;
-                let teams = standings(gameData, teamChoice, season, round, "Pts");
-                if(teams[i].points() > (teams[teamsQualifiedPerDivision].points() + 3 * (numberOfMatches - teams[teamsQualifiedPerDivision].gamesPlayed()))){
-                    teamListPlayOffBound.push(true);
-                }
-                else{
-                    teamListPlayOffBound.push(false);
+        
+        return teamListPlayOffBound;
+    }
+}
+
+function teamsPlayOffBoundStandings (gameData, season, round){
+    let teamListPlayOffBound = [];
+    if(season <= 11){
+        let numberOfTeamsInPlayOffs = gameData.seasons[season].postSeasonSchedule[0].matchups.length * 2;
+        let playOfTeamsPerDivision = numberOfTeamsInPlayOffs / (conferenceNumber * divisionNumber);
+        for(let i = 0; i < playOfTeamsPerDivision; i++){
+            for(let j = 0; j < conferenceNumber; j++){
+                for(let k = 0; k < divisionNumber; k++){
+                    let teamChoice = gameData.seasons[season].teams.conference[j].divisions[k].teams;
+                    let teams = standings(gameData, teamChoice, season, round, "Pts");
+                    teamListPlayOffBound.push(teams[i].id);
                 }
             }
         }
         return teamListPlayOffBound;
     }
+    else{
+        let teamsQualifiedPerDivision = gameData.seasons[season].postSeasonSchedule.rules.teamsQualifiedPerDivision;
+        let wildCardsPerConference = gameData.seasons[season].postSeasonSchedule.rules.wildCardsPerConference;
+        /* for(let i = 0; i < teamsQualifiedPerDivision; i++){
+            for(let j = 0; j < conferenceNumber; j++){
+                for(let k = 0; k < divisionNumber; k++){
+                    let teamChoice = gameData.seasons[season].teams.conference[j].divisions[k].teams;
+                    let teams = standings(gameData, teamChoice, season, round, "Pts");
+                    teamListPlayOffBound.push(teams[i].id);
+                }
+            }
+        }
+        for(let j = 0; j < conferenceNumber; j++){
+            let teamList = 0;
+            for(let i = 0; i < wildCardsPerConference; i++){
+                let teamChoice = gameData.seasons[season].teams.conference[j].teamsInConference;
+                let teams = standings(gameData, teamChoice, season, round, "Pts");
+                let teamAdded = false;
+                while(teamAdded == false){
+                    if(teamListPlayOffBound.includes(teams[teamList].id)){
+                        teamList++;
+                    }
+                    else{
+                        teamListPlayOffBound.push(teams[teamList].id);
+                        teamAdded = true;
+                    }
+                }
+            }
+        }
+        console.log(teamListPlayOffBound) */
+        //see if team is already qualified
+        let numberOfTeamsInPlayOffs = teamListPlayOffBound.length;
+        let numberOfMatches = gameData.seasons[season].schedule.length - (gameData.seasons[season].teams.allTeams.length % 2) * (gameData.seasons[season].schedule.length / gameData.seasons[season].teams.allTeams.length)
+        let numberOfConferences = gameData.seasons[season].teams.conference.length;
+        let numberOfDivisions = gameData.seasons[season].teams.conference[0].divisions.length;
+        /* for(let j = 0; j < numberOfTeamsInPlayOffs; j++){      //!!CHANGE!! for how many wild cards and how playoff works
+            let conferenceOfTeam = 0;
+            for(let i = 0; i < numberOfConferences; i++){
+                for(let k = 0; k < gameData.seasons[season].teams.conference[i].teamsInConference.length; k++){
+                    if(gameData.seasons[season].teams.conference[i].teamsInConference[k].id == teamListPlayOffBound[j]){
+                        conferenceOfTeam = i;
+                    }
+                }
+            }
+            let teamChoice = gameData.seasons[season].teams.conference[conferenceOfTeam].teamsInConference;
+            let teams = standings(gameData, teamChoice, season, round, "Pts");
+            console.log(teamListPlayOffBound[j])
+            if(teams[teamListPlayOffBound[j]].points() > (teams[teamsQualifiedPerDivision].points() + 3 * (numberOfMatches - teams[teamsQualifiedPerDivision].gamesPlayed()))){
+                teamListPlayOffBound.push(true);
+            }
+            else{
+                teamListPlayOffBound.push(false);
+            }
+        } */
+
+        for(let i = 0; i < numberOfConferences; i++){
+            for(let j = 0; j < numberOfDivisions; j++){
+                for(let k = 0; k < teamsQualifiedPerDivision; k++){
+                    let teamChoice = gameData.seasons[season].teams.conference[i].divisions[j].teams;
+                    let teams = standings(gameData, teamChoice, season, round, "Pts");
+                    if(teams[k].points() > (teams[teamsQualifiedPerDivision].points() + 3 * (numberOfMatches - teams[teamsQualifiedPerDivision].gamesPlayed())) || numberOfMatches - teams[teamsQualifiedPerDivision].gamesPlayed() == 0){
+                        teamListPlayOffBound.push(teams[k].id);
+                    }
+                }
+            }
+        }
+        
+        console.log(teamListPlayOffBound)
+        return teamListPlayOffBound;
+    }
 }
 
 function printStandings(teams, placeTeams){
-    let playOffTeams = teamsPlayOffBound(gameData, season, round);
+    let playOffTeams = teamsPlayOffBoundStandings(gameData, season, round);
     let nonPlayOffTeams = outOfPlayOffs(gameData, season, round);
+    let teamsQualifiedPerDivision = 4;
+    if(season > 11){
+        teamsQualifiedPerDivision = gameData.seasons[season].postSeasonSchedule.rules.teamsQualifiedPerDivision;
+    }
     //let playOffPlaces = gameData.seasons[season].postSeasonSchedule[0].matchups.length * 2;
     for(let i = -1; i < teams.length; i++){
         if(i == -1){
@@ -1486,13 +1579,11 @@ function printStandings(teams, placeTeams){
             name.className = "gridsquare";
             name.id = "name";
             name.innerText = teams[i].name;
+            if(i < teamsQualifiedPerDivision){
+                name.style.backgroundColor = "lightgreen";
+            }
             if(playOffTeams.includes(teams[i].id)){
-                if(playOffTeams[playOffTeams.indexOf(teams[i].id) + playOffTeams.length / 2] == true){
-                    name.style.backgroundColor = "rgb(0, 204, 0)";
-                }
-                else{
-                    name.style.backgroundColor = "lightgreen";
-                }
+                name.style.backgroundColor = "rgb(0, 204, 0)";
             }
             if(nonPlayOffTeams.includes(teams[i].id)){
                 name.style.backgroundColor = "rgb(255, 153, 153)";
@@ -1588,7 +1679,7 @@ function printStandings(teams, placeTeams){
 }
 
 function printStandingsHome(teams){
-    let playOffTeams = teamsPlayOffBound(gameData, season, round);
+    let playOffTeams = teamsPlayOffBoundStandings(gameData, season, round);
     for(let i = -1; i < teams.length; i++){
         if(i == -1){
             let standingsRow = document.createElement("div");
@@ -1809,7 +1900,7 @@ function printStandingsHome(teams){
 }
 
 function printStandingsAway(teams){
-    let playOffTeams = teamsPlayOffBound(gameData, season, round);
+    let playOffTeams = teamsPlayOffBoundStandings(gameData, season, round);
     for(let i = -1; i < teams.length; i++){
         if(i == -1){
             let standingsRow = document.createElement("div");
@@ -2032,10 +2123,10 @@ function printStandingsAway(teams){
 function layOutPostSeason(gameData, season){
     //seeding
     let teamsPlayOffBound2 = teamsPlayOffBound(gameData, season, gameData.seasons[season].schedule.length - 1);
-    let numberOfTeamsToPop = teamsPlayOffBound2.length / 2;
+    /* let numberOfTeamsToPop = teamsPlayOffBound2.length / 2;
     for(let i = 0; i < numberOfTeamsToPop; i++){
         teamsPlayOffBound2.pop();
-    }
+    } */
     gameData.seasons[season].postSeasonSchedule.seeds = teamsPlayOffBound2;
     let teamChoice = [];
     for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.seeds.length; i++){

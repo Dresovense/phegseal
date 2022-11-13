@@ -127,7 +127,7 @@ function randn_bm() {
 //partie graphique:
 
 let title = document.createElement("h2");
-title.innerText = `${gameData.seasons[gameData.seasons.length - 1].endDate} draft`;
+title.innerText = `${gameData.seasons[season].endDate} draft`;
 title.style.textAlign = "center";
 document.body.appendChild(title)
 
