@@ -1278,18 +1278,14 @@ function teamsPlayOffBoundStandings (gameData, season, round){
             }
         }
         
-        console.log(teamListPlayOffBound)
         return teamListPlayOffBound;
     }
 }
 
 function printStandings(teams, placeTeams){
-    let playOffTeams = teamsPlayOffBoundStandings(gameData, season, round);
+    let playOffTeams = teamsPlayOffBound(gameData, season, round);
+    let playOffTeamsQualified = teamsPlayOffBoundStandings(gameData, season, round);
     let nonPlayOffTeams = outOfPlayOffs(gameData, season, round);
-    let teamsQualifiedPerDivision = 4;
-    if(season > 11){
-        teamsQualifiedPerDivision = gameData.seasons[season].postSeasonSchedule.rules.teamsQualifiedPerDivision;
-    }
     //let playOffPlaces = gameData.seasons[season].postSeasonSchedule[0].matchups.length * 2;
     for(let i = -1; i < teams.length; i++){
         if(i == -1){
@@ -1579,10 +1575,10 @@ function printStandings(teams, placeTeams){
             name.className = "gridsquare";
             name.id = "name";
             name.innerText = teams[i].name;
-            if(i < teamsQualifiedPerDivision){
+            if(playOffTeams.includes(teams[i].id)){
                 name.style.backgroundColor = "lightgreen";
             }
-            if(playOffTeams.includes(teams[i].id)){
+            if(playOffTeamsQualified.includes(teams[i].id)){
                 name.style.backgroundColor = "rgb(0, 204, 0)";
             }
             if(nonPlayOffTeams.includes(teams[i].id)){
@@ -1679,7 +1675,9 @@ function printStandings(teams, placeTeams){
 }
 
 function printStandingsHome(teams){
-    let playOffTeams = teamsPlayOffBoundStandings(gameData, season, round);
+    let playOffTeams = teamsPlayOffBound(gameData, season, round);
+    let playOffTeamsQualified = teamsPlayOffBoundStandings(gameData, season, round);
+    let nonPlayOffTeams = outOfPlayOffs(gameData, season, round);
     for(let i = -1; i < teams.length; i++){
         if(i == -1){
             let standingsRow = document.createElement("div");
@@ -1823,6 +1821,12 @@ function printStandingsHome(teams){
             if(playOffTeams.includes(teams[i].id)){
                 name.style.backgroundColor = "lightgreen";
             }
+            if(playOffTeamsQualified.includes(teams[i].id)){
+                name.style.backgroundColor = "rgb(0, 204, 0)";
+            }
+            if(nonPlayOffTeams.includes(teams[i].id)){
+                name.style.backgroundColor = "rgb(255, 153, 153)";
+            }
             standingsRow.appendChild(name);
             //logo of team
             let logo = document.createElement("img");
@@ -1830,6 +1834,14 @@ function printStandingsHome(teams){
             logo.id = "logo";
             logo.src = ".." + teams[i].logo + ".png";
             name.appendChild(logo);  
+            if(teams[i].id == lastYearWinner){
+                //last year winner logo
+                let lastYearWinnerLogo = document.createElement("img");
+                lastYearWinnerLogo.className = "logo";
+                lastYearWinnerLogo.id = "logo";
+                lastYearWinnerLogo.src = "../graphics/trophy/trophy.png";
+                name.appendChild(lastYearWinnerLogo);  
+            }
             //games of team
             let games = document.createElement("div");
             games.className = "gridsquare";
@@ -1900,7 +1912,9 @@ function printStandingsHome(teams){
 }
 
 function printStandingsAway(teams){
-    let playOffTeams = teamsPlayOffBoundStandings(gameData, season, round);
+    let playOffTeams = teamsPlayOffBound(gameData, season, round);
+    let playOffTeamsQualified = teamsPlayOffBoundStandings(gameData, season, round);
+    let nonPlayOffTeams = outOfPlayOffs(gameData, season, round);
     for(let i = -1; i < teams.length; i++){
         if(i == -1){
             let standingsRow = document.createElement("div");
@@ -2044,6 +2058,12 @@ function printStandingsAway(teams){
             if(playOffTeams.includes(teams[i].id)){
                 name.style.backgroundColor = "lightgreen";
             }
+            if(playOffTeamsQualified.includes(teams[i].id)){
+                name.style.backgroundColor = "rgb(0, 204, 0)";
+            }
+            if(nonPlayOffTeams.includes(teams[i].id)){
+                name.style.backgroundColor = "rgb(255, 153, 153)";
+            }
             standingsRow.appendChild(name);
             //logo of team
             let logo = document.createElement("img");
@@ -2051,6 +2071,14 @@ function printStandingsAway(teams){
             logo.id = "logo";
             logo.src = ".." + teams[i].logo + ".png";
             name.appendChild(logo);  
+            if(teams[i].id == lastYearWinner){
+                //last year winner logo
+                let lastYearWinnerLogo = document.createElement("img");
+                lastYearWinnerLogo.className = "logo";
+                lastYearWinnerLogo.id = "logo";
+                lastYearWinnerLogo.src = "../graphics/trophy/trophy.png";
+                name.appendChild(lastYearWinnerLogo);  
+            }
             //games of team
             let games = document.createElement("div");
             games.className = "gridsquare";
@@ -2506,11 +2534,14 @@ function gamesRound (gameData, season, round){
                         }
                     }
                     button.dispatchEvent(new Event("click"));
+                    console.log("button1")
+                    console.log(select.value)
                     if(matchEnded == matches.length){
                         console.log("here")
                         gameData.seasons[season].schedule[round].completed = "yes";
                         selectionOptions(gameData, season);
                         select.options[select.options.length - 2].selected = true;
+                        console.log("Back1")
                     }
                     //lay-out post season       
                     if(gameData.seasons[season].schedule[gameData.seasons[season].schedule.length - 1].completed == "yes"){
@@ -2975,6 +3006,7 @@ function gamesPostSeason (gameData, season, round){
                                     }
                                 }
                                 button.dispatchEvent(new Event("click"));
+                                console.log("button2")
                                 if(allRoundsFinished == matchups.length){
                                     if(round != gameData.seasons[season].postSeasonSchedule.length - 1){
                                         //lay-out next round
@@ -2995,6 +3027,7 @@ function gamesPostSeason (gameData, season, round){
                                     gameData.seasons[season].postSeasonSchedule[round].completed = "yes";
                                     selectionOptions(gameData, season); 
                                     select.options[select.options.length - 2].selected = true;
+                                    console.log("Back2")
                                 }
                             }
                         });
@@ -3356,6 +3389,8 @@ function gamesPostSeason (gameData, season, round){
                                                         }
                                                     }
                                                     selectionOptions(gameData, season); 
+                                                    select.options[select.options.length - 2].selected = true;
+                                                    console.log("Back5")
                                                 }
                                                 else{   //finals
                                                     for(let a = 0; a < gameData.seasons[season].postSeasonSchedule.finals.length; a++){
@@ -3377,7 +3412,7 @@ function gamesPostSeason (gameData, season, round){
                                             }
                                             button.dispatchEvent(new Event("click"));
                                             selectionOptions(gameData, season);
-                                            select.options[select.options.length - 2].selected = true;
+                                            console.log("Back3")
                                         }
                                     });
                                     divMatch.appendChild(gameButton);
@@ -3728,6 +3763,7 @@ function gamesPostSeason (gameData, season, round){
                                     }
                                     selectionOptions(gameData, season);
                                     button.dispatchEvent(new Event("click"));
+                                    console.log("Back7")
                                 }
                             });
                             divMatch.appendChild(gameButton);
@@ -3981,6 +4017,8 @@ function selectionOptions (gameData, season){
 let select = document.createElement("select");
 document.body.appendChild(select);
 selectionOptions(gameData, season);
+console.log(select[select.length - 1])
+select[select.length - 1].selected = "selected";
 
 //conferences/divisions
 let divisionsFactor = "league";
@@ -4310,6 +4348,7 @@ nextRound.addEventListener("click", () => {
         leagueStandingsChoice.style.display = "none";
         divisionStandingsChoice.style.display = "none";
     }
+    console.log(select.value)
 });
 document.body.appendChild(nextRound);
 

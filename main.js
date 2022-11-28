@@ -10,7 +10,8 @@ const createWindow = () => {
             nodeIntegration: true,
             contextIsolation: false
         },
-        autoHideMenuBar: true
+        autoHideMenuBar: true,
+        icon: path.join(__dirname, "graphics\system\icon.ico")
     });
 
 

@@ -303,11 +303,11 @@ function endDraft(){
         }
         //reduce current talent (-0.1 to 0.3 drop, gauss drop)
         console.log(gameData.teams[i].name + " before " + gameData.teams[i].power);
-        let drop = randn_bm() * (0.5 + gameData.teams[i].seasonsAbove1/35) - 0.1 - (0.05 * gameData.teams[i].seasonsBelow1);
+        let drop = randn_bm() * (0.6 + gameData.teams[i].seasonsAbove1/30) - 0.1 - (0.02 * gameData.teams[i].seasonsBelow1);
         gameData.teams[i].power -= drop;
         console.log(gameData.teams[i].name + " drop " + drop);
         //push new talent
-        let newTalent = gameData.teams[i].projectedPowerNextSeasons[0] / 2000;
+        let newTalent = gameData.teams[i].projectedPowerNextSeasons[0] / 2100;
         gameData.teams[i].power += newTalent;
         console.log(gameData.teams[i].name + " newTalent " + newTalent);
         console.log(gameData.teams[i].name + " after " + gameData.teams[i].power);

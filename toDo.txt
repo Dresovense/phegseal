@@ -1,19 +1,9 @@
 Link to team history when you click on them
-    info:
-        -name
-        -logo
-        -date
-        -town (map?)
-        -stadium (capacity)
-        -rivals
     standings
         -regular season (with graphic?)
         -playoff
     Records (button -> other page)
         -franchise Records (+ bold if league record)
-    matches
-        -last 5 matches
-        -last 5 matches against particular team
 
 Records (All-time + team)
 Power Rankings
