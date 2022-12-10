@@ -111,6 +111,12 @@ draftClass.sort(function(left,right){
     }
 })
 
+for(let i = 0; i < 50; i++){
+    let random_player = draftClass.splice(Math.floor(Math.random() * 150), 1);
+    let random_place = Math.floor(Math.random() * 150);
+    draftClass.splice(random_place, 0, random_player[0]);
+}
+
 //distribution de gauss
 function randn_bm() {
     let u = 0, v = 0;
@@ -292,22 +298,32 @@ function endDraft(){
     for(let i = 0; i < gameData.teams.length; i++){
         //redo years above/under 1:
         if(gameData.teams[i].power >= 1){
-            console.log("here");
             gameData.teams[i].seasonsAbove1++;
             gameData.teams[i].seasonsBelow1 = 0;
         }
         else{
-            console.log("here2")
-            gameData.teams[i].seasonsBelow1++;
-            gameData.teams[i].seasonsAbove1 = 0;
+            if(gameData.teams[i].seasonsAbove1 > 0){
+                let number_of_years_to_remove = Math.ceil(Math.random() * 2);
+                gameData.teams[i].seasonsAbove1 -= number_of_years_to_remove;
+
+                if(gameData.team[i].seasonsAbove1 <= 0){
+                    gameData.teams[i].seasonsAbove1 = 0;
+                    gameData.teams[i].seasonsBelow1 = 1;
+                }
+            }
+            else{
+                gameData.teams[i].seasonsBelow1++;
+            }
         }
+
+
         //reduce current talent (-0.1 to 0.3 drop, gauss drop)
         console.log(gameData.teams[i].name + " before " + gameData.teams[i].power);
-        let drop = randn_bm() * (0.6 + gameData.teams[i].seasonsAbove1/30) - 0.1 - (0.02 * gameData.teams[i].seasonsBelow1);
+        let drop = randn_bm() * (0.50 + gameData.teams[i].seasonsAbove1/25) - 0.12 - (0.05 * gameData.teams[i].seasonsBelow1);
         gameData.teams[i].power -= drop;
         console.log(gameData.teams[i].name + " drop " + drop);
         //push new talent
-        let newTalent = gameData.teams[i].projectedPowerNextSeasons[0] / 2100;
+        let newTalent = gameData.teams[i].projectedPowerNextSeasons[0] / 1920;
         gameData.teams[i].power += newTalent;
         console.log(gameData.teams[i].name + " newTalent " + newTalent);
         console.log(gameData.teams[i].name + " after " + gameData.teams[i].power);
@@ -316,7 +332,7 @@ function endDraft(){
         gameData.teams[i].projectedPowerNextSeasons.push(0);
         //change of potential in the next seasons
         for(let j = 0; j < 5; j++){
-            let dropPotential = randn_bm() * 80 - 30;
+            let dropPotential = randn_bm() * 70 - 30;
             gameData.teams[i].projectedPowerNextSeasons[j] -= dropPotential;
         }
     }

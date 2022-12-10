@@ -14,7 +14,7 @@ button{
 .gridRow{
     display: inline-grid;
     grid-auto-flow: column;
-    grid-template-columns: 30px 30px 200px repeat(9, 30px) 40px;
+    grid-template-columns: 30px 30px 230px repeat(9, 30px) 40px;
 }
 .gridsquare{
     border: 1px solid black;
@@ -260,7 +260,6 @@ h3{
     display: inline-grid;
     grid-auto-flow: line;
     grid-template-columns:repeat(12, 50px);
-    height: 50px;
 }
 .draftRoundSquare{
     border: 1px solid black;
@@ -342,6 +341,7 @@ h3{
 .team_previousYears{
     display: grid;
     grid-template-columns: 80px 110px 105px;
+    border-bottom: 1px solid black;
 }
 
 .team_previousYearsSquare{
@@ -359,6 +359,12 @@ h3{
     width: auto;
     margin-left: auto;
     margin-right: auto;
+}
+
+.team_nextFiveMatches{
+    height: 100px;
+    overflow: auto;
+    overflow-x: hidden;
 }
 
 /* teamChoice.js */

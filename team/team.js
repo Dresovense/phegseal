@@ -347,11 +347,12 @@ document.body.appendChild(otherInfoFlex);
         matchesContainers.appendChild(selectTeamButton)
 
     let nextFiveMatchesTitle = document.createElement("div");
-    nextFiveMatchesTitle.innerText = "Next 5 matches played";
+    nextFiveMatchesTitle.innerText = "Next matches played";
     nextFiveMatchesTitle.style.textAlign = "center"
     matchesContainers.appendChild(nextFiveMatchesTitle)
 
     let nextFiveMatchesContainer = document.createElement("div");
+    nextFiveMatchesContainer.className = "team_nextFiveMatches"
     matchesContainers.appendChild(nextFiveMatchesContainer);
 
     let nextMatchesNodes = nextFiveMatches(-1);
@@ -542,7 +543,11 @@ function nextFiveMatches(teamId){
 }
 
 function printLastMatches(matchesNodes, container){
-    for(let j = 4; j >= 0; j--){
+    numberOfGames = 4
+    if(matchesNodes.length < 5){
+        numberOfGames = matchesNodes.length - 1
+    }
+    for(let j = numberOfGames; j >= 0; j--){
         let previousMatchesContainers = document.createElement("grid");
         previousMatchesContainers.className = "team_previousMatchesContainers";
         container.appendChild(previousMatchesContainers);
@@ -599,7 +604,7 @@ function printLastMatches(matchesNodes, container){
 }
 
 function printNextMatches(matchesNodes, container){
-    for(let j = 0; j < 5; j++){
+    for(let j = 0; j < matchesNodes.length; j++){
         if(matchesNodes[j]){
             let previousMatchesContainers = document.createElement("grid");
             previousMatchesContainers.className = "team_previousMatchesContainers";
