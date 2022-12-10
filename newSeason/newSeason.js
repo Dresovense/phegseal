@@ -296,6 +296,8 @@ goBackButton.addEventListener("click", () =>{
 });
 document.body.appendChild(goBackButton);
 
+
+
 //print schedule
 let newSeason = {
     "date": startDate + "-" + endDate,
@@ -310,7 +312,7 @@ let newSeason = {
             "postSeasonTeams": "",
             "teamsQualifiedPerDivision": "",
             "wildCardsPerConference": "",
-            "playOffOrganisation": ""
+            "playOffOrganisation": "",
         },
         "conference": [],
         "finals": [],
@@ -2036,7 +2038,8 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
             for(let k = 0; k < teamList[i][j].length; k++){
                 if(teamList[i][j][k] != -1){
                     let team = {
-                        "id": `${teamList[i][j][k]}`
+                        "id": `${teamList[i][j][k]}`,
+                        "power": gameData.teams[teamList[i][j][k]].power
                     }
                     division.teams.push(team);
                     conference.teamsInConference.push(team);

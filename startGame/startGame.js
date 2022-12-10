@@ -9,7 +9,12 @@ for(let i = 0; i < gameData.seasons.length; i++){
     button.innerText = `${gameData.seasons[i].date}`;
     button.addEventListener("click", () => {
         sessionStorage.setItem("season", i);
-        location.href = "../season/season.html";
+        if(i > 28){
+          location.href = "../seasonPanel/seasonPanel.html";
+        }
+        else{
+          location.href = "../season/season.html";
+        }
     }); 
     button.style.display = "inline-block";
     document.body.appendChild(button);

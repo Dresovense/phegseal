@@ -8,6 +8,12 @@ document.body.appendChild(teamNameDiv);
 let teamName = document.createElement("input");
 document.body.appendChild(teamName);
 
+let shortNameDiv = document.createElement("div");
+shortNameDiv.innerText = "Short Name :";
+document.body.appendChild(shortNameDiv);
+let shortName = document.createElement("input");
+document.body.appendChild(shortName);
+
 let teamLogoDiv = document.createElement("div");
 teamLogoDiv.innerText = "Logo (past directory) :";
 document.body.appendChild(teamLogoDiv);
@@ -42,13 +48,13 @@ document.body.appendChild(teamStadiumAttendance);
 let confirmChoicebutton = document.createElement("button");
 confirmChoicebutton.innerText = "Confirm Choice";
 confirmChoicebutton.className = "teamChoice";
-let endDate = gameData.seasons[gameData.seasons.length - 1].endDate + 1;
 confirmChoicebutton.addEventListener("click", () => {
     let teamObject = {
         name: teamName.value,
+        shortName: shortName.value,
         logo: teamLogo.value,
         color: teamColor.value,
-        date: gameData.seasons[gameData.seasons.length - 1].endDate + "-" + endDate,
+        date: gameData.seasons.length - 1,
         town: teamTown.value,
         stadiumName: teamStadium.value,
         stadiumAttendence: teamStadiumAttendance.value,
@@ -62,7 +68,7 @@ confirmChoicebutton.addEventListener("click", () => {
         records:{
 
         },
-        power: "0",
+        power: "0.7",
         seasonsAbove1: "0",
         seasonsBelow1: "0",
         projectedPowerNextSeasons: [

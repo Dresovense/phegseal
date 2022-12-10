@@ -1,16 +1,26 @@
 let gameData = JSON.parse(sessionStorage.getItem("gameData"));
 
+
+
+let map = document.createElement("img");
+map.src = "../graphics/map/Phegsael.png";
+map.style.width = "900px";
+map.style.margin = "auto";
+document.body.appendChild(map);
+
 for(let i = 0; i < gameData.teams.length; i++){
-    let button = document.createElement("button");
-    button.style.width = "120px";
-    button.innerText = `${gameData.teams[i].name}`;
-    button.addEventListener("click", () => {
-        sessionStorage.setItem("team", i);
-        location.href = "../team/team.html";
-    }); 
-    button.style.display = "block";
-    document.body.appendChild(button);
+  let team = document.createElement("img");
+  team.className = "teamChoice_team";
+  team.src = ".." + gameData.teams[i].logo + ".png";
+  team.addEventListener("click", () => {
+      sessionStorage.setItem("team", i);
+      location.href = "../team/team.html";
+  }); 
+  team.style.left = gameData.teams[i].teamPlacement.left;
+  team.style.top = gameData.teams[i].teamPlacement.top;
+  document.body.appendChild(team);
 }
+
 
 let button = document.createElement("button");
 button.innerText = "New Team";

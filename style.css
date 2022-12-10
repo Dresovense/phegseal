@@ -14,7 +14,7 @@ button{
 .gridRow{
     display: inline-grid;
     grid-auto-flow: column;
-    grid-template-columns: 30px 30px 200px repeat(9, 30px) 40px;
+    grid-template-columns: 30px 30px 230px repeat(9, 30px) 40px;
 }
 .gridsquare{
     border: 1px solid black;
@@ -260,7 +260,6 @@ h3{
     display: inline-grid;
     grid-auto-flow: line;
     grid-template-columns:repeat(12, 50px);
-    height: 50px;
 }
 .draftRoundSquare{
     border: 1px solid black;
@@ -282,4 +281,103 @@ h3{
     height: 30px;
     align-items:center;
     justify-content:center;
+}
+
+
+/* team.js */
+.team_teamName{
+    height: auto;
+    text-align: center;
+    width: 300px;
+    display: block;
+    margin: 0 auto;
+}
+
+.team_teamLogo{
+    height: auto;
+    text-align: center;
+    max-width: 300px;
+    height: 100px;
+    display: block;
+    margin: 0 auto;
+}
+
+.team_teamInfos{
+    display: grid;
+    grid-template-columns: 150px 150px;
+    margin-left: 10px;
+}
+
+.team_teamInfosSquare{
+    border: 1px solid black;
+    text-align: center;
+}
+
+.team_otherInfoFlex{
+    display: inline-flex;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.team_previousYearsContainer{
+    width: 315px;
+    height: 400px;
+    border: 1px black solid;
+    overflow: auto;
+}
+
+.team_matchesContainers{
+    width: 315px;
+    height: 400px;
+    border: 1px black solid;
+}
+
+.team_records{
+    width: 315px;
+    height: 400px;
+    border: 1px black solid;
+}
+
+.team_previousYears{
+    display: grid;
+    grid-template-columns: 80px 110px 105px;
+    border-bottom: 1px solid black;
+}
+
+.team_previousYearsSquare{
+    border-left: black 1px solid;
+    border-right: black 1px solid;
+}
+
+.team_previousMatchesContainers{
+    display: grid;
+    grid-template-columns: 55px 60px 25px 30px 25px 60px 55px;
+}
+
+.team_previousMatchesContainersSquare{
+    display: block;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.team_nextFiveMatches{
+    height: 100px;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+/* teamChoice.js */
+
+.teamChoice_team{
+    max-width: 40px;
+    max-height: 30px;
+    position: absolute;
+    opacity: 0.8;
+}
+
+.teamChoice_team:hover{
+    max-width: 50px;
+    max-height: 40px;
+    opacity: 1;
 }
