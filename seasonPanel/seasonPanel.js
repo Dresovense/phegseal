@@ -145,14 +145,17 @@ else{
             for(let k = 0; k < gameData.seasons[season].teams.allTeams.length; k++){
                 if(gameData.seasons[season].teams.allTeams[k].id == standings[i]){
                     console.log(`${gameData.teams[standings[i]].name} / ${standings[i]}: ${gameData.seasons[season].teams.allTeams[k].power}`)
-                    if(gameData.seasons[season].teams.allTeams[k].power < 1){
+                    if(gameData.seasons[season].teams.allTeams[k].power < 0.8){
                         expectations.innerText = "None";
+                    }
+                    else if(gameData.seasons[season].teams.allTeams[k].power < 1){
+                        expectations.innerText = "Be competitive";
                     }
                     else if(gameData.seasons[season].teams.allTeams[k].power < 1.1){
                         expectations.innerText = "Playoff Team";
                     }
-                    else if(gameData.seasons[season].teams.allTeams[k].power < 1.3){
-                        expectations.innerText = "Challenge for title"
+                    else if(gameData.seasons[season].teams.allTeams[k].power < 1.25){
+                        expectations.innerText = "Dark horse"
                     }
                     else{
                         expectations.innerText = "Contender";

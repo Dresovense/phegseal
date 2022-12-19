@@ -3966,7 +3966,7 @@ function addChampionToData(team){
             return 1
         }
     })
-    gameDataJson = JSON.stringify(gameData);
+    let gameDataJson = JSON.stringify(gameData);
     sessionStorage.setItem("gameData", gameDataJson);
 }
 

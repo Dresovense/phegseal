@@ -323,7 +323,7 @@ function endDraft(){
         gameData.teams[i].power -= drop;
         console.log(gameData.teams[i].name + " drop " + drop);
         //push new talent
-        let newTalent = gameData.teams[i].projectedPowerNextSeasons[0] / 1925;
+        let newTalent = gameData.teams[i].projectedPowerNextSeasons[0] / 1800;
         gameData.teams[i].power += newTalent;
         console.log(gameData.teams[i].name + " newTalent " + newTalent);
         console.log(gameData.teams[i].name + " after " + gameData.teams[i].power);
