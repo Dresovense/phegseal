@@ -47,6 +47,7 @@ select{
     margin-top: 20px;
     max-height: 350px;
     overflow: auto;
+    width: 630px;
 }
 
 #divMatch{
@@ -260,6 +261,7 @@ h3{
     display: inline-grid;
     grid-auto-flow: line;
     grid-template-columns:repeat(12, 50px);
+    width: 100%;
 }
 .draftRoundSquare{
     border: 1px solid black;
@@ -380,4 +382,11 @@ h3{
     max-width: 50px;
     max-height: 40px;
     opacity: 1;
+}
+
+/* seasonPanel.js */
+
+.seasonPanel_winProbabilitiesRowSquare{
+    display: flex;
+    align-items: center;
 }

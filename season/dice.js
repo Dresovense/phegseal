@@ -138,7 +138,6 @@ module.exports = {
         else if(die2Result >= Math.pow(0.9998,powerTeam2)){
             result[1] = "8";
         }
-        console.log(result)
         return result;
     }
 }

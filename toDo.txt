@@ -9,7 +9,6 @@ Records (All-time + team)
 Power Rankings
 Rivalries (change with time)
 Interesting things happening in the round
-Arrows for the places up/down 
 See schedule of matches
 Control that the number of teams in Playoffs equals the number of teams making in each division plus the wild cards + division matches > conference matches > interconference matches
 Make playoff Tree

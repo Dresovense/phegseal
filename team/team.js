@@ -91,6 +91,49 @@ document.body.appendChild(teamLogo);
     rivals1.className = "team_teamInfosSquare";
     teamInfos.appendChild(rivals1);
 
+    //Number of cups
+    let numberOfCups0 = document.createElement("div");
+    numberOfCups0.innerText = "Number of Cups:";
+    numberOfCups0.className = "team_teamInfosSquare";
+    teamInfos.appendChild(numberOfCups0);
+    let numberOfCups1 = document.createElement("div");
+    let numberOfCups_number = -1;
+    for(let i = 0; i < gameData.records.postSeason.titles.mostTitles.teams.length; i++){
+        if(gameData.records.postSeason.titles.mostTitles.teams[i].teamId == team){
+            numberOfCups_number = gameData.records.postSeason.titles.mostTitles.teams[i].record;
+        }
+    }
+    if(numberOfCups_number == -1){
+        numberOfCups1.innerText = `None`;
+    }
+    else{
+        numberOfCups1.innerText = numberOfCups_number;
+    }
+    numberOfCups1.className = "team_teamInfosSquare";
+    teamInfos.appendChild(numberOfCups1);
+
+    //Last Win (play-off drought)
+    let lastWin0 = document.createElement("div");
+    lastWin0.innerText = "Last Win:";
+    lastWin0.className = "team_teamInfosSquare";
+    teamInfos.appendChild(lastWin0);
+    let lastWin1 = document.createElement("div");
+    let lastSeason = -1;
+    for(let i = 0; i < gameData.records.postSeason.titles.mostTitles.teams.length; i++){
+        if(gameData.records.postSeason.titles.mostTitles.teams[i].teamId == team){
+            lastSeason = gameData.records.postSeason.titles.mostTitles.teams[i].seasonsId[gameData.records.postSeason.titles.mostTitles.teams[i].seasonsId.length - 1];
+        }
+    }
+    if(lastSeason == -1){
+        lastWin1.innerText = `None (${gameData.seasons.length - 1 - gameData.teams[team].date})`;
+    }
+    else{
+        console.log(lastSeason)
+        lastWin1.innerText = `${gameData.seasons[lastSeason].date} (${gameData.seasons.length - 1 - lastSeason})`;
+    }
+    lastWin1.className = "team_teamInfosSquare";
+    teamInfos.appendChild(lastWin1);
+
 
 //other Info (records, previous standings, previous matches)
 let otherInfoFlex = document.createElement("div");
@@ -203,6 +246,10 @@ document.body.appendChild(otherInfoFlex);
             //playoff
             let playoff = document.createElement("div");
             playoff.className = "team_previousYearsSquare";
+            previousYears.appendChild(playoff);
+            let playoffText = document.createElement("div")
+            playoffText.style.display = "inline-block"
+            playoff.appendChild(playoffText);
             let winner = false;
             let inPlayoffs = false;
             let roundLost = 0;
@@ -212,30 +259,41 @@ document.body.appendChild(otherInfoFlex);
                     for(let j = 0; j < gameData.seasons[i].postSeasonSchedule.length; j++){
                         for(let k = 0; k < gameData.seasons[i].postSeasonSchedule[j].matchups.length; k++){
                             if(gameData.seasons[i].postSeasonSchedule[j].matchups[k].loser == team){
+                                let teamInLastPlayoffMatch = document.createElement("img");
+                                teamInLastPlayoffMatch.style.height = "20px"
+                                teamInLastPlayoffMatch.src = ".." + gameData.teams[gameData.seasons[i].postSeasonSchedule[j].matchups[k].winner].logo + ".png"
+                                playoff.appendChild(teamInLastPlayoffMatch)
+
                                 roundLost = j + 1;
                                 k = gameData.seasons[i].postSeasonSchedule[j].matchups.length;
+                            }
+                            else if(gameData.seasons[i].postSeasonSchedule[j].matchups[k].winner == team){
+                                let teamInLastPlayoffMatch = document.createElement("img");
+                                teamInLastPlayoffMatch.style.height = "20px"
+                                teamInLastPlayoffMatch.src = ".." + gameData.teams[gameData.seasons[i].postSeasonSchedule[j].matchups[k].loser].logo + ".png"
+                                playoff.appendChild(teamInLastPlayoffMatch)
                             }
                         }
                     }
                     if(roundLost == 0){
                         winner = true;
                     }
-                }
+                    }
                 if(inPlayoffs){
                     if(winner){
-                        playoff.innerText = "Winner";
+                        playoffText.innerText = "Winner";
                     }
                     else{
                         if(roundLost == 1){
-                            playoff.innerText = "Lost in 1st round";
+                            playoffText.innerText = "Lost in 1st round";
                         }
                         else if(roundLost == 2){
-                            playoff.innerText = "Finalist";
+                            playoffText.innerText = "Finalist";
                         }
                     }
                 }
                 else{
-                    playoff.innerText = "Did not qualify";
+                    playoffText.innerText = "Did not qualify";
                 }
             }
             else{
@@ -249,8 +307,21 @@ document.body.appendChild(otherInfoFlex);
                             for(let l = 0; l < gameData.seasons[i].postSeasonSchedule.conference[j].length; l++){
                                 for(let k = 0; k < gameData.seasons[i].postSeasonSchedule.conference[j][l].matchups.length; k++){
                                     if(gameData.seasons[i].postSeasonSchedule.conference[j][l].matchups[k].loser == team){
+                                        let teamInLastPlayoffMatch = document.createElement("img");
+                                        teamInLastPlayoffMatch.style.height = "20px";
+                                        teamInLastPlayoffMatch.src = ".." + gameData.teams[gameData.seasons[i].postSeasonSchedule.conference[j][l].matchups[k].winner].logo + ".png"
+                                        playoff.appendChild(teamInLastPlayoffMatch)
+                                        console.log(playoff.firstChild)
+                                        console.log(teamInLastPlayoffMatch.parentNode)
+                                        
                                         roundLost = l + 1;
                                         k = gameData.seasons[i].postSeasonSchedule.conference[j][l].matchups.length;
+                                    }
+                                    else if(gameData.seasons[i].postSeasonSchedule.conference[j][l].matchups[k].winner == team){
+                                        let teamInLastPlayoffMatch = document.createElement("img");
+                                        teamInLastPlayoffMatch.style.height = "20px";
+                                        teamInLastPlayoffMatch.src = ".." + gameData.teams[gameData.seasons[i].postSeasonSchedule.conference[j][l].matchups[k].loser].logo + ".png"
+                                        playoff.appendChild(teamInLastPlayoffMatch)
                                     }
                                 }
                             }
@@ -258,8 +329,18 @@ document.body.appendChild(otherInfoFlex);
                         for(let j = 0; j < gameData.seasons[i].postSeasonSchedule.finals.length; j++){
                             for(let k = 0; k < gameData.seasons[i].postSeasonSchedule.finals[j].matchups.length; k++){
                                 if(gameData.seasons[i].postSeasonSchedule.finals[j].matchups[k].loser == team){
+                                    let teamInLastPlayoffMatch = document.createElement("img");
+                                    teamInLastPlayoffMatch.src = ".." + gameData.teams[gameData.seasons[i].postSeasonSchedule.finals[j].matchups[k].winner].logo + ".png"
+                                    teamInLastPlayoffMatch.style.height = "20px";
+                                    playoff.appendChild(teamInLastPlayoffMatch)
                                     roundLost = j + gameData.seasons[i].postSeasonSchedule.conference[j].length + 1;
                                     k = gameData.seasons[i].postSeasonSchedule.finals[j].matchups.length;
+                                }
+                                else if(gameData.seasons[i].postSeasonSchedule.finals[j].matchups[k].winner == team){
+                                    let teamInLastPlayoffMatch = document.createElement("img");
+                                    teamInLastPlayoffMatch.src = ".." + gameData.teams[gameData.seasons[i].postSeasonSchedule.finals[j].matchups[k].loser].logo + ".png"
+                                    teamInLastPlayoffMatch.style.height = "20px";
+                                    playoff.appendChild(teamInLastPlayoffMatch)
                                 }
                             }
                         }
@@ -271,32 +352,32 @@ document.body.appendChild(otherInfoFlex);
                     if(inPlayoffs){
                         console.log("Season:" + gameData.seasons[i].date + "roundLost: " + roundLost)
                         if(winner){
-                            playoff.innerText = "Winner";
+                            playoffText.innerText = "Winner";
                         }
                         else{
                             if(roundLost < roundsOfConferenceFinal){
-                                playoff.innerText = `Lost in ${roundLost}st round`;
+                               playoffText.innerText = `Lost in ${roundLost}st round`;
                             }
                             else if(roundLost == roundsOfConferenceFinal){
                                 if(gameData.seasons[i].teams.conference.length > 1){
-                                    playoff.innerText = "Conference Final";
+                                    playoffText.innerText = "Conference Final"
                                 }
                                 else{
                                     playoff.innerText = `Lost in ${roundLost}st round`;
+                                    playoffText.innerText = `Lost in ${roundLost}st round`;
                                 }
                             }
                             else if(roundLost > roundsOfConferenceFinal){
-                                playoff.innerText = "Finalist";
+                                playoffText.innerText = "Finalist";
                             }
                         }
                     }
                     else{
-                        playoff.innerText = "Did not qualify";
+                        playoffText.innerText = "Did not qualify";
                     }
                 }
                 
             }
-            previousYears.appendChild(playoff);
 
             if(i % 2 == 1){
                 year.style.backgroundColor = "lightgray";
