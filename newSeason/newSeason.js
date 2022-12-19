@@ -1,5 +1,7 @@
 const { match } = require('assert');
 const fs = require('fs');
+const dice = require("../season/dice.js");
+const standings = require("../functions/standings.js")
 
 let gameData = JSON.parse(sessionStorage.getItem("gameData"));
 
@@ -266,13 +268,16 @@ confirmChoicebutton.addEventListener("click", () => {
             divsSchedule[i].style.display = "none";     //display
         }
         createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConference, divisionRounds, conferenceRounds, interConferenceRounds);   //changer endroit ou c'est fait
+        newSeason.postSeasonSchedule.rules.numberOfMatchesPerTeam = numberOfGamesPerTeam(newSeason);
         gameData.seasons.push(newSeason);
+        gameData = regularSeasonPrediction(gameData)
         //save data + go to season
         fs.writeFile('saves/data.json', JSON.stringify(gameData, null, 4), function(err) {
             if(err){
                 return console.log(err);
             }
         });
+        console.log(gameData)
         gameData = JSON.stringify(gameData);
         sessionStorage.setItem("gameData", gameData);
         location.href = "../startGame/startGame.html";
@@ -313,6 +318,7 @@ let newSeason = {
             "teamsQualifiedPerDivision": "",
             "wildCardsPerConference": "",
             "playOffOrganisation": "",
+            "numberOfMatchesPerTeam": ""
         },
         "conference": [],
         "finals": [],
@@ -1830,6 +1836,12 @@ let newSeason = {
     "draft": {
         "completed": "no",
         "picks": []
+    },
+    "predictions":{
+        "win": [],
+        "lose": [],
+        "standings": [],
+        "playoffs": []
     }
 };
 
@@ -2197,3 +2209,66 @@ function shuffleArray(array) {
     return array;
 }
 
+function numberOfGamesPerTeam(newSeason){
+    let teamId = newSeason.schedule[0].games[0].team1Id;
+    let numberOfMatches = 0
+    for(let i = 0; i < newSeason.schedule.length; i++){
+        for(let j = 0; j < newSeason.schedule[i].games.length; j++){
+            if(newSeason.schedule[i].games[j].team1Id == teamId || newSeason.schedule[i].games[j].team2Id == teamId){
+                numberOfMatches++;
+            }
+        }
+    }
+    console.log(numberOfMatches)
+    return numberOfMatches
+}
+
+function regularSeasonPrediction(gameData){
+    let team_predictions_win = []
+    let team_predictions_lose = []
+    let team_predictions_playoffs = []
+    let team_predictions_standings = []
+    for(let i = 0; i < gameData.seasons[gameData.seasons.length - 1].teams.allTeams.length; i++){
+        team_predictions_win.push(0);
+        team_predictions_lose.push(0);
+        team_predictions_playoffs.push(0);
+        team_predictions_standings.push(0);
+    }
+    for(let i = 0; i < 1000; i++){
+        let gameDataTest = JSON.parse(JSON.stringify(gameData));
+        for(let j = 0; j < gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule.length; j++){
+            for(k = 0; k < gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games.length; k++){
+                result = dice.diceRoll(gameData.teams[gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games[k].team1Id].power,gameData.teams[gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games[k].team2Id].power)
+                gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games[k].team1Goals = result[0];
+                gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games[k].team2Goals = result[1];
+            }
+        }
+        let teamChoice = gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.allTeams;
+        let teams = standings.standings(gameDataTest, teamChoice, gameDataTest.seasons.length - 1, gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule.length - 1, "Pts");
+        let conferences = []
+        for(let j = 0; j < gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.conference.length; j++){
+            conferences.push(0);
+        }
+        for(let j = 0; j < teams.length; j++){
+            team_predictions_standings[teams[j].id] += teams.length - j;
+            for(k = 0; k < conferences.length; k++){
+                if(conferences[k] < gameDataTest.seasons[gameDataTest.seasons.length - 1].postSeasonSchedule.rules.teamsQualifiedPerDivision){
+                    for(let l = 0; l < gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.conference[k].teamsInConference.length; l++){
+                        console.log(gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.conference[k].teamsInConference[l].id)
+                        if(teams[j].id == gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.conference[k].teamsInConference[l].id){
+                            conferences[k] += 1
+                            team_predictions_playoffs[teams[j].id] += 1;
+                        }
+                    }
+                }
+            }
+        }
+        team_predictions_win[teams[0].id] += 1;
+        team_predictions_lose[teams[teams.length - 1].id] += 1;
+    }
+    gameData.seasons[gameData.seasons.length - 1].predictions.win = team_predictions_win;
+    gameData.seasons[gameData.seasons.length - 1].predictions.lose = team_predictions_lose;
+    gameData.seasons[gameData.seasons.length - 1].predictions.playoffs = team_predictions_playoffs;
+    gameData.seasons[gameData.seasons.length - 1].predictions.standings = team_predictions_standings;
+    return gameData
+}

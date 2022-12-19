@@ -3191,6 +3191,7 @@ function gamesPostSeason (gameData, season, round){
             br.id ="3";
             gamesDiv.appendChild(br);
             if(round == gameData.seasons[season].postSeasonSchedule.length - 1 && gameData.seasons[season].postSeasonSchedule[round].completed == "yes"){
+                addChampionToData(gameData.seasons[season].postSeasonSchedule[round].matchups[0].winner);
                 printChampion(gameData.seasons[season].postSeasonSchedule[round].matchups[0].winner);
             }
         }
@@ -3930,6 +3931,43 @@ function gamesPostSeason (gameData, season, round){
             //}
         }
     }
+}
+
+function addChampionToData(team){
+    console.log("here")
+    let recordTitles = gameData.records.postSeason.titles.mostTitles;
+    let newTeam = true
+    for(let i = 0; i < recordTitles.teams.length; i++){
+        console.log("here1")
+        if(recordTitles.teams[i].teamId == team){            
+            console.log("here2")
+            recordTitles.teams[i].seasonsId.push(season);
+            recordTitles.teams[i].record++
+            newTeam = false;
+        }
+    }
+    if(newTeam){
+        let newTeam = {
+            "teamId": team,
+            "seasonsId": [
+                season
+            ],
+            "record": 1
+        }
+        recordTitles.teams.push(newTeam)
+    }
+
+    //rearrange data
+    recordTitles.teams.sort((left, right) => {
+        if(left.record > right.record){
+            return -1
+        }
+        else{
+            return 1
+        }
+    })
+    gameDataJson = JSON.stringify(gameData);
+    sessionStorage.setItem("gameData", gameDataJson);
 }
 
 let congratulations = document.createElement("h3");

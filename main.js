@@ -11,16 +11,16 @@ const createWindow = () => {
             contextIsolation: false
         },
         autoHideMenuBar: true,
-        icon: path.join(__dirname, "graphics\system\icon.ico")
+        icon: path.join(__dirname, "graphics\system\icon.ico"),
     });
 
 
     win.loadFile('index.html');
-
+    win.maximize()
 };
 
 app.whenReady().then(() => {
-    createWindow();    
+    createWindow();  
 });
 
 app.on('window-all-closed', () => {
