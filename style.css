@@ -11,10 +11,14 @@ button{
     margin: 3px;
 }
 
+.season_seasonContainer{
+    width: 650px;
+}
+
 .gridRow{
     display: inline-grid;
     grid-auto-flow: column;
-    grid-template-columns: 30px 30px 230px repeat(9, 30px) 40px;
+    grid-template-columns: 30px 30px 230px repeat(8, 30px) 30px 40px 35px;
 }
 .gridsquare{
     border: 1px solid black;
@@ -47,7 +51,7 @@ select{
     margin-top: 20px;
     max-height: 350px;
     overflow: auto;
-    width: 630px;
+    width: 660px;
 }
 
 #divMatch{
@@ -124,7 +128,17 @@ h3{
 .gamesDiv{
     max-height: 228px;
     overflow: auto;
+    width: 670px;
 }
+
+.season_leftSide{
+    width: 650px;
+}
+
+.season_gameContents{
+    display: flex;
+}
+
 
 
 /* Navigation Menu */

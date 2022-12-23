@@ -303,7 +303,7 @@ function endDraft(){
         }
         else{
             if(gameData.teams[i].seasonsAbove1 > 0){
-                let number_of_years_to_remove = Math.ceil(Math.random() * 5);
+                let number_of_years_to_remove = Math.ceil(Math.random() * 5) + 1;
                 gameData.teams[i].seasonsAbove1 -= number_of_years_to_remove;
 
                 if(gameData.teams[i].seasonsAbove1 <= 0){
