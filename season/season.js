@@ -2,6 +2,7 @@
 const dice = require("./dice.js");
 const recordsPostSeason = require("./recordsPostSeason.js");
 const recordsSeason = require("./recordsSeason.js");
+const events = require("./events/events.js")
 let gameData = JSON.parse(sessionStorage.getItem("gameData"));
 let season = sessionStorage.getItem("season");
 
@@ -4571,3 +4572,18 @@ if(boolRegularSeason == false){
     divisionStandingsChoice.style.display = "none";
 }
 
+//events:
+    //background
+let eventBackground = document.createElement("div");
+eventBackground.className = "eventBackground";
+eventBackground.addEventListener("click", () =>{
+    eventDiv.style.display = "none";
+    eventBackground.style.opacity = "0";
+})
+eventBackground.style.display = "none"
+document.body.appendChild(eventBackground);
+    //container
+let eventDiv = document.createElement("div");
+eventDiv.className = "eventContainer";
+document.body.appendChild(eventDiv);
+eventDiv.style.display = "none";

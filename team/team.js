@@ -56,8 +56,8 @@ document.body.appendChild(teamLogo);
     if(gameData.teams[team].power < 0.8){
         expectations = "None";
     }
-    else if(gameData.seasons[season].teams.allTeams[k].power < 1){
-        expectations.innerText = "Be competitive";
+    else if(gameData.teams[team].power < 1){
+        expectations= "Be competitive";
     }
     else if (gameData.teams[team].power < 1.10){
         expectations = "Playoff Team";
