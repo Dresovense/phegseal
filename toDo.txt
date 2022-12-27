@@ -21,3 +21,6 @@ Division must be even
 
 
 make divisional playoff (like nhl) 
+
+
+Trades: Create a log of every trade that happened (and show it somewhere, seasonPanel?), Change trade beggining depending on expectations

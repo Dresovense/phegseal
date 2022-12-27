@@ -2184,7 +2184,7 @@ function layOutPostSeason(gameData, season){
             return -1;
         }
     });
-    gameData.seasons[season].postSeasonSchedule.teamsInPlayoffs = gameData.seasons[season].postSeasonSchedule.seeds; 
+    gameData.seasons[season].postSeasonSchedule.teamsInPlayoffs = JSON.parse(JSON.stringify(gameData.seasons[season].postSeasonSchedule.seeds)); 
 
     let playOffOrganisation = gameData.seasons[season].postSeasonSchedule.rules.playOffOrganisation;
     let postSeasonTeams = gameData.seasons[season].postSeasonSchedule.rules.postSeasonTeams;
@@ -2563,7 +2563,7 @@ function gamesRound (gameData, season, round){
                     if(gameData.seasons[season].schedule[gameData.seasons[season].schedule.length - 1].completed == "yes"){
                         layOutPostSeason(gameData, season);
                     }
-                    
+                    events.trade(eventDiv, eventBackground, gameData, round);
                     gameDataJson = JSON.stringify(gameData);
                     sessionStorage.setItem("gameData", gameDataJson);
                 }
@@ -4576,6 +4576,7 @@ eventBackground.className = "eventBackground";
 eventBackground.addEventListener("click", () =>{
     eventDiv.style.display = "none";
     eventBackground.style.opacity = "0";
+    eventBackground.style.display = "none";
 })
 eventBackground.style.display = "none"
 document.body.appendChild(eventBackground);

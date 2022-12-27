@@ -2,119 +2,197 @@ const standings = require('../functions/standings.js');
 let gameData = JSON.parse(sessionStorage.getItem("gameData"));
 let season = sessionStorage.getItem("season");
 
-
-let firstName = JSON.parse(fs.readFileSync('nameDb/firstName.json', "utf-8", function (err,data) {
-  if (err) {
-    return console.log(err);
-  }
-}));
-let lastName = JSON.parse(fs.readFileSync('nameDb/lastName.json', "utf-8", function (err,data) {
-    if (err) {
-      return console.log(err);
-    }
-}));
-
-let lastYearStandings = standings.standings(gameData, gameData.seasons[season].teams.allTeams, season, gameData.seasons[season].schedule.length - 1, "Pts");
-
-//draft order: by standings and playoff round loss
 let draftOrder = [];
-    //teams that missed the playoffs
-for(let i = lastYearStandings.length - 1; i >= 0; i--){
-    console.log(lastYearStandings[i].id)
-    if(!gameData.seasons[season].postSeasonSchedule.teamsInPlayoffs.includes(lastYearStandings[i].id)){
-        draftOrder.push(lastYearStandings[i].id);
-    }
-}
-    //teams that lost before the finals
-for(let j = 0; j < gameData.seasons[season].postSeasonSchedule.conference[0].length; j++){
-    let roundLosers = []
-    for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.conference.length; i++){
-        for(let k = 0; k < gameData.seasons[season].postSeasonSchedule.conference[i][j].matchups.length; k++){
-            roundLosers.push(gameData.seasons[season].postSeasonSchedule.conference[i][j].matchups[k].loser);
-        }
-    }
-    console.log(roundLosers)
-    console.log(lastYearStandings)
-    roundLosers.sort(function(left, right){
-        let indexOfLeft;
-        let indexOfRight;
-        for(let i = 0; i < lastYearStandings.length; i++){
-            if(lastYearStandings[i].id == left){
-                indexOfLeft = i;
-            }
-            if(lastYearStandings[i].id == right){
-                indexOfRight = i;
-            }
-        }
-        if(indexOfLeft > indexOfRight){
-            return -1;
-        }
-        else{
-            return 1;
-        }
-    })
-    console.log(roundLosers)
-    draftOrder = draftOrder.concat(roundLosers);
-}
-    //teams that lost in the finals
-for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.finals.length; i++){
-    let roundLosers = [];
-    for(let j = 0; j < gameData.seasons[season].postSeasonSchedule.finals[i].matchups.length; j++){
-        roundLosers.push(gameData.seasons[season].postSeasonSchedule.finals[i].matchups[j].loser);
-    }
-    roundLosers.sort(function(left, right){
-        if(lastYearStandings[roundLosers[left]].index() > lastYearStandings[roundLosers[right]].index){
-            return -1;
-        }
-        else{
-            return 1;
-        }
-    })
-    console.log(roundLosers)
-    draftOrder = draftOrder.concat(roundLosers);
-}
-    //team that won
-draftOrder.push(gameData.seasons[season].postSeasonSchedule.finals[gameData.seasons[season].postSeasonSchedule.finals.length - 1].matchups[0].winner);
-console.log(draftOrder)
-
-
-
-
-//joueurs disponibles dans la draft class
+let draft= []
 let draftClass = [];                                                //5* 90, 10 * 80, 15 * 70, 20 * 60, 30 * 50
-for(let i = 0; i < 2000; i++){
-    let potential = Math.ceil(Math.pow(randn_bm() + 0.155, 1.75) * 100);
-    let developpmentYears = Math.floor(randn_bm() * 8);
-    let randomName = firstName.data[Math.floor(Math.random() * firstName.data.length)] + " " + lastName.data[Math.floor(Math.random() * lastName.data.length)];
-    draftClass.push({
-        potential: potential,
-        developpmentYears: developpmentYears,
-        name: randomName
-    });
-}
-console.log(draftClass)
-
-draftClass.sort(function(left,right){
-    if(left.potential > right.potential){
-        return -1;
+if(gameData.seasons[season].draft.completed == "no"){
+    let firstName = JSON.parse(fs.readFileSync('nameDb/firstName.json', "utf-8", function (err,data) {
+      if (err) {
+        return console.log(err);
+      }
+    }));
+    let lastName = JSON.parse(fs.readFileSync('nameDb/lastName.json', "utf-8", function (err,data) {
+        if (err) {
+          return console.log(err);
+        }
+    }));
+    
+    let lastYearStandings = standings.standings(gameData, gameData.seasons[season].teams.allTeams, season, gameData.seasons[season].schedule.length - 1, "Pts");
+    
+    //draft order: by standings and playoff round loss
+        //teams that missed the playoffs
+    for(let i = lastYearStandings.length - 1; i >= 0; i--){
+        if(!gameData.seasons[season].postSeasonSchedule.teamsInPlayoffs.includes(lastYearStandings[i].id)){
+            draftOrder.push(lastYearStandings[i].id);
+        }
     }
-    else if(left.potential < right.potential){
-        return 1;
+        //teams that lost before the finals
+    for(let j = 0; j < gameData.seasons[season].postSeasonSchedule.conference[0].length; j++){
+        let roundLosers = []
+        for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.conference.length; i++){
+            for(let k = 0; k < gameData.seasons[season].postSeasonSchedule.conference[i][j].matchups.length; k++){
+                roundLosers.push(gameData.seasons[season].postSeasonSchedule.conference[i][j].matchups[k].loser);
+            }
+        }
+        roundLosers.sort(function(left, right){
+            let indexOfLeft;
+            let indexOfRight;
+            for(let i = 0; i < lastYearStandings.length; i++){
+                if(lastYearStandings[i].id == left){
+                    indexOfLeft = i;
+                }
+                if(lastYearStandings[i].id == right){
+                    indexOfRight = i;
+                }
+            }
+            if(indexOfLeft > indexOfRight){
+                return -1;
+            }
+            else{
+                return 1;
+            }
+        })
+        draftOrder = draftOrder.concat(roundLosers);
     }
-    else{
-        if(left.developpmentYears > right.developpmentYears){
+        //teams that lost in the finals
+    for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.finals.length; i++){
+        let roundLosers = [];
+        for(let j = 0; j < gameData.seasons[season].postSeasonSchedule.finals[i].matchups.length; j++){
+            roundLosers.push(gameData.seasons[season].postSeasonSchedule.finals[i].matchups[j].loser);
+        }
+        roundLosers.sort(function(left, right){
+            if(lastYearStandings[roundLosers[left]].index() > lastYearStandings[roundLosers[right]].index){
+                return -1;
+            }
+            else{
+                return 1;
+            }
+        })
+        draftOrder = draftOrder.concat(roundLosers);
+    }
+        //team that won
+    draftOrder.push(gameData.seasons[season].postSeasonSchedule.finals[gameData.seasons[season].postSeasonSchedule.finals.length - 1].matchups[0].winner);
+    console.log(draftOrder)
+    
+    for(let i = 0; i < 7; i++){
+        draft.push(JSON.parse(JSON.stringify(draftOrder)));
+    }
+    console.log(draft)
+        //change picks based on trades:
+    for(let i = 0; i < 7; i++){ //i = round
+        for(let l = 0; l < draftOrder.length; l++){ //l = pick
+            for(let j = 0; j < lastYearStandings.length; j++){ //j = teams
+                if(draft[i][l] == j){
+                    draft[i][l] = gameData.teams[j].ownerOfTeamPicks[0][i]
+                }
+            }
+        }
+    }
+    
+    
+    
+    
+    //joueurs disponibles dans la draft class
+    for(let i = 0; i < 2000; i++){
+        let potential = Math.ceil(Math.pow(randn_bm() + 0.155, 1.75) * 100);
+        let developpmentYears = Math.floor(randn_bm() * 8);
+        let randomName = firstName.data[Math.floor(Math.random() * firstName.data.length)] + " " + lastName.data[Math.floor(Math.random() * lastName.data.length)];
+        draftClass.push({
+            potential: potential,
+            developpmentYears: developpmentYears,
+            name: randomName
+        });
+    }
+    
+    draftClass.sort(function(left,right){
+        if(left.potential > right.potential){
+            return -1;
+        }
+        else if(left.potential < right.potential){
             return 1;
         }
         else{
-            return -1;
+            if(left.developpmentYears > right.developpmentYears){
+                return 1;
+            }
+            else{
+                return -1;
+            }
         }
+    })
+    
+    for(let i = 0; i < 50; i++){
+        let random_player = draftClass.splice(Math.floor(Math.random() * 150), 1);
+        let random_place = Math.floor(Math.random() * 150);
+        draftClass.splice(random_place, 0, random_player[0]);
     }
-})
+}
+else{
+    //draft order: by standings and playoff round loss
+        let lastYearStandings = standings.standings(gameData, gameData.seasons[season].teams.allTeams, season, gameData.seasons[season].schedule.length - 1, "Pts");
+        //teams that missed the playoffs
+        for(let i = lastYearStandings.length - 1; i >= 0; i--){
+            if(!gameData.seasons[season].postSeasonSchedule.teamsInPlayoffs.includes(lastYearStandings[i].id)){
+                draftOrder.push(lastYearStandings[i].id);
+            }
+        }
+            //teams that lost before the finals
+        for(let j = 0; j < gameData.seasons[season].postSeasonSchedule.conference[0].length; j++){
+            let roundLosers = []
+            for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.conference.length; i++){
+                for(let k = 0; k < gameData.seasons[season].postSeasonSchedule.conference[i][j].matchups.length; k++){
+                    roundLosers.push(gameData.seasons[season].postSeasonSchedule.conference[i][j].matchups[k].loser);
+                }
+            }
+            roundLosers.sort(function(left, right){
+                let indexOfLeft;
+                let indexOfRight;
+                for(let i = 0; i < lastYearStandings.length; i++){
+                    if(lastYearStandings[i].id == left){
+                        indexOfLeft = i;
+                    }
+                    if(lastYearStandings[i].id == right){
+                        indexOfRight = i;
+                    }
+                }
+                if(indexOfLeft > indexOfRight){
+                    return -1;
+                }
+                else{
+                    return 1;
+                }
+            })
+            draftOrder = draftOrder.concat(roundLosers);
+        }
+            //teams that lost in the finals
+        for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.finals.length; i++){
+            let roundLosers = [];
+            for(let j = 0; j < gameData.seasons[season].postSeasonSchedule.finals[i].matchups.length; j++){
+                roundLosers.push(gameData.seasons[season].postSeasonSchedule.finals[i].matchups[j].loser);
+            }
+            roundLosers.sort(function(left, right){
+                if(lastYearStandings[roundLosers[left]].index() > lastYearStandings[roundLosers[right]].index){
+                    return -1;
+                }
+                else{
+                    return 1;
+                }
+            })
+            draftOrder = draftOrder.concat(roundLosers);
+        }
+            //team that won
+        draftOrder.push(gameData.seasons[season].postSeasonSchedule.finals[gameData.seasons[season].postSeasonSchedule.finals.length - 1].matchups[0].winner);
+    
+    //draft:
+    for(let i = 0; i < 7; i++){
+        let newDraftOrder = []
+        for(let j = 0; j < draftOrder.length; j++){
+            newDraftOrder.push(gameData.seasons[season].draft.picks[draftOrder.length * i + j].team)
+        }
+        draft.push(newDraftOrder);
+    }
 
-for(let i = 0; i < 50; i++){
-    let random_player = draftClass.splice(Math.floor(Math.random() * 150), 1);
-    let random_place = Math.floor(Math.random() * 150);
-    draftClass.splice(random_place, 0, random_player[0]);
+
 }
 
 //distribution de gauss
@@ -247,13 +325,13 @@ function draftRound(round, container){
             let teamName = document.createElement("div");
             teamName.className = "draftGridSquare";
             teamName.id = "name";
-            teamName.innerText = gameData.teams[draftOrder[i]].name;
+            teamName.innerText = gameData.teams[draft[round][i]].name;
             draftGrid.appendChild(teamName);
             //logo of team
             let logo = document.createElement("img");
             logo.className = "logo";
             logo.id = "logo";
-            logo.src = ".." + gameData.teams[draftOrder[i]].logo + ".png";
+            logo.src = ".." + gameData.teams[draft[round][i]].logo + ".png";
             teamName.appendChild(logo);  
     
             let player = document.createElement("div");
@@ -285,13 +363,13 @@ function draftRound(round, container){
 
 function pick(currentPick, currentRound){
     let pick = {
-        team: draftOrder[currentPick - currentRound * draftOrder.length],
+        team: draft[currentRound][currentPick - currentRound * draftOrder.length],
         player: draftClass[currentPick].name,
         potential: draftClass[currentPick].potential,
         developpmentYears: draftClass[currentPick].developpmentYears
     }
     gameData.seasons[season].draft.picks.push(pick);
-    gameData.teams[draftOrder[currentPick - currentRound * draftOrder.length]].projectedPowerNextSeasons[pick.developpmentYears] += pick.potential;
+    gameData.teams[draft[currentRound][currentPick - currentRound * draftOrder.length]].projectedPowerNextSeasons[pick.developpmentYears] += pick.potential;
 }
 
 function endDraft(){
@@ -336,6 +414,13 @@ function endDraft(){
             gameData.teams[i].projectedPowerNextSeasons[j] -= dropPotential;
         }
     }
+    //add picks for next Season and remove picks from this season:
+    for(let i = 0; i < gameData.teams.length; i++){
+        gameData.teams[i].ownerOfTeamPicks.shift();
+        gameData.teams[i].ownerOfTeamPicks.push([i,i,i,i,i,i,i])
+    }
+
+
     gameData.seasons[season].draft.completed = "yes";
 
     newSeasonButton.style.display = "inline-block";

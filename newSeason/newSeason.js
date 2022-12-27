@@ -2254,7 +2254,6 @@ function regularSeasonPrediction(gameData){
             for(k = 0; k < conferences.length; k++){
                 if(conferences[k] < gameDataTest.seasons[gameDataTest.seasons.length - 1].postSeasonSchedule.rules.teamsQualifiedPerDivision){
                     for(let l = 0; l < gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.conference[k].teamsInConference.length; l++){
-                        console.log(gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.conference[k].teamsInConference[l].id)
                         if(teams[j].id == gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.conference[k].teamsInConference[l].id){
                             conferences[k] += 1
                             team_predictions_playoffs[teams[j].id] += 1;
