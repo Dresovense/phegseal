@@ -139,6 +139,11 @@ h3{
     display: flex;
 }
 
+.previousTrades{
+    margin-left: 110px;
+    margin-top: 10px;
+}
+
 
 
 /* Navigation Menu */

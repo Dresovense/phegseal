@@ -270,7 +270,8 @@ confirmChoicebutton.addEventListener("click", () => {
         createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConference, divisionRounds, conferenceRounds, interConferenceRounds);   //changer endroit ou c'est fait
         newSeason.postSeasonSchedule.rules.numberOfMatchesPerTeam = numberOfGamesPerTeam(newSeason);
         gameData.seasons.push(newSeason);
-        gameData = regularSeasonPrediction(gameData)
+        gameData = regularSeasonPrediction(gameData);
+        gameData = updateTradeWillingness(gameData);
         //save data + go to season
         fs.writeFile('saves/data.json', JSON.stringify(gameData, null, 4), function(err) {
             if(err){
@@ -1842,7 +1843,8 @@ let newSeason = {
         "lose": [],
         "standings": [],
         "playoffs": []
-    }
+    },
+    trade:[]
 };
 
 function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConference, divisionRounds, conferenceRounds, interConferenceRounds, postSeasonRounds){
@@ -2270,4 +2272,25 @@ function regularSeasonPrediction(gameData){
     gameData.seasons[gameData.seasons.length - 1].predictions.playoffs = team_predictions_playoffs;
     gameData.seasons[gameData.seasons.length - 1].predictions.standings = team_predictions_standings;
     return gameData
+}
+
+function updateTradeWillingness(gameData){
+    for(let i = 0; i < gameData.teams.length; i++){
+        if(gameData.teams[i].power < 0.8){
+            gameData.teams[i].trade = 35;
+        }
+        else if(gameData.teams[i].power < 1){
+            gameData.teams[i].trade = 45;
+        }
+        else if (gameData.teams[i].power < 1.10){
+            gameData.teams[i].trade = 50;
+        }
+        else if(gameData.teams[i].power < 1.25){
+            gameData.teams[i].trade = 55;
+        }
+        else{
+            gameData.teams[i].trade = 65;
+        }
+    }
+    return gameData;
 }

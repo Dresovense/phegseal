@@ -24,6 +24,10 @@ seasonContainer.appendChild(seasonTitle);
 const conferenceNumber = gameData.seasons[season].teams.conference.length;
 const divisionNumber = gameData.seasons[season].teams.conference[0].divisions.length;
 
+
+let previousTrades = document.createElement("div");
+previousTrades.className = "previousTrades";
+
 let lastYearWinner
 if(season <= 12 && season != 0){
     lastYearWinner = gameData.seasons[season - 1].postSeasonSchedule[1].matchups[0].winner;
@@ -1653,18 +1657,20 @@ function printStandings(teams, placeTeams){
             shutouts.id = "shutouts";
             shutouts.innerText = teams[i].shutouts();
             standingsRow.appendChild(shutouts); 
-            //pace of team
-            let numberOfMatches = gameData.seasons[season].schedule.length - (gameData.seasons[season].teams.allTeams.length % 2) * (gameData.seasons[season].schedule.length / gameData.seasons[season].teams.allTeams.length)
-            let numberOfMatchesPerTeam = numberOfMatches
-            if(gameData.seasons[season].postSeasonSchedule.rules.numberOfMatchesPerTeam){
-                numberOfMatchesPerTeam = gameData.seasons[season].postSeasonSchedule.rules.numberOfMatchesPerTeam;
+            if(season >= 12){
+                //pace of team
+                let numberOfMatches = gameData.seasons[season].schedule.length - (gameData.seasons[season].teams.allTeams.length % 2) * (gameData.seasons[season].schedule.length / gameData.seasons[season].teams.allTeams.length)
+                let numberOfMatchesPerTeam = numberOfMatches
+                if(gameData.seasons[season].postSeasonSchedule.rules.numberOfMatchesPerTeam){
+                    numberOfMatchesPerTeam = gameData.seasons[season].postSeasonSchedule.rules.numberOfMatchesPerTeam;
+                }
+                let pace = document.createElement("div");
+                pace.className = "gridsquare";
+                pace.style.backgroundColor = "lightgray";
+                pace.id = "pace";
+                pace.innerText = (teams[i].points() / (teams[i].gamesPlayed()) * numberOfMatchesPerTeam).toFixed(0);
+                standingsRow.appendChild(pace); 
             }
-            let pace = document.createElement("div");
-            pace.className = "gridsquare";
-            pace.style.backgroundColor = "lightgray";
-            pace.id = "pace";
-            pace.innerText = (teams[i].points() / (teams[i].gamesPlayed()) * numberOfMatchesPerTeam).toFixed(0);
-            standingsRow.appendChild(pace); 
             //pointPercentage of team
             let pointPercentage = document.createElement("div");
             pointPercentage.className = "gridsquare";
@@ -2564,6 +2570,7 @@ function gamesRound (gameData, season, round){
                         layOutPostSeason(gameData, season);
                     }
                     events.trade(eventDiv, eventBackground, gameData, round);
+                    tradeLog(select.value);
                     gameDataJson = JSON.stringify(gameData);
                     sessionStorage.setItem("gameData", gameDataJson);
                 }
@@ -3189,7 +3196,6 @@ function gamesPostSeason (gameData, season, round){
             br.id ="3";
             gamesDiv.appendChild(br);
             if(round == gameData.seasons[season].postSeasonSchedule.length - 1 && gameData.seasons[season].postSeasonSchedule[round].completed == "yes"){
-                addChampionToData(gameData.seasons[season].postSeasonSchedule[round].matchups[0].winner);
                 printChampion(gameData.seasons[season].postSeasonSchedule[round].matchups[0].winner);
             }
         }
@@ -3198,7 +3204,7 @@ function gamesPostSeason (gameData, season, round){
         if(round < gameData.seasons[season].postSeasonSchedule.conference[0].length){
             for(let l = 0; l < gameData.seasons[season].postSeasonSchedule.conference.length; l++){
                 let teams = gameData.teams;
-            
+                
                 //for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.conference[l][0].matchups.length; i++){
                     let matchupdiv = document.createElement("div");
                     gamesDiv.appendChild(matchupdiv);
@@ -3925,22 +3931,22 @@ function gamesPostSeason (gameData, season, round){
                 gamesDiv.appendChild(br);
                 if(round == gameData.seasons[season].postSeasonSchedule.finals.length - 1 && gameData.seasons[season].postSeasonSchedule.finals[round].completed == "yes"){
                     printChampion(gameData.seasons[season].postSeasonSchedule.finals[round].matchups[0].winner);
+                    gameData = addChampionToData(gameData, gameData.seasons[season].postSeasonSchedule.finals[round].matchups[0].winner);
                 }
             //}
         }
     }
 }
 
-function addChampionToData(team){
+function addChampionToData(gameData, team){
     console.log("here")
-    let recordTitles = gameData.records.postSeason.titles.mostTitles;
     let newTeam = true
-    for(let i = 0; i < recordTitles.teams.length; i++){
+    for(let i = 0; i < gameData.records.postSeason.titles.mostTitles.teams.length; i++){
         console.log("here1")
-        if(recordTitles.teams[i].teamId == team){            
+        if(gameData.records.postSeason.titles.mostTitles.teams[i].teamId == team){            
             console.log("here2")
-            recordTitles.teams[i].seasonsId.push(season);
-            recordTitles.teams[i].record++
+            gameData.records.postSeason.titles.mostTitles.teams[i].seasonsId.push(season);
+            gameData.records.postSeason.titles.mostTitles.teams[i].record++
             newTeam = false;
         }
     }
@@ -3952,11 +3958,11 @@ function addChampionToData(team){
             ],
             "record": 1
         }
-        recordTitles.teams.push(newTeam)
+        gameData.records.postSeason.titles.mostTitles.teams.push(newTeam)
     }
 
     //rearrange data
-    recordTitles.teams.sort((left, right) => {
+    gameData.records.postSeason.titles.mostTitles.teams.sort((left, right) => {
         if(left.record > right.record){
             return -1
         }
@@ -3964,8 +3970,8 @@ function addChampionToData(team){
             return 1
         }
     })
-    let gameDataJson = JSON.stringify(gameData);
-    sessionStorage.setItem("gameData", gameDataJson);
+    
+    return gameData
 }
 
 let congratulations = document.createElement("h3");
@@ -4237,6 +4243,8 @@ button.addEventListener("click", () => {
         leagueStandingsChoice.style.display = "none";
         divisionStandingsChoice.style.display = "none";
     }
+    
+    tradeLog(select.value);
 });
 
 let previousRound = document.createElement("button");
@@ -4301,6 +4309,8 @@ previousRound.addEventListener("click", () =>{
         leagueStandingsChoice.style.display = "none";
         divisionStandingsChoice.style.display = "none";
     }
+    
+    tradeLog(select.value);
 });
 seasonContainer.appendChild(previousRound);
 
@@ -4409,6 +4419,7 @@ nextRound.addEventListener("click", () => {
         divisionStandingsChoice.style.display = "none";
     }
     console.log(select.value)
+    tradeLog(select.value);
 });
 seasonContainer.appendChild(nextRound);
 
@@ -4717,3 +4728,43 @@ leftSide.appendChild(winProbabilitiesContainer)
         }
     }
     }
+
+leftSide.appendChild(previousTrades);
+    //previous trades:
+    
+    tradeLog(select.value);
+function tradeLog(round){
+    previousTrades.innerHTML = ""
+    let tradeLogInfo = document.createElement("div");
+    tradeLogInfo.innerText = "Trade Log:";
+    previousTrades.appendChild(tradeLogInfo)
+    if(season >= 40){
+        for(let i = 0; i < gameData.seasons[season].trade.length; i++){
+            if(gameData.seasons[season].trade[i].round <= round || boolRegularSeason == false){
+                let trade = document.createElement("div");
+                previousTrades.appendChild(trade);
+                trade.innerText = `Trade between ${gameData.teams[gameData.seasons[season].trade[i].buyer].name} and ${gameData.teams[gameData.seasons[season].trade[i].seller].name} (round ${gameData.seasons[season].trade[i].round})`;
+                trade.addEventListener("click", () => {
+                    let eventDescription = `A trade has occurred between ${gameData.teams[gameData.seasons[season].trade[i].buyer].name} and ${gameData.teams[gameData.seasons[season].trade[i].seller].name}.`;
+                    let eventEffects = `${gameData.teams[gameData.seasons[season].trade[i].seller].name} receives:\n`
+                    for(let j = 0; j < gameData.seasons[season].trade[i].picks.length; j++){
+                        if(gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1 == 1){
+                            eventEffects += `- ${gameData.teams[gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].fromTeam].name} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].year + gameData.seasons[season].endDate} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1}st round pick\n`
+                        }
+                        else if(gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1 == 2){
+                            eventEffects += `- ${gameData.teams[gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].fromTeam].name} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].year + gameData.seasons[season].endDate} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1}nd round pick\n`
+                        }
+                        else if(gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1 == 3){
+                            eventEffects += `- ${gameData.teams[gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].fromTeam].name} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].year + gameData.seasons[season].endDate} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1}rd round pick\n`
+                        }
+                        else{
+                            eventEffects += `- ${gameData.teams[gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].fromTeam].name} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].year + gameData.seasons[season].endDate} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1}th round pick\n`
+                        }
+                    }
+                    eventEffects += `\n${gameData.teams[gameData.seasons[season].trade[i].buyer].name} receives: ${gameData.seasons[season].trade[i].power.toFixed(3)} power in players` //place holder
+                    events.events(eventDiv, eventBackground, "Trade!", eventDescription, eventEffects);  
+                })
+            }
+        }
+    }
+}

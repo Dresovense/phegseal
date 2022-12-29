@@ -124,8 +124,8 @@ module.exports = {
         console.log(assets)
 
         //reduce willingness to trade:
-        gameData.teams[randomBuyer].trade = 65;
-        gameData.teams[randomSeller].trade = 35;
+        gameData.teams[randomBuyer].trade = 55;
+        gameData.teams[randomSeller].trade = 45;
 
 
         //tradeEffects: (change picks owner, change power, print event)
@@ -152,20 +152,30 @@ module.exports = {
             let eventEffects = `${gameData.teams[randomSeller].name} receives:\n`
             for(let i = 0; i < picksToTrade.length; i++){
                 if(assets[picksToTrade[i]].pick + 1 == 1){
-                    eventEffects += `- ${gameData.teams[assets[picksToTrade[i]].fromTeam].name}'s ${assets[picksToTrade[i]].year + gameData.seasons[season].endDate} ${assets[picksToTrade[i]].pick + 1}st round pick\n`
+                    eventEffects += `- ${gameData.teams[assets[picksToTrade[i]].fromTeam].name} ${assets[picksToTrade[i]].year + gameData.seasons[season].endDate} ${assets[picksToTrade[i]].pick + 1}st round pick\n`
                 }
                 else if(assets[picksToTrade[i]].pick + 1 == 2){
-                    eventEffects += `- ${gameData.teams[assets[picksToTrade[i]].fromTeam].name}'s ${assets[picksToTrade[i]].year + gameData.seasons[season].endDate} ${assets[picksToTrade[i]].pick + 1}nd round pick\n`
+                    eventEffects += `- ${gameData.teams[assets[picksToTrade[i]].fromTeam].name} ${assets[picksToTrade[i]].year + gameData.seasons[season].endDate} ${assets[picksToTrade[i]].pick + 1}nd round pick\n`
                 }
                 else if(assets[picksToTrade[i]].pick + 1 == 3){
-                    eventEffects += `- ${gameData.teams[assets[picksToTrade[i]].fromTeam].name}'s ${assets[picksToTrade[i]].year + gameData.seasons[season].endDate} ${assets[picksToTrade[i]].pick + 1}rd round pick\n`
+                    eventEffects += `- ${gameData.teams[assets[picksToTrade[i]].fromTeam].name} ${assets[picksToTrade[i]].year + gameData.seasons[season].endDate} ${assets[picksToTrade[i]].pick + 1}rd round pick\n`
                 }
                 else{
-                    eventEffects += `- ${gameData.teams[assets[picksToTrade[i]].fromTeam].name}'s ${assets[picksToTrade[i]].year + gameData.seasons[season].endDate} ${assets[picksToTrade[i]].pick + 1}th round pick\n`
+                    eventEffects += `- ${gameData.teams[assets[picksToTrade[i]].fromTeam].name} ${assets[picksToTrade[i]].year + gameData.seasons[season].endDate} ${assets[picksToTrade[i]].pick + 1}th round pick\n`
                 }
             }
             eventEffects += `\n${gameData.teams[randomBuyer].name} receives: ${powerToBeEchanged.toFixed(3)} power in players` //place holder
             this.events(eventContainer, eventBackground, "Trade!", eventDescription, eventEffects);  
+            //add to trade data
+            let tradeData = {
+                buyer: randomBuyer,
+                seller: randomSeller,
+                picks: picksToTrade,
+                assetsOfBuyer: assets,
+                round: round,
+                power: powerToBeEchanged
+            }
+            gameData.seasons[season].trade.push(tradeData);
     },
     tradeUpdate: function(gameData, season, round, numberOfTeams){
         let buyers = standings.playoffBound(gameData, season, round)
