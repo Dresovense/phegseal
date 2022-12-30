@@ -11,10 +11,14 @@ button{
     margin: 3px;
 }
 
+.season_seasonContainer{
+    width: 650px;
+}
+
 .gridRow{
     display: inline-grid;
     grid-auto-flow: column;
-    grid-template-columns: 30px 30px 230px repeat(9, 30px) 40px;
+    grid-template-columns: 30px 30px 230px repeat(8, 30px) 30px 40px 35px;
 }
 .gridsquare{
     border: 1px solid black;
@@ -47,7 +51,7 @@ select{
     margin-top: 20px;
     max-height: 350px;
     overflow: auto;
-    width: 630px;
+    width: 660px;
 }
 
 #divMatch{
@@ -124,7 +128,22 @@ h3{
 .gamesDiv{
     max-height: 228px;
     overflow: auto;
+    width: 670px;
 }
+
+.season_leftSide{
+    width: 650px;
+}
+
+.season_gameContents{
+    display: flex;
+}
+
+.previousTrades{
+    margin-left: 110px;
+    margin-top: 10px;
+}
+
 
 
 /* Navigation Menu */
@@ -275,7 +294,7 @@ h3{
 .draftGrid{
     margin-top: 20px;
     display: inline-grid;
-    grid-template-columns: 50px 200px 200px 50px;
+    grid-template-columns: 50px 100px 200px 200px 50px;
 }
 .draftGridSquare{
     border: 1px solid black;
@@ -389,4 +408,37 @@ h3{
 .seasonPanel_winProbabilitiesRowSquare{
     display: flex;
     align-items: center;
+}
+
+/*event.js*/
+.eventContainer{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    height: 60%;
+    position: absolute;
+    background-color: white;
+    top: 20%;
+    left: 20%;
+    border-radius: 5px;
+}
+
+.eventBackground{
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    opacity: 0.5;
+    background-color: grey;
+}
+
+.event_eventName{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.event_eventContainee{
+    margin-left: 10px;
+    margin-top: 10px;
 }

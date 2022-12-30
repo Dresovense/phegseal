@@ -270,7 +270,8 @@ confirmChoicebutton.addEventListener("click", () => {
         createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConference, divisionRounds, conferenceRounds, interConferenceRounds);   //changer endroit ou c'est fait
         newSeason.postSeasonSchedule.rules.numberOfMatchesPerTeam = numberOfGamesPerTeam(newSeason);
         gameData.seasons.push(newSeason);
-        gameData = regularSeasonPrediction(gameData)
+        gameData = regularSeasonPrediction(gameData);
+        gameData = updateTradeWillingness(gameData);
         //save data + go to season
         fs.writeFile('saves/data.json', JSON.stringify(gameData, null, 4), function(err) {
             if(err){
@@ -1835,14 +1836,18 @@ let newSeason = {
     },
     "draft": {
         "completed": "no",
-        "picks": []
+        "picks": [],
+        "currentRound": 0,
+        "currentPick": 0,
+        "draftClass": []
     },
     "predictions":{
         "win": [],
         "lose": [],
         "standings": [],
         "playoffs": []
-    }
+    },
+    trade:[]
 };
 
 function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConference, divisionRounds, conferenceRounds, interConferenceRounds, postSeasonRounds){
@@ -2062,6 +2067,8 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
         }
         newSeason.teams.conference.push(conference);
     }
+    //draftClass
+    newSeason.draft.draftClass = createDraftClass();
 }
 
 function roundRobin (teamList, numberRounds){
@@ -2254,7 +2261,6 @@ function regularSeasonPrediction(gameData){
             for(k = 0; k < conferences.length; k++){
                 if(conferences[k] < gameDataTest.seasons[gameDataTest.seasons.length - 1].postSeasonSchedule.rules.teamsQualifiedPerDivision){
                     for(let l = 0; l < gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.conference[k].teamsInConference.length; l++){
-                        console.log(gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.conference[k].teamsInConference[l].id)
                         if(teams[j].id == gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.conference[k].teamsInConference[l].id){
                             conferences[k] += 1
                             team_predictions_playoffs[teams[j].id] += 1;
@@ -2271,4 +2277,89 @@ function regularSeasonPrediction(gameData){
     gameData.seasons[gameData.seasons.length - 1].predictions.playoffs = team_predictions_playoffs;
     gameData.seasons[gameData.seasons.length - 1].predictions.standings = team_predictions_standings;
     return gameData
+}
+
+function updateTradeWillingness(gameData){
+    for(let i = 0; i < gameData.teams.length; i++){
+        if(gameData.teams[i].power < 0.8){
+            gameData.teams[i].trade = 35;
+        }
+        else if(gameData.teams[i].power < 1){
+            gameData.teams[i].trade = 45;
+        }
+        else if (gameData.teams[i].power < 1.10){
+            gameData.teams[i].trade = 50;
+        }
+        else if(gameData.teams[i].power < 1.25){
+            gameData.teams[i].trade = 55;
+        }
+        else{
+            gameData.teams[i].trade = 65;
+        }
+    }
+    return gameData;
+}
+
+function createDraftClass(){
+    let firstName = JSON.parse(fs.readFileSync('nameDb/firstName.json', "utf-8", function (err,data) {
+        if (err) {
+          return console.log(err);
+        }
+      }));
+      let lastName = JSON.parse(fs.readFileSync('nameDb/lastName.json', "utf-8", function (err,data) {
+          if (err) {
+            return console.log(err);
+          }
+      }));
+      
+    let draftClass = [];
+
+    //joueurs disponibles dans la draft class
+    for(let i = 0; i < 2000; i++){
+        let potential = Math.ceil(Math.pow(randn_bm() + 0.155, 1.75) * 100);
+        let developpmentYears = Math.floor(randn_bm() * 8);
+        let randomName = firstName.data[Math.floor(Math.random() * firstName.data.length)] + " " + lastName.data[Math.floor(Math.random() * lastName.data.length)];
+        draftClass.push({
+            potential: potential,
+            developpmentYears: developpmentYears,
+            name: randomName
+        });
+    }
+    
+    draftClass.sort(function(left,right){
+        if(left.potential > right.potential){
+            return -1;
+        }
+        else if(left.potential < right.potential){
+            return 1;
+        }
+        else{
+            if(left.developpmentYears > right.developpmentYears){
+                return 1;
+            }
+            else{
+                return -1;
+            }
+        }
+    })
+    
+    for(let i = 0; i < 50; i++){
+        let random_player = draftClass.splice(Math.floor(Math.random() * 150), 1);
+        let random_place = Math.floor(Math.random() * 150);
+        draftClass.splice(random_place, 0, random_player[0]);
+    }
+
+    return draftClass;
+}
+
+
+//distribution de gauss
+function randn_bm() {
+    let u = 0, v = 0;
+    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
+    while(v === 0) v = Math.random();
+    let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+    num = num / 10.0 + 0.5; // Translate to 0 -> 1
+    if (num > 1 || num < 0) return randn_bm() // resample between 0 and 1
+    return num
 }

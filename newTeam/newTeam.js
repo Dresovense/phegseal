@@ -48,6 +48,7 @@ document.body.appendChild(teamStadiumAttendance);
 let confirmChoicebutton = document.createElement("button");
 confirmChoicebutton.innerText = "Confirm Choice";
 confirmChoicebutton.className = "teamChoice";
+let teamId = gameData.teams.length;
 confirmChoicebutton.addEventListener("click", () => {
     let teamObject = {
         name: teamName.value,
@@ -68,7 +69,7 @@ confirmChoicebutton.addEventListener("click", () => {
         records:{
 
         },
-        power: "0.7",
+        power: "0.8",
         seasonsAbove1: "0",
         seasonsBelow1: "0",
         projectedPowerNextSeasons: [
@@ -78,6 +79,12 @@ confirmChoicebutton.addEventListener("click", () => {
             0,
             0,
             0
+        ],
+        trade: "50",
+        ownerOfTeamPicks: [
+            [teamId, teamId, teamId, teamId, teamId, teamId, teamId],
+            [teamId, teamId, teamId, teamId, teamId, teamId, teamId],
+            [teamId, teamId, teamId, teamId, teamId, teamId, teamId]
         ]
     }
     gameData.teams.push(teamObject);

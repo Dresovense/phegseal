@@ -24,6 +24,8 @@
     <button onclick="goBack()" class="goBack">Go Back</button>
     <script>
         function goBack() {
+            gameData = JSON.stringify(gameData);
+            sessionStorage.setItem("gameData", gameData);
             window.history.back();
         }
 

@@ -337,6 +337,39 @@ module.exports = {
         }
     
         return teams;
+    },
+    playoffBound: function(gameData, season, round){
+        let teamListPlayOffBound = [];
+        let teamsQualifiedPerDivision = gameData.seasons[season].postSeasonSchedule.rules.teamsQualifiedPerDivision;
+        let wildCardsPerConference = gameData.seasons[season].postSeasonSchedule.rules.wildCardsPerConference;
+        for(let i = 0; i < teamsQualifiedPerDivision; i++){
+            for(let j = 0; j < conferenceNumber; j++){
+                for(let k = 0; k < divisionNumber; k++){
+                    let teamChoice = gameData.seasons[season].teams.conference[j].divisions[k].teams;
+                    let teams = standings(gameData, teamChoice, season, round, "Pts");
+                    teamListPlayOffBound.push(teams[i].id);
+                }
+            }
+        }
+        for(let j = 0; j < conferenceNumber; j++){
+            let teamList = 0;
+            for(let i = 0; i < wildCardsPerConference; i++){
+                let teamChoice = gameData.seasons[season].teams.conference[j].teamsInConference;
+                let teams = standings(gameData, teamChoice, season, round, "Pts");
+                let teamAdded = false;
+                while(teamAdded == false){
+                    if(teamListPlayOffBound.includes(teams[teamList].id)){
+                        teamList++;
+                    }
+                    else{
+                        teamListPlayOffBound.push(teams[teamList].id);
+                        teamAdded = true;
+                    }
+                }
+            }
+        }
+        
+        return teamListPlayOffBound;
     }
 }
 
