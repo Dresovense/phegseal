@@ -4,9 +4,9 @@ let season = sessionStorage.getItem("season");
 
 let draftOrder = [];
 let draft= []
-let draftClass = [];                                                //5* 90, 10 * 80, 15 * 70, 20 * 60, 30 * 50
+let draftClass = gameData.seasons[season].draft.draftClass;                                                //5* 90, 10 * 80, 15 * 70, 20 * 60, 30 * 50
 if(gameData.seasons[season].draft.completed == "no"){
-    let firstName = JSON.parse(fs.readFileSync('nameDb/firstName.json', "utf-8", function (err,data) {
+    /* let firstName = JSON.parse(fs.readFileSync('nameDb/firstName.json', "utf-8", function (err,data) {
       if (err) {
         return console.log(err);
       }
@@ -15,7 +15,7 @@ if(gameData.seasons[season].draft.completed == "no"){
         if (err) {
           return console.log(err);
         }
-    }));
+    })); */
     
     let lastYearStandings = standings.standings(gameData, gameData.seasons[season].teams.allTeams, season, gameData.seasons[season].schedule.length - 1, "Pts");
     
@@ -93,7 +93,7 @@ if(gameData.seasons[season].draft.completed == "no"){
     
     
     //joueurs disponibles dans la draft class
-    for(let i = 0; i < 2000; i++){
+    /* for(let i = 0; i < 2000; i++){
         let potential = Math.ceil(Math.pow(randn_bm() + 0.155, 1.75) * 100);
         let developpmentYears = Math.floor(randn_bm() * 8);
         let randomName = firstName.data[Math.floor(Math.random() * firstName.data.length)] + " " + lastName.data[Math.floor(Math.random() * lastName.data.length)];
@@ -125,7 +125,7 @@ if(gameData.seasons[season].draft.completed == "no"){
         let random_player = draftClass.splice(Math.floor(Math.random() * 150), 1);
         let random_place = Math.floor(Math.random() * 150);
         draftClass.splice(random_place, 0, random_player[0]);
-    }
+    } */
 }
 else{
     //draft order: by standings and playoff round loss
@@ -219,8 +219,6 @@ let draftDiv = document.createElement("div");
 document.body.appendChild(draftDiv)
 draftRound(0,draftDiv);
 
-let currentRound = 0;
-let currentPick = 0;
 
 
 let newSeasonButton = document.createElement("button");
@@ -248,16 +246,19 @@ if(gameData.seasons[season].draft.completed == "yes"){
 }
 nextPick.addEventListener("click", () => {
     draftDiv.innerHTML = "";
-    pick(currentPick, currentRound);
-    currentPick++;
-    if(currentPick % draftOrder.length == 0){
-        draftRound(currentRound, draftDiv);
-        currentRound++;
+    gameData.seasons[season].draft.currentRound = Math.floor(gameData.seasons[season].draft.picks.length / gameData.seasons[season].teams.allTeams.length)
+    console.log(gameData.seasons[season].draft.currentRound)
+    console.log(gameData.seasons[season].draft.picks.length)
+    pick(gameData.seasons[season].draft.currentPick, gameData.seasons[season].draft.currentRound);
+    gameData.seasons[season].draft.currentPick++;
+    if(gameData.seasons[season].draft.currentPick % draftOrder.length == 0){
+        draftRound(gameData.seasons[season].draft.currentRound, draftDiv);
+        gameData.seasons[season].draft.currentRound++;
     }
     else{
-        draftRound(currentRound, draftDiv);
+        draftRound(gameData.seasons[season].draft.currentRound, draftDiv);
     }
-    if(currentPick == draftOrder.length * 7){
+    if(gameData.seasons[season].draft.currentPick == draftOrder.length * 7){
         nextPick.style.display = "none";
         endDraft();
     }
@@ -299,6 +300,11 @@ function draftRound(round, container){
             draftNumber.className = "draftGridSquare";
             draftNumber.innerText = `Ovr`;
             draftGrid.appendChild(draftNumber);
+
+            let originalTeam = document.createElement("div");
+            originalTeam.innerText = "Original Team";
+            originalTeam.className = "draftGridSquare";
+            draftGrid.appendChild(originalTeam);
     
             let teamName = document.createElement("div");
             teamName.className = "draftGridSquare";
@@ -321,6 +327,16 @@ function draftRound(round, container){
             draftNumber.className = "draftGridSquare";
             draftNumber.innerText = `${i + 1 + (round) * draftOrder.length}`;
             draftGrid.appendChild(draftNumber);
+
+            let originalTeam = document.createElement("div");
+            originalTeam.className = "draftGridSquare";
+            draftGrid.appendChild(originalTeam);
+
+            let logoOfOriginalTeam = document.createElement("img");
+            logoOfOriginalTeam.className = "logo";
+            logoOfOriginalTeam.id = "logo";
+            logoOfOriginalTeam.src = ".." + gameData.teams[draftOrder[i]].logo + ".png";
+            originalTeam.appendChild(logoOfOriginalTeam);  
     
             let teamName = document.createElement("div");
             teamName.className = "draftGridSquare";
@@ -354,6 +370,7 @@ function draftRound(round, container){
                 teamName.style.backgroundColor = "lightgray";
                 player.style.backgroundColor = "lightgray";
                 potential.style.backgroundColor = "lightgray";
+                originalTeam.style.backgroundColor = "lightgray";
             }
         }                                                                                                               
     }
@@ -397,11 +414,11 @@ function endDraft(){
 
         //reduce current talent (-0.1 to 0.3 drop, gauss drop)
         console.log(gameData.teams[i].name + " before " + gameData.teams[i].power);
-        let drop = randn_bm() * (0.525 + gameData.teams[i].seasonsAbove1/24) - 0.12 - (0.05 * gameData.teams[i].seasonsBelow1);
+        let drop = randn_bm() * (0.535 + gameData.teams[i].seasonsAbove1/23) - 0.12 - (0.05 * gameData.teams[i].seasonsBelow1);
         gameData.teams[i].power -= drop;
         console.log(gameData.teams[i].name + " drop " + drop);
         //push new talent
-        let newTalent = gameData.teams[i].projectedPowerNextSeasons[0] / 1770;
+        let newTalent = gameData.teams[i].projectedPowerNextSeasons[0] / 1800;
         gameData.teams[i].power += newTalent;
         console.log(gameData.teams[i].name + " newTalent " + newTalent);
         console.log(gameData.teams[i].name + " after " + gameData.teams[i].power);
@@ -410,7 +427,7 @@ function endDraft(){
         gameData.teams[i].projectedPowerNextSeasons.push(0);
         //change of potential in the next seasons
         for(let j = 0; j < 7; j++){
-            let dropPotential = randn_bm() * 75 - 28;
+            let dropPotential = randn_bm() * 80 - 28;
             gameData.teams[i].projectedPowerNextSeasons[j] -= dropPotential;
         }
     }
@@ -430,10 +447,10 @@ function endDraft(){
 let previousRound = document.createElement("button");
 previousRound.innerText = "Previous Round";
 previousRound.addEventListener("click", () => {
-    if(currentRound != 0){
+    if(gameData.seasons[season].draft.currentRound != 0){
         draftDiv.innerHTML = "";
-        currentRound--;
-        draftRound(currentRound, draftDiv);
+        gameData.seasons[season].draft.currentRound--;
+        draftRound(gameData.seasons[season].draft.currentRound, draftDiv);
     }
 });
 document.body.appendChild(previousRound);
@@ -442,10 +459,10 @@ document.body.appendChild(previousRound);
 let nextRound = document.createElement("button");
 nextRound.innerText = "Next Round";
 nextRound.addEventListener("click", () => {
-    if(currentRound != 6){
+    if(gameData.seasons[season].draft.currentRound != 6){
         draftDiv.innerHTML = "";
-        currentRound++;
-        draftRound(currentRound, draftDiv);
+        gameData.seasons[season].draft.currentRound++;
+        draftRound(gameData.seasons[season].draft.currentRound, draftDiv);
     }
 });
 document.body.appendChild(nextRound);

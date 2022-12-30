@@ -3945,8 +3945,10 @@ function addChampionToData(gameData, team){
         console.log("here1")
         if(gameData.records.postSeason.titles.mostTitles.teams[i].teamId == team){            
             console.log("here2")
-            gameData.records.postSeason.titles.mostTitles.teams[i].seasonsId.push(season);
-            gameData.records.postSeason.titles.mostTitles.teams[i].record++
+            if(gameData.records.postSeason.titles.mostTitles.teams[i].seasonsId.indexOf(season) < 0 || gameData.records.postSeason.titles.mostTitles.teams[i].seasonsId.indexOf(Number(season)) >= 0){
+                gameData.records.postSeason.titles.mostTitles.teams[i].seasonsId.push(season);
+                gameData.records.postSeason.titles.mostTitles.teams[i].record++
+            }
             newTeam = false;
         }
     }
@@ -4690,7 +4692,10 @@ leftSide.appendChild(winProbabilitiesContainer)
             for(let k = 0; k < gameData.seasons[season].teams.allTeams.length; k++){
                 if(gameData.seasons[season].teams.allTeams[k].id == standings[i]){
                     console.log(`${gameData.teams[standings[i]].name} / ${standings[i]}: ${gameData.seasons[season].teams.allTeams[k].power}`)
-                    if(gameData.seasons[season].teams.allTeams[k].power < 0.8){
+                    if(gameData.seasons[season].teams.allTeams[k].power < 0.5){
+                        expectations.innerText = "Tank Mode";
+                    }
+                    else if(gameData.seasons[season].teams.allTeams[k].power < 0.8){
                         expectations.innerText = "None";
                     }
                     else if(gameData.seasons[season].teams.allTeams[k].power < 1){
@@ -4740,7 +4745,9 @@ function tradeLog(round){
     previousTrades.appendChild(tradeLogInfo)
     if(season >= 40){
         for(let i = 0; i < gameData.seasons[season].trade.length; i++){
-            if(gameData.seasons[season].trade[i].round <= round || boolRegularSeason == false){
+            console.log(gameData.seasons[season].trade[i].round)
+            console.log(round)
+            if(Number(gameData.seasons[season].trade[i].round) <= round || boolRegularSeason == false){
                 let trade = document.createElement("div");
                 previousTrades.appendChild(trade);
                 trade.innerText = `Trade between ${gameData.teams[gameData.seasons[season].trade[i].buyer].name} and ${gameData.teams[gameData.seasons[season].trade[i].seller].name} (round ${gameData.seasons[season].trade[i].round})`;
@@ -4749,16 +4756,16 @@ function tradeLog(round){
                     let eventEffects = `${gameData.teams[gameData.seasons[season].trade[i].seller].name} receives:\n`
                     for(let j = 0; j < gameData.seasons[season].trade[i].picks.length; j++){
                         if(gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1 == 1){
-                            eventEffects += `- ${gameData.teams[gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].fromTeam].name} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].year + gameData.seasons[season].endDate} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1}st round pick\n`
+                            eventEffects += `- ${gameData.teams[gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].fromTeam].name}' ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].year + gameData.seasons[season].endDate} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1}st round pick\n`
                         }
                         else if(gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1 == 2){
-                            eventEffects += `- ${gameData.teams[gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].fromTeam].name} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].year + gameData.seasons[season].endDate} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1}nd round pick\n`
+                            eventEffects += `- ${gameData.teams[gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].fromTeam].name}' ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].year + gameData.seasons[season].endDate} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1}nd round pick\n`
                         }
                         else if(gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1 == 3){
-                            eventEffects += `- ${gameData.teams[gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].fromTeam].name} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].year + gameData.seasons[season].endDate} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1}rd round pick\n`
+                            eventEffects += `- ${gameData.teams[gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].fromTeam].name}' ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].year + gameData.seasons[season].endDate} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1}rd round pick\n`
                         }
                         else{
-                            eventEffects += `- ${gameData.teams[gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].fromTeam].name} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].year + gameData.seasons[season].endDate} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1}th round pick\n`
+                            eventEffects += `- ${gameData.teams[gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].fromTeam].name}' ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].year + gameData.seasons[season].endDate} ${gameData.seasons[season].trade[i].assetsOfBuyer[gameData.seasons[season].trade[i].picks[j]].pick + 1}th round pick\n`
                         }
                     }
                     eventEffects += `\n${gameData.teams[gameData.seasons[season].trade[i].buyer].name} receives: ${gameData.seasons[season].trade[i].power.toFixed(3)} power in players` //place holder

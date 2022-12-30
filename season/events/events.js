@@ -8,20 +8,20 @@ module.exports = {
         eventBackground.style.display = "block";
 
         //event name
-        let eventName = document.createElement("div");
-        eventName.className = "eventContainee"
+        let eventName = document.createElement("h2");
+        eventName.className = "event_eventName";
         eventName.innerText = eventNameText;
         eventContainer.appendChild(eventName)
         
         //event description
         let eventDescription = document.createElement("div");
-        eventDescription.className = "eventContainee"
+        eventDescription.className = "event_eventContainee"
         eventDescription.innerText = eventDescriptionText;
         eventContainer.appendChild(eventDescription)
 
         //event effects
         let eventEffects = document.createElement("div");
-        eventEffects.className = "eventContainee"
+        eventEffects.className = "event_eventContainee"
         eventEffects.innerText = eventEffectsText;
         eventContainer.appendChild(eventEffects) 
     },
@@ -152,16 +152,16 @@ module.exports = {
             let eventEffects = `${gameData.teams[randomSeller].name} receives:\n`
             for(let i = 0; i < picksToTrade.length; i++){
                 if(assets[picksToTrade[i]].pick + 1 == 1){
-                    eventEffects += `- ${gameData.teams[assets[picksToTrade[i]].fromTeam].name} ${assets[picksToTrade[i]].year + gameData.seasons[season].endDate} ${assets[picksToTrade[i]].pick + 1}st round pick\n`
+                    eventEffects += `- ${gameData.teams[assets[picksToTrade[i]].fromTeam].name}' ${assets[picksToTrade[i]].year + gameData.seasons[season].endDate} ${assets[picksToTrade[i]].pick + 1}st round pick\n`
                 }
                 else if(assets[picksToTrade[i]].pick + 1 == 2){
-                    eventEffects += `- ${gameData.teams[assets[picksToTrade[i]].fromTeam].name} ${assets[picksToTrade[i]].year + gameData.seasons[season].endDate} ${assets[picksToTrade[i]].pick + 1}nd round pick\n`
+                    eventEffects += `- ${gameData.teams[assets[picksToTrade[i]].fromTeam].name}' ${assets[picksToTrade[i]].year + gameData.seasons[season].endDate} ${assets[picksToTrade[i]].pick + 1}nd round pick\n`
                 }
                 else if(assets[picksToTrade[i]].pick + 1 == 3){
-                    eventEffects += `- ${gameData.teams[assets[picksToTrade[i]].fromTeam].name} ${assets[picksToTrade[i]].year + gameData.seasons[season].endDate} ${assets[picksToTrade[i]].pick + 1}rd round pick\n`
+                    eventEffects += `- ${gameData.teams[assets[picksToTrade[i]].fromTeam].name}' ${assets[picksToTrade[i]].year + gameData.seasons[season].endDate} ${assets[picksToTrade[i]].pick + 1}rd round pick\n`
                 }
                 else{
-                    eventEffects += `- ${gameData.teams[assets[picksToTrade[i]].fromTeam].name} ${assets[picksToTrade[i]].year + gameData.seasons[season].endDate} ${assets[picksToTrade[i]].pick + 1}th round pick\n`
+                    eventEffects += `- ${gameData.teams[assets[picksToTrade[i]].fromTeam].name}' ${assets[picksToTrade[i]].year + gameData.seasons[season].endDate} ${assets[picksToTrade[i]].pick + 1}th round pick\n`
                 }
             }
             eventEffects += `\n${gameData.teams[randomBuyer].name} receives: ${powerToBeEchanged.toFixed(3)} power in players` //place holder
@@ -197,7 +197,7 @@ module.exports = {
                     tradeModifier += 0.7
                 }
                 else{
-                    tradeModifier += 0.5
+                    tradeModifier += 0.4
                 }
                 //time above 1 (if more time, more likely to trade)
                 tradeModifier += gameData.teams[i].seasonsAbove1 / 10

@@ -6,23 +6,30 @@ Link to team history when you click on them
         -franchise Records (+ bold if league record)
 
 Records (All-time + team)
-Power Rankings
-Rivalries (change with time)
-Interesting things happening in the round
-See schedule of matches
-Control that the number of teams in Playoffs equals the number of teams making in each division plus the wild cards + division matches > conference matches > interconference matches
-Make playoff Tree
-Can't let match three play before match 2 in playoffs
-Make expectations vary by : number of teams that make the playoffs, strength, ownership, ...
 
+Power Rankings
+
+Rivalries (change with time)
+
+Interesting things happening in the round
+
+See schedule of matches
+
+Control that the number of teams in Playoffs equals the number of teams making in each division plus the wild cards + division matches > conference matches > interconference matches
+
+Make playoff Tree
+
+Can't let match three play before match 2 in playoffs
+
+Make expectations vary by : number of teams that make the playoffs, strength, ownership, ...
 
 Conference must be a power of 2 (2,4,8,...)
 Division must be even
 
-
 make divisional playoff (like nhl) 
 
+Rework season choice page
 
-Trades: Create a log of every trade that happened (and show it somewhere, seasonPanel?)
+Prospect pool for each team, team's previous draft choices
 
-Prospect pool for each team
+Expand the playoffs (let the player choose)

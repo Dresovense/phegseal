@@ -145,7 +145,10 @@ else{
             for(let k = 0; k < gameData.seasons[season].teams.allTeams.length; k++){
                 if(gameData.seasons[season].teams.allTeams[k].id == standings[i]){
                     console.log(`${gameData.teams[standings[i]].name} / ${standings[i]}: ${gameData.seasons[season].teams.allTeams[k].power}`)
-                    if(gameData.seasons[season].teams.allTeams[k].power < 0.8){
+                    if(gameData.seasons[season].teams.allTeams[k].power < 0.5){
+                        expectations.innerText = "Tank Mode";
+                    }
+                    else if(gameData.seasons[season].teams.allTeams[k].power < 0.8){
                         expectations.innerText = "None";
                     }
                     else if(gameData.seasons[season].teams.allTeams[k].power < 1){

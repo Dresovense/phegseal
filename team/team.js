@@ -53,7 +53,10 @@ document.body.appendChild(teamLogo);
     teamInfos.appendChild(expectationsDiv0);
     let expectationsDiv1 = document.createElement("div");
     let expectations;
-    if(gameData.teams[team].power < 0.8){
+    if(gameData.teams[team].power < 0.5){
+        expectations = "Tank Mode";
+    }
+    else if(gameData.teams[team].power < 0.8){
         expectations = "None";
     }
     else if(gameData.teams[team].power < 1){
