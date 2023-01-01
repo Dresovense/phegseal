@@ -353,10 +353,36 @@ h3{
     border: 1px black solid;
 }
 
-.team_records{
+.team_drafts{
     width: 315px;
     height: 400px;
     border: 1px black solid;
+}
+
+.team_draftInfo{
+    height: 360px;
+    overflow-y: auto;
+}
+
+.team_noDraft{
+    margin: auto;
+    width: fit-content;
+    margin-top: 5px;
+}
+
+.team_teamTitle{
+    text-align: center;
+}
+
+.team_draftClass{
+    display: grid;
+    grid-template-columns: 50px 60px 150px 30px;
+    margin-left: 11px;
+    margin-right: 11px;
+}
+
+.team_draftedPlayer{
+    text-align: center;
 }
 
 .team_previousYears{
@@ -386,6 +412,23 @@ h3{
     height: 100px;
     overflow: auto;
     overflow-x: hidden;
+}
+
+.team_prospectPoolContainer{
+    width: 315px;
+    height: 400px;
+    border: 1px black solid;
+}
+
+.team_prospectPoolGrid{
+    display: grid;
+    grid-template-columns: 50px 200px;
+    width: fit-content;
+    margin: auto;
+}
+
+.team_prospectPoolElement{
+    text-align: center;
 }
 
 /* teamChoice.js */

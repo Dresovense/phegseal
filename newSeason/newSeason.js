@@ -95,6 +95,16 @@ wildCardsPerConference.min = "0";
 wildCardsPerConference.className = "scheduleChoice";
 document.body.appendChild(wildCardsPerConference);
 
+let divNumberOfPlayoffMatches = document.createElement("div");
+divNumberOfPlayoffMatches.className = "scheduleChoice";
+divNumberOfPlayoffMatches.innerText = "Number of matches during the playoffs";
+document.body.appendChild(divNumberOfPlayoffMatches);
+let numberOfPlayoffMatches = document.createElement("input");
+numberOfPlayoffMatches.type = "number";
+numberOfPlayoffMatches.min = "3";
+numberOfPlayoffMatches.className = "scheduleChoice";
+document.body.appendChild(numberOfPlayoffMatches);
+
 let divplayOffOrganisation = document.createElement("div");
 divplayOffOrganisation.className = "scheduleChoice";
 divplayOffOrganisation.innerText = "Playoff Seeding:";
@@ -203,17 +213,6 @@ for(let i = 0; i < gameData.teams.length; i++){
         }
     }
     team.addEventListener("click", () => {
-        /* if(!teamList.includes(i)){
-            teamList.push(i);
-            team.style.backgroundColor = "lightblue";
-        }
-        else{
-            const index = teamList.indexOf(i);
-            if (index > -1){
-                teamList.splice(index, 1);
-                team.style.backgroundColor = "white";
-            }
-        } */
         if(teamList[0].includes(i)){
             const index = teamList[0].indexOf(i);
             if(index > -1){
@@ -1850,7 +1849,7 @@ let newSeason = {
     trade:[]
 };
 
-function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConference, divisionRounds, conferenceRounds, interConferenceRounds, postSeasonRounds){
+function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConference, divisionRounds, conferenceRounds, interConferenceRounds){
     allTeams = [];
     for(let i = 1; i < teamList.length; i++){
         for(let j = 0; j < teamList[1].length; j++){
@@ -1928,6 +1927,7 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
     newSeason.postSeasonSchedule.rules.teamsQualifiedPerDivision = teamsQualifiedPerDivision.value;
     newSeason.postSeasonSchedule.rules.wildCardsPerConference = wildCardsPerConference.value;
     newSeason.postSeasonSchedule.rules.playOffOrganisation = select.value;
+    newSeason.postSeasonSchedule.rules.numberOfPlayoffMatches = numberOfPlayoffMatches.value;
 
     let teamsInPlayOffPerConference = postSeasonTeamsChoice.value / conferencesNumber.value;
     let postSeasonConferenceRounds = Math.log2(teamsInPlayOffPerConference);
@@ -1945,7 +1945,7 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
                     "loser": "",
                     "completed": "no"
                 }
-                for(let k = 0; k < 3; k++){
+                for(let k = 0; k < numberOfPlayoffMatches.value; k++){
                     let matches = {
                         "team1Id": "",
                         "team2Id": "",
@@ -2013,7 +2013,7 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
                     "loser": "",
                     "completed": "no"
                 }
-                for(let k = 0; k < 3; k++){
+                for(let k = 0; k < numberOfPlayoffMatches.value; k++){
                     let matches = {
                         "team1Id": "",
                         "team2Id": "",
@@ -2030,6 +2030,8 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
         }
         newSeason.postSeasonSchedule.finals = finalsSchedule;
     }
+
+
     //teams
     let conferencesName = document.getElementsByClassName("conference");
     let divisionName = document.getElementsByClassName("division");
@@ -2311,7 +2313,7 @@ function createDraftClass(){
             return console.log(err);
           }
       }));
-      
+
     let draftClass = [];
 
     //joueurs disponibles dans la draft class

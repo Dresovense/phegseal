@@ -470,10 +470,48 @@ document.body.appendChild(otherInfoFlex);
         matchesContainers.appendChild(selectTeamButtonNext)
 
 
-    //franchise records
-    let records = document.createElement("div");
-    records.className = "team_records";
-    otherInfoFlex.appendChild(records);
+    //previous draft
+    let previousDrafts = document.createElement("div");
+    previousDrafts.className = "team_drafts";
+    otherInfoFlex.appendChild(previousDrafts);
+
+    let draftInfo = document.createElement("div");
+    draftInfo.className = "team_draftInfo"
+    previousDrafts.appendChild(draftInfo)
+    
+    let season = gameData.seasons.length - 1;
+    previousDraft(team, season, draftInfo);
+    
+    let previousSeason = document.createElement("button");
+    previousSeason.innerText = "Previous Season";
+    previousDrafts.appendChild(previousSeason);
+    previousSeason.addEventListener("click", () => {
+        season--;
+        if(season < 19 || season < gameData.teams[team].date){
+            season++;
+        }
+        previousDraft(team, season, draftInfo)
+    });
+
+    let nextSeason = document.createElement("button");
+    nextSeason.innerText = "Next Season";
+    previousDrafts.appendChild(nextSeason);
+    nextSeason.addEventListener("click", () => {
+        season++;
+        if(season > gameData.seasons.length - 1){
+            season--;
+        }
+        previousDraft(team, season, draftInfo);
+    })
+
+    //prospect pool
+    let prospectPoolContainer = document.createElement("div");
+    prospectPoolContainer.className = "team_prospectPoolContainer";
+    otherInfoFlex.appendChild(prospectPoolContainer);
+
+    prospectPool(team, prospectPoolContainer)
+
+    
 
 
 function lastFiveMatches(teamId){
@@ -744,6 +782,144 @@ function printNextMatches(matchesNodes, container){
                 name2.style.backgroundColor = "lightgray";
                 logo2.style.backgroundColor = "lightgray"; */
                 previousMatchesContainers.style.backgroundColor = "lightgray"
+            }
+        }
+    }
+}
+
+function previousDraft(team, season, container){
+    container.innerHTML = "";
+
+    let previousDraftTitle = document.createElement("div");
+    previousDraftTitle.className = "team_teamTitle";
+    previousDraftTitle.innerText = `${gameData.teams[team].name}' ${gameData.seasons[season].endDate} draft`;
+    container.appendChild(previousDraftTitle)
+
+    let draftClass = document.createElement("div");
+    draftClass.className = "team_draftClass";
+    container.appendChild(draftClass);
+
+    let background = true;
+    for(let i = -1; i < gameData.seasons[season].draft.picks.length; i++){
+        if(i == -1){
+            let draftRound = document.createElement("div");
+            draftRound.className = "team_draftedPlayer";
+            draftRound.innerText = "Round";
+            draftClass.appendChild(draftRound);
+
+            let draftOverallPick = document.createElement("div");
+            draftOverallPick.className = "team_draftedPlayer";
+            draftOverallPick.innerText = "Pick";
+            draftClass.appendChild(draftOverallPick);
+
+            let draftPlayer = document.createElement("div");
+            draftPlayer.className = "team_draftedPlayer";
+            draftPlayer.innerText = "Player Name";
+            draftClass.appendChild(draftPlayer);
+
+            let draftPotential = document.createElement("div");
+            draftPotential.className = "team_draftedPlayer";
+            draftPotential.innerText = "Pot";
+            draftClass.appendChild(draftPotential);
+        }
+        else{
+            if(gameData.seasons[season].draft.picks[i].team == team){
+                let draftRound = document.createElement("div");
+                draftRound.className = "team_draftedPlayer";
+                draftRound.innerText = `${Math.ceil((i + 1) / gameData.seasons[season].teams.allTeams.length)}`;
+                draftClass.appendChild(draftRound);
+
+                let draftOverallPick = document.createElement("div");
+                draftOverallPick.className = "team_draftedPlayer";
+                draftOverallPick.innerText = `#${i + 1}`;
+                draftClass.appendChild(draftOverallPick);
+
+                let draftPlayer = document.createElement("div");
+                draftPlayer.className = "team_draftedPlayer";
+                draftPlayer.innerText = gameData.seasons[season].draft.picks[i].player;
+                draftClass.appendChild(draftPlayer);
+
+                let draftPotential = document.createElement("div");
+                draftPotential.className = "team_draftedPlayer";
+                draftPotential.innerText = gameData.seasons[season].draft.picks[i].potential;
+                draftClass.appendChild(draftPotential);
+
+                if(background == true){
+                    draftRound.style.backgroundColor = "lightgray";
+                    draftOverallPick.style.backgroundColor = "lightgray";
+                    draftPlayer.style.backgroundColor = "lightgray";
+                    draftPotential.style.backgroundColor = "lightgray";
+                    background = false;
+                }
+                else{
+                    background = true;
+                }
+            }
+            
+        }
+    }
+    if(gameData.seasons[season].draft.picks.length == 0){
+        let noDraft = document.createElement("div");
+        noDraft.innerText = "The draft hasn't happenned yet";
+        noDraft.className = "team_noDraft";
+        container.appendChild(noDraft);
+    }
+}
+
+function prospectPool(team, container){
+    let prospectPoolName = document.createElement("div");
+    prospectPoolName.innerText = "Prospect Pool";
+    prospectPoolName.className = "team_teamTitle";
+    container.appendChild(prospectPoolName);
+
+    let prospectPoolGrid = document.createElement("div");
+    prospectPoolGrid.className = "team_prospectPoolGrid";
+    container.appendChild(prospectPoolGrid);
+
+    for(let i = -1; i < 5; i++){
+        if(i == -1){
+            let prospectYear = document.createElement("div");
+            prospectYear.innerText = "Year";
+            prospectYear.className = "team_prospectPoolElement"
+            prospectPoolGrid.appendChild(prospectYear);
+
+            let prospectStrength = document.createElement("div");
+            prospectStrength.innerText = "Strength of Prospect Class";
+            prospectStrength.className = "team_prospectPoolElement"
+            prospectPoolGrid.appendChild(prospectStrength);
+        }
+        else{
+            let prospectYear = document.createElement("div");
+            prospectYear.innerText = gameData.seasons[season].endDate + i;
+            prospectYear.className = "team_prospectPoolElement"
+            prospectPoolGrid.appendChild(prospectYear);
+
+            let prospectStrength = document.createElement("div");
+            prospectStrength.className = "team_prospectPoolElement"
+            prospectPoolGrid.appendChild(prospectStrength);
+
+            if(gameData.teams[team].projectedPowerNextSeasons[i] < 100){
+                prospectStrength.innerText = "Abysmal";
+            }
+            else if(gameData.teams[team].projectedPowerNextSeasons[i] < 250){
+                prospectStrength.innerText = "Bad";
+            }
+            else if(gameData.teams[team].projectedPowerNextSeasons[i] < 400){
+                prospectStrength.innerText = "Medium";
+            }
+            else if(gameData.teams[team].projectedPowerNextSeasons[i] < 600){
+                prospectStrength.innerText = "Good";
+            }
+            else if(gameData.teams[team].projectedPowerNextSeasons[i] < 800){
+                prospectStrength.innerText = "Great";
+            }
+            else{
+                prospectStrength.innerText = "Amazing";
+            }
+
+            if(i % 2 == 0){
+                prospectStrength.style.backgroundColor = "lightgray";
+                prospectYear.style.backgroundColor = "lightgray";
             }
         }
     }

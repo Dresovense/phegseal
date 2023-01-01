@@ -30,6 +30,6 @@ make divisional playoff (like nhl)
 
 Rework season choice page
 
-Prospect pool for each team, team's previous draft choices
+Draft Lottery (choice)
 
-Expand the playoffs (let the player choose)
+Redo projections every few rounds

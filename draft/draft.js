@@ -341,6 +341,7 @@ function draftRound(round, container){
             let teamName = document.createElement("div");
             teamName.className = "draftGridSquare";
             teamName.id = "name";
+            console.log(draft[round][i])
             teamName.innerText = gameData.teams[draft[round][i]].name;
             draftGrid.appendChild(teamName);
             //logo of team
@@ -427,7 +428,7 @@ function endDraft(){
         gameData.teams[i].projectedPowerNextSeasons.push(0);
         //change of potential in the next seasons
         for(let j = 0; j < 7; j++){
-            let dropPotential = randn_bm() * 80 - 28;
+            let dropPotential = randn_bm() * 90 - 28;
             gameData.teams[i].projectedPowerNextSeasons[j] -= dropPotential;
         }
     }
@@ -462,6 +463,7 @@ nextRound.addEventListener("click", () => {
     if(gameData.seasons[season].draft.currentRound != 6){
         draftDiv.innerHTML = "";
         gameData.seasons[season].draft.currentRound++;
+        console.log(gameData.seasons[season].draft.currentRound)
         draftRound(gameData.seasons[season].draft.currentRound, draftDiv);
     }
 });

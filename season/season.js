@@ -12,7 +12,7 @@ document.body.appendChild(gameContents);
 
 let seasonContainer = document.createElement("div");
 seasonContainer.className = "season_seasonContainer";
-gameContents.appendChild(seasonContainer);
+gameContents.appendChild(seasonContainer);  
 
 let homeAwayFactor = "All";
 let endDate = gameData.seasons[season].endDate;
@@ -2165,10 +2165,6 @@ function printStandingsAway(teams){
 function layOutPostSeason(gameData, season){
     //seeding
     let teamsPlayOffBound2 = teamsPlayOffBound(gameData, season, gameData.seasons[season].schedule.length - 1);
-    /* let numberOfTeamsToPop = teamsPlayOffBound2.length / 2;
-    for(let i = 0; i < numberOfTeamsToPop; i++){
-        teamsPlayOffBound2.pop();
-    } */
     gameData.seasons[season].postSeasonSchedule.seeds = teamsPlayOffBound2;
     let teamChoice = [];
     for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.seeds.length; i++){
@@ -2218,8 +2214,8 @@ function layOutPostSeason(gameData, season){
                 }
             }
             for(let j = 0; j < teamsInPlayoffsPerConference / 2; j++){
-                for(let k = 0; k < 3; k++){
-                    if(k != 1){
+                for(let k = 0; k < gameData.seasons[season].postSeasonSchedule.rules.numberOfPlayoffMatches; k++){
+                    if(k % 2 == 0){
                         gameData.seasons[season].postSeasonSchedule.conference[i][0].matchups[j].games[k].team1Id = seedingConference[j];
                         gameData.seasons[season].postSeasonSchedule.conference[i][0].matchups[j].games[k].team2Id = seedingConference[teamsInPlayoffsPerConference - 1 -j];
                     }
@@ -3205,7 +3201,6 @@ function gamesPostSeason (gameData, season, round){
             for(let l = 0; l < gameData.seasons[season].postSeasonSchedule.conference.length; l++){
                 let teams = gameData.teams;
                 
-                //for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.conference[l][0].matchups.length; i++){
                     let matchupdiv = document.createElement("div");
                     gamesDiv.appendChild(matchupdiv);
                     let conferenceMatchups = gameData.seasons[season].postSeasonSchedule.conference[l][round].matchups;
@@ -3333,7 +3328,7 @@ function gamesPostSeason (gameData, season, round){
                                             //confirm who won and check if the matchup has ended
                                             let team1Wins = 0;
                                             let team2Wins = 0;
-                                            for(let k = 0; k < 3; k++){
+                                            for(let k = 0; k < gameData.seasons[season].postSeasonSchedule.rules.numberOfPlayoffMatches; k++){
                                                 if(k % 2 == 0){
                                                     if(conferenceMatchups[i].games[k].team1Goals > conferenceMatchups[i].games[k].team2Goals){
                                                         team1Wins++;
@@ -3367,21 +3362,17 @@ function gamesPostSeason (gameData, season, round){
                                                     }
                                                 }
                                             }
-                                            if(team1Wins >= 2){
+                                            if(team1Wins >= Math.ceil(gameData.seasons[season].postSeasonSchedule.rules.numberOfPlayoffMatches / 2)){
                                                 conferenceMatchups[i].completed = "yes";
                                                 conferenceMatchups[i].loser = `${conferenceMatchups[i].games[0].team2Id}`;
                                                 conferenceMatchups[i].winner = `${conferenceMatchups[i].games[0].team1Id}`;
-                                                //if(round != gameData.seasons[season].postSeasonSchedule.conference[l].length - 1){
-                                                    gameData.seasons[season].postSeasonSchedule.seeds.splice(gameData.seasons[season].postSeasonSchedule.seeds.indexOf(conferenceMatchups[i].loser), 1);
-                                                // }
+                                                gameData.seasons[season].postSeasonSchedule.seeds.splice(gameData.seasons[season].postSeasonSchedule.seeds.indexOf(conferenceMatchups[i].loser), 1);
                                             }
-                                            else if(team2Wins >= 2){
+                                            else if(team2Wins >= Math.ceil(gameData.seasons[season].postSeasonSchedule.rules.numberOfPlayoffMatches / 2)){
                                                 conferenceMatchups[i].completed = "yes";
                                                 conferenceMatchups[i].loser = `${conferenceMatchups[i].games[0].team1Id}`;
                                                 conferenceMatchups[i].winner = `${conferenceMatchups[i].games[0].team2Id}`;
-                                                //if(round != gameData.seasons[season].postSeasonSchedule.conference[l].length - 1){
-                                                    gameData.seasons[season].postSeasonSchedule.seeds.splice(gameData.seasons[season].postSeasonSchedule.seeds.indexOf(conferenceMatchups[i].loser), 1);
-                                                //}
+                                                gameData.seasons[season].postSeasonSchedule.seeds.splice(gameData.seasons[season].postSeasonSchedule.seeds.indexOf(conferenceMatchups[i].loser), 1);
                                             }
                                             //check if all rounds are finished      
                                             let allRoundsFinished = 0
@@ -3407,8 +3398,8 @@ function gamesPostSeason (gameData, season, round){
                                                             }
                                                         });
                                                         for(let b = 0; b < gameData.seasons[season].postSeasonSchedule.conference[c][round + 1].matchups.length; b++){
-                                                            for(let j = 0; j < 3; j++){
-                                                                if(j != 1){
+                                                            for(let j = 0; j < gameData.seasons[season].postSeasonSchedule.rules.numberOfPlayoffMatches; j++){
+                                                                if(j % 2 == 0){
                                                                     gameData.seasons[season].postSeasonSchedule.conference[c][round + 1].matchups[b].games[j].team1Id = teamSeeds[b];
                                                                     gameData.seasons[season].postSeasonSchedule.conference[c][round + 1].matchups[b].games[j].team2Id = teamSeeds[teamSeeds.length - 1 - b];
                                                                 }
@@ -3427,8 +3418,8 @@ function gamesPostSeason (gameData, season, round){
                                                     for(let a = 0; a < gameData.seasons[season].postSeasonSchedule.finals.length; a++){
                                                         for(let b = 0; b < gameData.seasons[season].postSeasonSchedule.finals[a].matchups.length; b++){
                                                             let teamSeeds = gameData.seasons[season].postSeasonSchedule.seeds;
-                                                            for(let j = 0; j < 3; j++){
-                                                                if(j != 1){
+                                                            for(let j = 0; j < gameData.seasons[season].postSeasonSchedule.rules.numberOfPlayoffMatches; j++){
+                                                                if(j % 2 == 0){
                                                                     gameData.seasons[season].postSeasonSchedule.finals[a].matchups[b].games[j].team1Id = teamSeeds[b];
                                                                     gameData.seasons[season].postSeasonSchedule.finals[a].matchups[b].games[j].team2Id = teamSeeds[teamSeeds.length - 1 - b];
                                                                 }
@@ -3584,7 +3575,6 @@ function gamesPostSeason (gameData, season, round){
         }
         else{
             let teams = gameData.teams;
-            //for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.conference[l][0].matchups.length; i++){
                 let matchupdiv = document.createElement("div");
                 round = round - gameData.seasons[season].postSeasonSchedule.conference[0].length;
                 gamesDiv.appendChild(matchupdiv);
@@ -3712,7 +3702,7 @@ function gamesPostSeason (gameData, season, round){
                                     //confirm who won and check if the matchup has ended
                                     let team1Wins = 0;
                                     let team2Wins = 0;
-                                    for(let k = 0; k < 3; k++){
+                                    for(let k = 0; k < gameData.seasons[season].postSeasonSchedule.rules.numberOfPlayoffMatches; k++){
                                         if(k % 2 == 0){
                                             if(finalMatchups[round].games[k].team1Goals > finalMatchups[round].games[k].team2Goals){
                                                 team1Wins++;
@@ -3746,21 +3736,17 @@ function gamesPostSeason (gameData, season, round){
                                             }
                                         }
                                     }
-                                    if(team1Wins >= 2){
+                                    if(team1Wins >= Math.ceil(gameData.seasons[season].postSeasonSchedule.rules.numberOfPlayoffMatches / 2)){
                                         finalMatchups[round].completed = "yes";
                                         finalMatchups[round].loser = `${finalMatchups[round].games[0].team2Id}`;
                                         finalMatchups[round].winner = `${finalMatchups[round].games[0].team1Id}`;
-                                        //if(round != gameData.seasons[season].postSeasonSchedule.conference[l].length - 1){
-                                            gameData.seasons[season].postSeasonSchedule.seeds.splice(gameData.seasons[season].postSeasonSchedule.seeds.indexOf(finalMatchups[round].loser), 1);
-                                        // }
+                                        gameData.seasons[season].postSeasonSchedule.seeds.splice(gameData.seasons[season].postSeasonSchedule.seeds.indexOf(finalMatchups[round].loser), 1);
                                     }
-                                    else if(team2Wins >= 2){
+                                    else if(team2Wins >= Math.ceil(gameData.seasons[season].postSeasonSchedule.rules.numberOfPlayoffMatches / 2)){
                                         finalMatchups[round].completed = "yes";
                                         finalMatchups[round].loser = `${finalMatchups[round].games[0].team1Id}`;
                                         finalMatchups[round].winner = `${finalMatchups[round].games[0].team2Id}`;
-                                        //if(round != gameData.seasons[season].postSeasonSchedule.conference[l].length - 1){
-                                            gameData.seasons[season].postSeasonSchedule.seeds.splice(gameData.seasons[season].postSeasonSchedule.seeds.indexOf(finalMatchups[round].loser), 1);
-                                        //}
+                                        gameData.seasons[season].postSeasonSchedule.seeds.splice(gameData.seasons[season].postSeasonSchedule.seeds.indexOf(finalMatchups[round].loser), 1);
                                     }
                                     //check if all rounds are finished      
                                     let allRoundsFinished = 0
@@ -3772,12 +3758,11 @@ function gamesPostSeason (gameData, season, round){
                                     if(allRoundsFinished == finalMatchups.length){ 
                                         gameData.seasons[season].postSeasonSchedule.finals[round].completed = "yes";
                                         //finals
-                                        //for(let a = 0; a < gameData.seasons[season].postSeasonSchedule.finals.length; a++){
                                         if(round < gameData.seasons[season].postSeasonSchedule.finals.length - 1){
                                             for(let b = 0; b < gameData.seasons[season].postSeasonSchedule.finals[round + 1].matchups.length; b++){
                                                 let teamSeeds = gameData.seasons[season].postSeasonSchedule.seeds;
-                                                for(let j = 0; j < 3; j++){
-                                                    if(j != 1){
+                                                for(let j = 0; j < gameData.seasons[season].postSeasonSchedule.rules.numberOfPlayoffMatches; j++){
+                                                    if(j % 2 == 0){
                                                         gameData.seasons[season].postSeasonSchedule.finals[round + 1].matchups[b].games[j].team1Id = teamSeeds[b];
                                                         gameData.seasons[season].postSeasonSchedule.finals[round + 1].matchups[b].games[j].team2Id = teamSeeds[teamSeeds.length - 1 - b];
                                                     }
