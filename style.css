@@ -431,6 +431,14 @@ h3{
     text-align: center;
 }
 
+.team_teamLogoPicks{
+    max-height: 20px;
+}
+
+.team_roundPicks{
+    display: inline-flex;
+}
+
 /* teamChoice.js */
 
 .teamChoice_team{

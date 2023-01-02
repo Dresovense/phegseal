@@ -504,15 +504,48 @@ document.body.appendChild(otherInfoFlex);
         previousDraft(team, season, draftInfo);
     })
 
+    //teams's picks per year
+    let teamsPicksPerYearContainer = document.createElement("div");
+    teamsPicksPerYearContainer.className = "team_prospectPoolContainer";
+    otherInfoFlex.appendChild(teamsPicksPerYearContainer);
+
+    let picksInfo = document.createElement("div");
+    picksInfo.className = "team_draftInfo"
+    teamsPicksPerYearContainer.appendChild(picksInfo)
+    
+    let seasonPicks = 0;
+    picksPerYear(team, seasonPicks, picksInfo);
+    
+    let previousSeasonPicks = document.createElement("button");
+    previousSeasonPicks.innerText = "Previous Season";
+    teamsPicksPerYearContainer.appendChild(previousSeasonPicks);
+    previousSeasonPicks.addEventListener("click", () => {
+        seasonPicks--;
+        if(seasonPicks < 0){
+            seasonPicks++;
+        }
+        picksPerYear(team, seasonPicks, picksInfo);
+    });
+
+    let nextSeasonPicks = document.createElement("button");
+    nextSeasonPicks.innerText = "Next Season";
+    teamsPicksPerYearContainer.appendChild(nextSeasonPicks);
+    nextSeasonPicks.addEventListener("click", () => {
+        seasonPicks++;
+        if(seasonPicks > 2){
+            seasonPicks--;
+        }
+        picksPerYear(team, seasonPicks, picksInfo);
+    })
+
     //prospect pool
     let prospectPoolContainer = document.createElement("div");
     prospectPoolContainer.className = "team_prospectPoolContainer";
     otherInfoFlex.appendChild(prospectPoolContainer);
 
     prospectPool(team, prospectPoolContainer)
-
     
-
+    
 
 function lastFiveMatches(teamId){
     let matchesNodes = [];
@@ -920,6 +953,39 @@ function prospectPool(team, container){
             if(i % 2 == 0){
                 prospectStrength.style.backgroundColor = "lightgray";
                 prospectYear.style.backgroundColor = "lightgray";
+            }
+        }
+    }
+}
+
+function picksPerYear(team, season, container){
+    container.innerHTML = "";
+
+    let previousDraftTitle = document.createElement("div");
+    previousDraftTitle.className = "team_teamTitle";
+    previousDraftTitle.innerText = `${gameData.teams[team].name}' picks for the ${gameData.seasons[gameData.seasons.length - 1].endDate + season} draft`;
+    container.appendChild(previousDraftTitle);
+
+    let picksPerYearContainer = document.createElement("div");
+    picksPerYearContainer.className = "team_picksPerYearContainer";
+    container.appendChild(picksPerYearContainer);
+
+    for(let i = 0; i < 7; i++){ //round
+        let roundPicksTitle = document.createElement("div");
+        roundPicksTitle.innerText = `${i + 1} round:`;
+        roundPicksTitle.className = "team_roundPicksTitle";
+        picksPerYearContainer.appendChild(roundPicksTitle);
+
+        let roundPicks = document.createElement("div");
+        roundPicks.className = "team_roundPicks";
+        picksPerYearContainer.appendChild(roundPicks);
+
+        for(let j = 0; j < gameData.teams.length; j++){ //teams
+            if(gameData.teams[j].ownerOfTeamPicks[season][i] == team){
+                let teamLogo = document.createElement("img");
+                teamLogo.className = "team_teamLogoPicks";
+                teamLogo.src = ".." + gameData.teams[j].logo + ".png"
+                picksPerYearContainer.appendChild(teamLogo);
             }
         }
     }

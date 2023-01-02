@@ -50,7 +50,7 @@ module.exports = {
         let randomBuyer;
         let randomSeller;
         if(buyers.length > 0 && sellers.length > 0){
-            let chanceOfTrade = Math.floor(Math.random() * numberOfTeams * 2);
+            let chanceOfTrade = Math.floor(Math.random() * numberOfTeams * 1.5);
             if(chanceOfTrade == 0){
                 randomBuyer = buyers[Math.floor(Math.random() * buyers.length)];
                 randomSeller = sellers[Math.floor(Math.random() * sellers.length)];
