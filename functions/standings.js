@@ -370,6 +370,62 @@ module.exports = {
         }
         
         return teamListPlayOffBound;
+    },
+    regularSeasonPredictions: function(gameData, round){
+        let predictions = {
+            "win": [],
+            "lose": [],
+            "standings": [],
+            "playoffs": [],
+            "round": round
+        }
+    
+        let team_predictions_win = []
+        let team_predictions_lose = []
+        let team_predictions_playoffs = []
+        let team_predictions_standings = []
+        for(let i = 0; i < gameData.seasons[gameData.seasons.length - 1].teams.allTeams.length; i++){
+            team_predictions_win.push(0);
+            team_predictions_lose.push(0);
+            team_predictions_playoffs.push(0);
+            team_predictions_standings.push(0);
+        }
+        for(let i = 0; i < 500; i++){
+            let gameDataTest = JSON.parse(JSON.stringify(gameData));
+            for(let j = round; j < gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule.length; j++){
+                for(k = 0; k < gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games.length; k++){
+                    result = dice.diceRoll(gameData.teams[gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games[k].team1Id].power + gameData.teams[gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games[k].team1Id].tradePower, gameData.teams[gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games[k].team2Id].power + gameData.teams[gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games[k].team2Id].tradePower)
+                    gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games[k].team1Goals = result[0];
+                    gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games[k].team2Goals = result[1];
+                }
+            }
+            let teamChoice = gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.allTeams;
+            let teams = this.standings(gameDataTest, teamChoice, gameDataTest.seasons.length - 1, gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule.length - 1, "Pts");
+            let conferences = []
+            for(let j = 0; j < gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.conference.length; j++){
+                conferences.push(0);
+            }
+            for(let j = 0; j < teams.length; j++){
+                team_predictions_standings[teams[j].id] += teams.length - j;
+                for(k = 0; k < conferences.length; k++){
+                    if(conferences[k] < gameDataTest.seasons[gameDataTest.seasons.length - 1].postSeasonSchedule.rules.teamsQualifiedPerDivision){
+                        for(let l = 0; l < gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.conference[k].teamsInConference.length; l++){
+                            if(teams[j].id == gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.conference[k].teamsInConference[l].id){
+                                conferences[k] += 1
+                                team_predictions_playoffs[teams[j].id] += 1;
+                            }
+                        }
+                    }
+                }
+            }
+            team_predictions_win[teams[0].id] += 1;
+            team_predictions_lose[teams[teams.length - 1].id] += 1;
+        }
+        predictions.win = team_predictions_win;
+        predictions.lose = team_predictions_lose;
+        predictions.playoffs = team_predictions_playoffs;
+        predictions.standings = team_predictions_standings;
+        return predictions
     }
 }
 

@@ -105,6 +105,34 @@ numberOfPlayoffMatches.min = "3";
 numberOfPlayoffMatches.className = "scheduleChoice";
 document.body.appendChild(numberOfPlayoffMatches);
 
+let divDraftLottery = document.createElement("div");
+divDraftLottery.className = "scheduleChoice";
+divDraftLottery.innerText = "Draft Lottery:";
+document.body.appendChild(divDraftLottery);
+let selectDraftLottery = document.createElement("select");
+selectDraftLottery.className = "scheduleChoice";
+document.body.appendChild(selectDraftLottery);
+let draftLotteryYes = document.createElement("option");
+draftLotteryYes.innerText = "Yes";
+draftLotteryYes.value = true;
+draftLotteryYes.className = "scheduleChoice";
+selectDraftLottery.appendChild(draftLotteryYes);
+let draftLotteryNo = document.createElement("option");
+draftLotteryNo.innerText = "No";
+draftLotteryNo.value = false;
+draftLotteryNo.className = "scheduleChoice";
+selectDraftLottery.appendChild(draftLotteryNo);
+
+let divLotterySpots = document.createElement("div");
+divLotterySpots.className = "scheduleChoice";
+divLotterySpots.innerText = "Number of spots determined by the lottery:";
+document.body.appendChild(divLotterySpots);
+let lotterySpots = document.createElement("input");
+lotterySpots.type = "number";
+lotterySpots.min = "0";
+lotterySpots.className = "scheduleChoice";
+document.body.appendChild(lotterySpots);
+
 let divplayOffOrganisation = document.createElement("div");
 divplayOffOrganisation.className = "scheduleChoice";
 divplayOffOrganisation.innerText = "Playoff Seeding:";
@@ -269,7 +297,7 @@ confirmChoicebutton.addEventListener("click", () => {
         createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConference, divisionRounds, conferenceRounds, interConferenceRounds);   //changer endroit ou c'est fait
         newSeason.postSeasonSchedule.rules.numberOfMatchesPerTeam = numberOfGamesPerTeam(newSeason);
         gameData.seasons.push(newSeason);
-        gameData = regularSeasonPrediction(gameData);
+        gameData.seasons[gameData.seasons.length - 1].predictions.push(regularSeasonPrediction(gameData, 0));
         gameData = updateTradeWillingness(gameData);
         //save data + go to season
         fs.writeFile('saves/data.json', JSON.stringify(gameData, null, 4), function(err) {
@@ -318,7 +346,9 @@ let newSeason = {
             "teamsQualifiedPerDivision": "",
             "wildCardsPerConference": "",
             "playOffOrganisation": "",
-            "numberOfMatchesPerTeam": ""
+            "numberOfMatchesPerTeam": "",
+            "draftLottery": "",
+            "draftLotteryNumberOfSpots": ""
         },
         "conference": [],
         "finals": [],
@@ -1838,14 +1868,10 @@ let newSeason = {
         "picks": [],
         "currentRound": 0,
         "currentPick": 0,
-        "draftClass": []
+        "draftClass": [],
+        "draftLottery": []
     },
-    "predictions":{
-        "win": [],
-        "lose": [],
-        "standings": [],
-        "playoffs": []
-    },
+    "predictions":[],
     trade:[]
 };
 
@@ -1920,6 +1946,9 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
     console.log(newSeason);
 
     newSeason.schedule = shuffleArray(newSeason.schedule);
+
+    newSeason.postSeasonSchedule.rules.draftLottery = selectDraftLottery.value;
+    newSeason.postSeasonSchedule.rules.draftLotteryNumberOfSpots = lotterySpots.value;
 
     //post-season       A CHANGER¨!!!!!!!
 
@@ -2070,7 +2099,7 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
         newSeason.teams.conference.push(conference);
     }
     //draftClass
-    newSeason.draft.draftClass = createDraftClass();
+    newSeason.draft.draftClass = createDraftClass(allTeams.length);
 }
 
 function roundRobin (teamList, numberRounds){
@@ -2232,7 +2261,15 @@ function numberOfGamesPerTeam(newSeason){
     return numberOfMatches
 }
 
-function regularSeasonPrediction(gameData){
+function regularSeasonPrediction(gameData, round){
+    let predictions = {
+        "win": [],
+        "lose": [],
+        "standings": [],
+        "playoffs": [],
+        "round": round
+    }
+
     let team_predictions_win = []
     let team_predictions_lose = []
     let team_predictions_playoffs = []
@@ -2243,9 +2280,9 @@ function regularSeasonPrediction(gameData){
         team_predictions_playoffs.push(0);
         team_predictions_standings.push(0);
     }
-    for(let i = 0; i < 1000; i++){
+    for(let i = 0; i < 500; i++){
         let gameDataTest = JSON.parse(JSON.stringify(gameData));
-        for(let j = 0; j < gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule.length; j++){
+        for(let j = round; j < gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule.length; j++){
             for(k = 0; k < gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games.length; k++){
                 result = dice.diceRoll(gameData.teams[gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games[k].team1Id].power,gameData.teams[gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games[k].team2Id].power)
                 gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games[k].team1Goals = result[0];
@@ -2274,11 +2311,11 @@ function regularSeasonPrediction(gameData){
         team_predictions_win[teams[0].id] += 1;
         team_predictions_lose[teams[teams.length - 1].id] += 1;
     }
-    gameData.seasons[gameData.seasons.length - 1].predictions.win = team_predictions_win;
-    gameData.seasons[gameData.seasons.length - 1].predictions.lose = team_predictions_lose;
-    gameData.seasons[gameData.seasons.length - 1].predictions.playoffs = team_predictions_playoffs;
-    gameData.seasons[gameData.seasons.length - 1].predictions.standings = team_predictions_standings;
-    return gameData
+    predictions.win = team_predictions_win;
+    predictions.lose = team_predictions_lose;
+    predictions.playoffs = team_predictions_playoffs;
+    predictions.standings = team_predictions_standings;
+    return predictions
 }
 
 function updateTradeWillingness(gameData){
@@ -2302,7 +2339,7 @@ function updateTradeWillingness(gameData){
     return gameData;
 }
 
-function createDraftClass(){
+function createDraftClass(teams){
     let firstName = JSON.parse(fs.readFileSync('nameDb/firstName.json', "utf-8", function (err,data) {
         if (err) {
           return console.log(err);
@@ -2317,9 +2354,12 @@ function createDraftClass(){
     let draftClass = [];
 
     //joueurs disponibles dans la draft class
-    for(let i = 0; i < 2000; i++){
-        let potential = Math.ceil(Math.pow(randn_bm() + 0.155, 1.75) * 100);
+    for(let i = 0; i < 10000; i++){
+        let potential = Math.ceil(Math.pow(randn_bm(), 2.60) * 140);
         let developpmentYears = Math.floor(randn_bm() * 8);
+        if(potential < 30){
+            potential = 30;
+        }
         let randomName = firstName.data[Math.floor(Math.random() * firstName.data.length)] + " " + lastName.data[Math.floor(Math.random() * lastName.data.length)];
         draftClass.push({
             potential: potential,
@@ -2327,7 +2367,7 @@ function createDraftClass(){
             name: randomName
         });
     }
-    
+
     draftClass.sort(function(left,right){
         if(left.potential > right.potential){
             return -1;
@@ -2344,12 +2384,26 @@ function createDraftClass(){
             }
         }
     })
-    
-    for(let i = 0; i < 50; i++){
+
+    for(let i = 0; i < 30; i++){
         let random_player = draftClass.splice(Math.floor(Math.random() * 150), 1);
         let random_place = Math.floor(Math.random() * 150);
         draftClass.splice(random_place, 0, random_player[0]);
     }
+
+    for(let i = 0; i < 200; i++){
+        let random_player = draftClass.splice(Math.floor(Math.random() * 250) + 30, 1);
+        let random_place = Math.floor(Math.random() * 250) + 30;
+        draftClass.splice(random_place, 0, random_player[0]);
+    }
+
+    for(let i = 0; i < 200; i++){
+        let random_player = draftClass.splice(Math.floor(Math.random() * 10000) + 50, 1);
+        let random_place = Math.floor(Math.random() * 10000) + 50;
+        draftClass.splice(random_place, 0, random_player[0]);
+    }
+
+    draftClass.length = teams * 7;
 
     return draftClass;
 }

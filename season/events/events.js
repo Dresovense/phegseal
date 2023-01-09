@@ -137,7 +137,7 @@ module.exports = {
                 gameData.teams[fromTeam].ownerOfTeamPicks[year][pick] = randomSeller;
             }
             //change power:
-            gameData.teams[randomBuyer].power += powerToBeEchanged;
+            gameData.teams[randomBuyer].tradePower += powerToBeEchanged;
             gameData.teams[randomSeller].power -= powerToBeEchanged;
             for(let i = 0; i < gameData.seasons[season].teams.allTeams.length; i++){
                 if(gameData.seasons[season].teams.allTeams[i].id == randomBuyer){

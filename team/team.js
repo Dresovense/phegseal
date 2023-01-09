@@ -25,7 +25,12 @@ document.body.appendChild(teamLogo);
     teamDate0.className = "team_teamInfosSquare";
     teamInfos.appendChild(teamDate0);
     let teamDate1 = document.createElement("div");
-    teamDate1.innerText = gameData.seasons[gameData.teams[team].date].date;
+    if(gameData.teams[team].date >= gameData.seasons.length){
+        teamDate1.innerText = "None";
+    }
+    else{
+        teamDate1.innerText = gameData.seasons[gameData.teams[team].date].date;
+    }
     teamDate1.className = "team_teamInfosSquare";
     teamInfos.appendChild(teamDate1);
     //town
@@ -53,23 +58,26 @@ document.body.appendChild(teamLogo);
     teamInfos.appendChild(expectationsDiv0);
     let expectationsDiv1 = document.createElement("div");
     let expectations;
-    if(gameData.teams[team].power < 0.5){
+    if(gameData.teams[team].power + gameData.teams[team].tradePower < 0.5){
         expectations = "Tank Mode";
     }
-    else if(gameData.teams[team].power < 0.8){
+    else if(gameData.teams[team].power + gameData.teams[team].tradePower < 0.8){
         expectations = "None";
     }
-    else if(gameData.teams[team].power < 1){
+    else if(gameData.teams[team].power + gameData.teams[team].tradePower < 1){
         expectations= "Be competitive";
     }
-    else if (gameData.teams[team].power < 1.10){
+    else if (gameData.teams[team].power + gameData.teams[team].tradePower < 1.10){
         expectations = "Playoff Team";
     }
-    else if(gameData.teams[team].power < 1.25){
+    else if(gameData.teams[team].power + gameData.teams[team].tradePower < 1.25){
         expectations = "Dark horse"
     }
+    else if(gameData.teams[team].power + gameData.teams[team].tradePower < 1.6){
+        expectations = "Contender"
+    }
     else{
-        expectations = "Contender";
+        expectations = "Favourite";
     }
     expectationsDiv1.innerText = expectations;
     expectationsDiv1.className = "team_teamInfosSquare";
@@ -987,6 +995,22 @@ function picksPerYear(team, season, container){
                 teamLogo.src = ".." + gameData.teams[j].logo + ".png"
                 picksPerYearContainer.appendChild(teamLogo);
             }
+        }
+        if(gameData.teams[team].ownerOfTeamPicks[season][i] != team){
+            let parentheses1 = document.createElement("div");
+            parentheses1.className = "team_teamParenthesis";
+            parentheses1.innerText = "(";
+            picksPerYearContainer.appendChild(parentheses1)
+
+            let teamLogo = document.createElement("img");
+            teamLogo.className = "team_teamLogoPicks";
+            teamLogo.src = ".." + gameData.teams[gameData.teams[team].ownerOfTeamPicks[season][i]].logo + ".png"
+            picksPerYearContainer.appendChild(teamLogo);
+
+            let parentheses2 = document.createElement("div");
+            parentheses2.className = "team_teamParenthesis";
+            parentheses2.innerText = ")";
+            picksPerYearContainer.appendChild(parentheses2)
         }
     }
 }

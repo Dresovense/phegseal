@@ -1,18 +1,18 @@
-let draftClass = [];
+/* let draftClass = [];
 
-for(let i = 0; i < 1000; i++){
-    let potential = Math.ceil((randn_bm() + 0.1) * 100);
-    let developpmentYears = Math.floor(Math.random() * 6);
-    let randomName = "Test";
-    if(potential < 100){
-        draftClass.push({
-            potential: potential,
-            developpmentYears: developpmentYears,
-            name: randomName
-        });
+for(let i = 0; i < 10000; i++){
+    let potential = Math.ceil(Math.pow(randn_bm(), 2.60) * 140);
+    let developpmentYears = Math.floor(randn_bm() * 8);
+    if(potential < 30){
+        potential = 30;
     }
+   // let randomName = firstName.data[Math.floor(Math.random() * firstName.data.length)] + " " + lastName.data[Math.floor(Math.random() * lastName.data.length)];
+    draftClass.push({
+        potential: potential,
+        developpmentYears: developpmentYears,
+    //    name: randomName
+    });
 }
-console.log(draftClass)
 
 draftClass.sort(function(left,right){
     if(left.potential > right.potential){
@@ -31,9 +31,30 @@ draftClass.sort(function(left,right){
     }
 })
 
-for(let i = 0; i < 50; i++){
-    console.log(draftClass[i])
+for(let i = 0; i < 30; i++){
+    let random_player = draftClass.splice(Math.floor(Math.random() * 150), 1);
+    let random_place = Math.floor(Math.random() * 150);
+    draftClass.splice(random_place, 0, random_player[0]);
 }
+
+for(let i = 0; i < 200; i++){
+    let random_player = draftClass.splice(Math.floor(Math.random() * 250) + 30, 1);
+    let random_place = Math.floor(Math.random() * 250) + 30;
+    draftClass.splice(random_place, 0, random_player[0]);
+}
+
+for(let i = 0; i < 200; i++){
+    let random_player = draftClass.splice(Math.floor(Math.random() * 10000) + 50, 1);
+    let random_place = Math.floor(Math.random() * 10000) + 50;
+    draftClass.splice(random_place, 0, random_player[0]);
+} */
+
+/* for(let i = 0; i < 18*7; i++){
+    if(i % 18 == 0){
+        console.log("------------------------------------------------")
+    }
+    console.log(draftClass[i])
+} */
 
 function randn_bm() {
     let u = 0, v = 0;
@@ -43,4 +64,36 @@ function randn_bm() {
     num = num / 10.0 + 0.5; // Translate to 0 -> 1
     if (num > 1 || num < 0) return randn_bm() // resample between 0 and 1
     return num
+}
+
+
+let gameData = JSON.parse(sessionStorage.getItem("gameData"));
+
+for(let i = 0; i < gameData.teams.length; i++){
+    if(gameData.teams[i].power > 2.50){
+        console.log(`${gameData.teams[i].name}:`)
+        console.log(`Previous Power: ${gameData.teams[i].power}`)
+        gameData.teams[i].power -= Math.random() * 0.3 + 1
+        console.log(`New Power: ${gameData.teams[i].power}`)
+        console.log("--------------")
+    }
+    else if(gameData.teams[i].power > 2){
+        console.log(`${gameData.teams[i].name}:`)
+        console.log(`Previous Power: ${gameData.teams[i].power}`)
+        gameData.teams[i].power -= Math.random() * 0.3 + 0.3
+        console.log(`New Power: ${gameData.teams[i].power}`)
+        console.log("--------------")
+    }
+    else if(gameData.teams[i].power > 1.60){
+        console.log(`${gameData.teams[i].name}:`)
+        console.log(`Previous Power: ${gameData.teams[i].power}`)
+        gameData.teams[i].power -= Math.random() * 0.2 + 0.2
+        console.log(`New Power: ${gameData.teams[i].power}`)
+        console.log("--------------")
+    }
+    else{
+        console.log(`${gameData.teams[i].name}:`)
+        console.log(`Power: ${gameData.teams[i].power}`)
+        console.log("--------------")
+    }
 }
