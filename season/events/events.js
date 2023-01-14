@@ -50,21 +50,21 @@ module.exports = {
         let randomBuyer;
         let randomSeller;
         if(buyers.length > 0 && sellers.length > 0){
-            let chanceOfTrade = Math.floor(Math.random() * numberOfTeams * 1.5);
+            let chanceOfTrade = Math.floor(Math.random() * numberOfTeams );
             if(chanceOfTrade == 0){
                 randomBuyer = buyers[Math.floor(Math.random() * buyers.length)];
                 randomSeller = sellers[Math.floor(Math.random() * sellers.length)];
             }
             else{
-                return
+                return true
             }
         }
         else{
-            return
+            return true
         }
         
         //trade value:
-        let tradeValue = [70,35,20,10,7,5,3]
+        let tradeValue = [60,30,10,7,5,4,2]
 
         //assets of buying team:
         let assets = [];
@@ -90,8 +90,12 @@ module.exports = {
 
 
         //select how much power will be echanged (based on random, how much trade value buyer team still has, ...)
-        let powerToBeEchanged = randn_bm() * (totalAmountOfTradeValue * 0.0004 - 0.065) //min = 0.02, max = 0.15, depends on total trade value
-        let valueOfPowerChanged = powerToBeEchanged * 1100 - 20;
+        let powerToBeEchanged = randn_bm() * (totalAmountOfTradeValue * 0.0004 - 0.06) //min = 0.02, max = 0.15, depends on total trade value
+        let valueOfPowerChanged = powerToBeEchanged * 1125 - 10;
+
+        if(valueOfPowerChanged < 5){
+            valueOfPowerChanged = 5
+        }
         
         console.log(powerToBeEchanged)
         console.log(valueOfPowerChanged)
@@ -111,7 +115,7 @@ module.exports = {
                 }
             }
 
-            if(amountOfPicksValue < valueOfPowerChanged + 40){
+            if(amountOfPicksValue < valueOfPowerChanged + 20){
                 goodTrade = true;
             }
             else{
@@ -122,6 +126,26 @@ module.exports = {
         }
         console.log(picksToTrade)
         console.log(assets)
+
+        //organise picksToTrade by year and strength of pick
+        picksToTrade.sort(function(left, right){
+            console.log(left)
+            console.log(assets[left])
+            if(assets[left].pick < assets[right].pick){
+                return -1
+            }
+            else if(assets[left].pick > assets[right].pick){
+                return 1
+            }
+            else{
+                if(assets[left].year < assets[right].year){
+                    return -1;
+                }
+                else{
+                    return 1
+                }
+            }
+        })
 
         //reduce willingness to trade:
         gameData.teams[randomBuyer].trade = 55;
@@ -176,38 +200,44 @@ module.exports = {
                 power: powerToBeEchanged
             }
             gameData.seasons[season].trade.push(tradeData);
+
+        return false
     },
     tradeUpdate: function(gameData, season, round, numberOfTeams){
-        let buyers = standings.playoffBound(gameData, season, round)
+        let buyers = standings.playoffBound(gameData, season, round) //change
+        let outOfPlayOffs = standings.outOfPlayoffs(gameData, season, round)
         //change trade parameter:
         for(let i = 0; i < numberOfTeams; i++){
             if(buyers.indexOf(`${i}`) >= 0){ //buyers
-                let tradeModifier = gameData.teams[i].power;
+                let tradeModifier = Math.random() * gameData.teams[i].power * 1.5;
                 //expectation:
                 if(gameData.teams[i].power < 0.8){
-                    tradeModifier -= 0.1
+                    tradeModifier -= 0.3
                 }
                 else if(gameData.teams[i].power < 1){
                     tradeModifier += 0.1
                 }
                 else if (gameData.teams[i].power < 1.10){
-                    tradeModifier += 0.2
+                    tradeModifier += 0.3
                 }
                 else if(gameData.teams[i].power < 1.25){
                     tradeModifier += 0.7
                 }
+                else if(gameData.teams[i].power < 1.75){
+                    tradeModifier += 0.2
+                }
                 else{
-                    tradeModifier += 0.4
+                    tradeModifier -= 0.2
                 }
                 //time above 1 (if more time, more likely to trade)
                 tradeModifier += gameData.teams[i].seasonsAbove1 / 10
-                gameData.teams[i].trade += tradeModifier / gameData.seasons[season].schedule[round].games.length;
+                gameData.teams[i].trade += tradeModifier * 1.5 / gameData.seasons[season].schedule[round].games.length;
             }
             else{   //sellers
-                let tradeModifier = 2 - gameData.teams[i].power;
+                let tradeModifier = Math.random() * (2 - gameData.teams[i].power);
                 //expectation:
                 if(gameData.teams[i].power < 0.8){
-                    tradeModifier += 0.7
+                    tradeModifier += 0.2
                 }
                 else if(gameData.teams[i].power < 1){
                     tradeModifier += 0.5
@@ -216,16 +246,22 @@ module.exports = {
                     tradeModifier += 0.2
                 }
                 else if(gameData.teams[i].power < 1.25){
-                    tradeModifier -= 0.1
+                    tradeModifier -= 0.5
                 }
                 else{
-                    tradeModifier -= 0.5
+                    tradeModifier -= 0.7
                 }
                 //time bellow 1 (if less time, more likely to trade) (speed up rebuild)
                 if(gameData.teams[i].power < 0.9){
                     tradeModifier += (5 - gameData.teams[i].seasonsBelow1) / 5;
                 }
-                gameData.teams[i].trade -= tradeModifier / gameData.seasons[season].schedule[round].games.length;
+                gameData.teams[i].trade -= tradeModifier * 1.5 / gameData.seasons[season].schedule[round].games.length;
+            }
+            if(outOfPlayOffs.indexOf(`${i}`) >= 0){
+                gameData.teams[i].trade = 0;
+            }
+            if(gameData.teams[i].power < 0.25){
+                gameData.teams[i].trade = 50;
             }
         }
     }

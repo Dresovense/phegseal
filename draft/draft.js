@@ -138,7 +138,7 @@ if(gameData.seasons[season].draft.completed == "no"){
             for(let i = lastYearStandings.length - 1; i >= lastYearStandings.length - numberOfTeamsOutOfPlayoffs; i--){
                 console.log(numberOfTeamsOutOfPlayoffs)
                 console.log(numberOfLotteryBalls)
-                    eventDescription += `- ${gameData.teams[lastYearStandings[i].id].name}: ${((numberOfTeamsOutOfPlayoffs - numberOfLotteryBalls) / totalNumberOfOdds * 100)}%\n`
+                    eventDescription += `- ${gameData.teams[lastYearStandings[i].id].name}: ${((numberOfTeamsOutOfPlayoffs - numberOfLotteryBalls) / totalNumberOfOdds * 100).toFixed(2).replace(/[.,]00$/, "")} %\n`
                 
                 numberOfLotteryBalls++
             }
@@ -248,6 +248,16 @@ else{
         draft.push(newDraftOrder);
     }
 
+    draftOrderFirstRound = JSON.parse(JSON.stringify(draftOrder))
+    if(season >= 52){
+        for(let i = gameData.seasons[season].draft.draftLottery.length - 1; i >= 0; i--){
+            let index = draftOrderFirstRound.indexOf(gameData.seasons[season].draft.draftLottery[i])
+            draftOrderFirstRound.splice(index, 0)
+            draftOrderFirstRound.unshift(gameData.seasons[season].draft.draftLottery[i]);
+        }
+    }
+
+
 
 }
 
@@ -274,6 +284,8 @@ document.body.appendChild(title)
 let draftDiv = document.createElement("div");
 document.body.appendChild(draftDiv)
 draftRound(0,draftDiv);
+
+gameData.seasons[season].draft.currentRound = 0;
 
 
 
@@ -388,7 +400,7 @@ function draftRound(round, container){
             originalTeam.className = "draftGridSquare";
             draftGrid.appendChild(originalTeam);
 
-            if(round == 0 && gameData.seasons[season].draft.completed == "no"){
+            if(round == 0){
                 let logoOfOriginalTeam = document.createElement("img");
                 logoOfOriginalTeam.className = "logo";
                 logoOfOriginalTeam.id = "logo";
@@ -445,14 +457,21 @@ function draftRound(round, container){
 }
 
 function pick(currentPick, currentRound){
+    let potentialVariation = Math.round(Math.random() * 20 - 10);
     let pick = {
         team: draft[currentRound][currentPick - currentRound * draftOrder.length],
         player: draftClass[currentPick].name,
-        potential: draftClass[currentPick].potential,
+        potential: draftClass[currentPick].potential + potentialVariation,
         developpmentYears: draftClass[currentPick].developpmentYears
     }
     gameData.seasons[season].draft.picks.push(pick);
-    if(pick.potential >= 60){
+    if(pick.potential >= 90){
+        pick.potential *= 1.5
+    }
+    else if(pick.potential >= 80){
+        pick.potential *= 1.25
+    }
+    if(pick.potential >= 50){
         gameData.teams[draft[currentRound][currentPick - currentRound * draftOrder.length]].projectedPowerNextSeasons[pick.developpmentYears] += pick.potential;
     }
 }
@@ -482,7 +501,7 @@ function endDraft(){
 
         //reduce current talent (-0.1 to 0.3 drop, gauss drop)
         console.log(gameData.teams[i].name + " before " + gameData.teams[i].power);
-        let drop = randn_bm() * (0.6 + gameData.teams[i].seasonsAbove1/15) - 0.12 - (0.05 * gameData.teams[i].seasonsBelow1);
+        let drop = randn_bm() * (0.5 + gameData.teams[i].seasonsAbove1/20) - 0.10 - (0.07 * gameData.teams[i].seasonsBelow1);
         gameData.teams[i].power -= drop;
         console.log(gameData.teams[i].name + " drop " + drop);
         //push new talent
@@ -495,8 +514,12 @@ function endDraft(){
         gameData.teams[i].projectedPowerNextSeasons.push(0);
         //change of potential in the next seasons
         for(let j = 0; j < 7; j++){
-            let dropPotential = randn_bm() * 100 - 28;
+            let dropPotential = randn_bm() * 90 - 28;
             gameData.teams[i].projectedPowerNextSeasons[j] -= dropPotential;
+        }
+        //add minimal strength:
+        if(gameData.teams[i].power < 0.25){
+            gameData.teams[i].power = 0.25;
         }
     }
     //add picks for next Season and remove picks from this season:

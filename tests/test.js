@@ -1,7 +1,7 @@
-/* let draftClass = [];
+let draftClass = [];
 
 for(let i = 0; i < 10000; i++){
-    let potential = Math.ceil(Math.pow(randn_bm(), 2.60) * 140);
+    let potential = Math.ceil(Math.pow(randn_bm(), 2.51) * 140);
     let developpmentYears = Math.floor(randn_bm() * 8);
     if(potential < 30){
         potential = 30;
@@ -31,7 +31,7 @@ draftClass.sort(function(left,right){
     }
 })
 
-for(let i = 0; i < 30; i++){
+for(let i = 0; i < 75; i++){
     let random_player = draftClass.splice(Math.floor(Math.random() * 150), 1);
     let random_place = Math.floor(Math.random() * 150);
     draftClass.splice(random_place, 0, random_player[0]);
@@ -47,14 +47,16 @@ for(let i = 0; i < 200; i++){
     let random_player = draftClass.splice(Math.floor(Math.random() * 10000) + 50, 1);
     let random_place = Math.floor(Math.random() * 10000) + 50;
     draftClass.splice(random_place, 0, random_player[0]);
-} */
+}
 
-/* for(let i = 0; i < 18*7; i++){
+for(let i = 0; i < 18*7; i++){
     if(i % 18 == 0){
         console.log("------------------------------------------------")
     }
+    let randomPotential = Math.round(Math.random() * 20 - 10);
+    draftClass[i].potential += randomPotential
     console.log(draftClass[i])
-} */
+}
 
 function randn_bm() {
     let u = 0, v = 0;
@@ -67,33 +69,3 @@ function randn_bm() {
 }
 
 
-let gameData = JSON.parse(sessionStorage.getItem("gameData"));
-
-for(let i = 0; i < gameData.teams.length; i++){
-    if(gameData.teams[i].power > 2.50){
-        console.log(`${gameData.teams[i].name}:`)
-        console.log(`Previous Power: ${gameData.teams[i].power}`)
-        gameData.teams[i].power -= Math.random() * 0.3 + 1
-        console.log(`New Power: ${gameData.teams[i].power}`)
-        console.log("--------------")
-    }
-    else if(gameData.teams[i].power > 2){
-        console.log(`${gameData.teams[i].name}:`)
-        console.log(`Previous Power: ${gameData.teams[i].power}`)
-        gameData.teams[i].power -= Math.random() * 0.3 + 0.3
-        console.log(`New Power: ${gameData.teams[i].power}`)
-        console.log("--------------")
-    }
-    else if(gameData.teams[i].power > 1.60){
-        console.log(`${gameData.teams[i].name}:`)
-        console.log(`Previous Power: ${gameData.teams[i].power}`)
-        gameData.teams[i].power -= Math.random() * 0.2 + 0.2
-        console.log(`New Power: ${gameData.teams[i].power}`)
-        console.log("--------------")
-    }
-    else{
-        console.log(`${gameData.teams[i].name}:`)
-        console.log(`Power: ${gameData.teams[i].power}`)
-        console.log("--------------")
-    }
-}

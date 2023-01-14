@@ -1134,7 +1134,6 @@ function outOfPlayOffs(gameData, season, round){
         for(let i = numberOfTeamsInPlayOffs; i < gameData.seasons[season].teams.conference[0].teamsInConference.length; i++){ 
             let teamChoice = gameData.seasons[season].teams.conference[0].teamsInConference;
             let teams = standings(gameData, teamChoice, season, round, "Pts");
-            console.log(numberOfMatches)
             if(teams[numberOfTeamsInPlayOffs - 1].points() > (teams[i].points() + 3 * (numberOfMatches - teams[i].gamesPlayed())) || numberOfMatches - teams[i].gamesPlayed() == 0){
                 teamsOutOfPlayoffs.push(teams[i].id);
             }
@@ -1251,7 +1250,13 @@ function teamsPlayOffBoundStandings (gameData, season, round){
                 for(let k = 0; k < teamsQualifiedPerDivision; k++){
                     let teamChoice = gameData.seasons[season].teams.conference[i].divisions[j].teams;
                     let teams = standings(gameData, teamChoice, season, round, "Pts");
-                    if(teams[k].points() > (teams[teamsQualifiedPerDivision].points() + 3 * (numberOfMatchesPerTeam - teams[teamsQualifiedPerDivision].gamesPlayed())) || numberOfMatchesPerTeam - teams[teamsQualifiedPerDivision].gamesPlayed() == 0){
+                    let teamQualified = true;
+                    for(let m = teamsQualifiedPerDivision; m < teams.length; m++){
+                        if(teams[k].points() <= (teams[m].points() + 3 * (numberOfMatchesPerTeam - teams[m].gamesPlayed())) && numberOfMatchesPerTeam - teams[m].gamesPlayed() != 0){
+                            teamQualified = false;
+                        }
+                    }
+                    if(teamQualified){
                         teamListPlayOffBound.push(teams[k].id);
                     }
                 }
@@ -2258,7 +2263,6 @@ function gamesRound (gameData, season, round){
 
     for(let i = 0; i < matches.length; i++){
         if(matches[i].team1Goals == ""){
-
             let divMatch = document.createElement("div");
             divMatch.id = "divMatch";
             gamesDiv.appendChild(divMatch);
@@ -2391,10 +2395,15 @@ function gamesRound (gameData, season, round){
             let buttonVS = document.createElement("button");
             buttonVS.innerText = "VS";
             buttonVS.addEventListener("click", () => {
-                let result = dice.diceRoll(teams[matches[i].team1Id].power + teams[matches[i].team1Id].tradePower, teams[matches[i].team2Id].power + teams[matches[i].team2Id].tradePower);
-                inputGoalsTeam1.value = result[0];
-                inputGoalsTeam2.value = result[1];
-                gameButton.dispatchEvent(new Event("click"))
+                if(events.trade(eventDiv, eventBackground, gameData, round)){
+                    let result = dice.diceRoll(teams[matches[i].team1Id].power + teams[matches[i].team1Id].tradePower, teams[matches[i].team2Id].power + teams[matches[i].team2Id].tradePower);
+                    inputGoalsTeam1.value = result[0];
+                    inputGoalsTeam2.value = result[1];
+                    gameButton.dispatchEvent(new Event("click"))
+                }
+                tradeLog(select.value)
+                let gameDataJson = JSON.stringify(gameData);
+                sessionStorage.setItem("gameData", gameDataJson);
             })
             divMatch.appendChild(buttonVS);
             
@@ -2538,39 +2547,29 @@ function gamesRound (gameData, season, round){
             gameButton.innerText = "Confirm match";
             gameButton.style.display = "none";
             gameButton.addEventListener("click", function(){
-                if(inputGoalsTeam1.value == "" || inputGoalsTeam2.value == ""){
-                    window.alert("The fields are empty");
+                matches[i].team1Goals = inputGoalsTeam1.value;
+                matches[i].team2Goals = inputGoalsTeam2.value;
+                //test records
+                recordsSeason.testSeasonRecords(gameData, season, round, matches[i].team1Id, matches[i].team2Id);
+                let matchEnded = 0;
+                for(let j = 0; j < matches.length; j++){
+                    if(matches[j].team1Goals != ""){
+                        matchEnded++
+                    }
                 }
-                else{
-                    matches[i].team1Goals = inputGoalsTeam1.value;
-                    matches[i].team2Goals = inputGoalsTeam2.value;
-                    //test records
-                    recordsSeason.testSeasonRecords(gameData, season, round, matches[i].team1Id, matches[i].team2Id);
-                    let matchEnded = 0;
-                    for(let j = 0; j < matches.length; j++){
-                        if(matches[j].team1Goals != ""){
-                            matchEnded++
-                        }
-                    }
-                    button.dispatchEvent(new Event("click"));
-                    console.log("button1")
-                    console.log(select.value)
-                    if(matchEnded == matches.length){
-                        console.log("here")
-                        gameData.seasons[season].schedule[round].completed = "yes";
-                        selectionOptions(gameData, season);
-                        select.options[select.options.length - 2].selected = true;
-                        console.log("Back1")
-                    }
-                    //lay-out post season       
-                    if(gameData.seasons[season].schedule[gameData.seasons[season].schedule.length - 1].completed == "yes"){
-                        layOutPostSeason(gameData, season);
-                    }
-                    events.trade(eventDiv, eventBackground, gameData, round);
-                    tradeLog(select.value);
-                    gameDataJson = JSON.stringify(gameData);
-                    sessionStorage.setItem("gameData", gameDataJson);
+                button.dispatchEvent(new Event("click"));
+                if(matchEnded == matches.length){
+                    gameData.seasons[season].schedule[round].completed = "yes";
+                    selectionOptions(gameData, season);
+                    select.options[select.options.length - 2].selected = true;
                 }
+                //lay-out post season       
+                if(gameData.seasons[season].schedule[gameData.seasons[season].schedule.length - 1].completed == "yes"){
+                    layOutPostSeason(gameData, season);
+                }
+                tradeLog(select.value);
+                gameDataJson = JSON.stringify(gameData);
+                sessionStorage.setItem("gameData", gameDataJson);
             });
             divMatch.appendChild(gameButton);
         }
@@ -3035,7 +3034,6 @@ function gamesPostSeason (gameData, season, round){
                                     }
                                 }
                                 button.dispatchEvent(new Event("click"));
-                                console.log("button2")
                                 if(allRoundsFinished == matchups.length){
                                     if(round != gameData.seasons[season].postSeasonSchedule.length - 1){
                                         //lay-out next round
@@ -3056,7 +3054,6 @@ function gamesPostSeason (gameData, season, round){
                                     gameData.seasons[season].postSeasonSchedule[round].completed = "yes";
                                     selectionOptions(gameData, season); 
                                     select.options[select.options.length - 2].selected = true;
-                                    console.log("Back2")
                                 }
                             }
                         });
@@ -3414,7 +3411,6 @@ function gamesPostSeason (gameData, season, round){
                                                     }
                                                     selectionOptions(gameData, season); 
                                                     select.options[select.options.length - 2].selected = true;
-                                                    console.log("Back5")
                                                 }
                                                 else{   //finals
                                                     for(let a = 0; a < gameData.seasons[season].postSeasonSchedule.finals.length; a++){
@@ -3436,7 +3432,6 @@ function gamesPostSeason (gameData, season, round){
                                             }
                                             button.dispatchEvent(new Event("click"));
                                             selectionOptions(gameData, season);
-                                            console.log("Back3")
                                         }
                                     });
                                     divMatch.appendChild(gameButton);
@@ -3776,12 +3771,10 @@ function gamesPostSeason (gameData, season, round){
                                             }
 
                                         }
-                                        //}
                                         
                                     }
                                     selectionOptions(gameData, season);
                                     button.dispatchEvent(new Event("click"));
-                                    console.log("Back7")
                                 }
                             });
                             divMatch.appendChild(gameButton);
@@ -3919,11 +3912,8 @@ function gamesPostSeason (gameData, season, round){
                 if(round == gameData.seasons[season].postSeasonSchedule.finals.length - 1 && gameData.seasons[season].postSeasonSchedule.finals[round].completed == "yes"){
                     printChampion(gameData.seasons[season].postSeasonSchedule.finals[round].matchups[0].winner);
                     gameData = addChampionToData(gameData, gameData.seasons[season].postSeasonSchedule.finals[round].matchups[0].winner);
-                    console.log(gameData.teams)
                     removeTradePower(gameData);
-                    console.log(gameData.teams)
                 }
-            //}
         }
     }
 }
@@ -3938,12 +3928,9 @@ function removeTradePower(gameData){
 
 
 function addChampionToData(gameData, team){
-    console.log("here")
     let newTeam = true
     for(let i = 0; i < gameData.records.postSeason.titles.mostTitles.teams.length; i++){
-        console.log("here1")
-        if(gameData.records.postSeason.titles.mostTitles.teams[i].teamId == team){            
-            console.log("here2")
+        if(gameData.records.postSeason.titles.mostTitles.teams[i].teamId == team){
             if(gameData.records.postSeason.titles.mostTitles.teams[i].seasonsId.indexOf(season) < 0 || gameData.records.postSeason.titles.mostTitles.teams[i].seasonsId.indexOf(Number(season)) >= 0){
                 gameData.records.postSeason.titles.mostTitles.teams[i].seasonsId.push(season);
                 gameData.records.postSeason.titles.mostTitles.teams[i].record++
@@ -4421,7 +4408,6 @@ nextRound.addEventListener("click", () => {
         leagueStandingsChoice.style.display = "none";
         divisionStandingsChoice.style.display = "none";
     }
-    console.log(select.value)
     expectations(select.value);
     tradeLog(select.value);
 });
@@ -4586,20 +4572,20 @@ if(boolRegularSeason == false){
 
 //events:
     //background
-let eventBackground = document.createElement("div");
-eventBackground.className = "eventBackground";
-eventBackground.addEventListener("click", () =>{
+    let eventBackground = document.createElement("div");
+    eventBackground.className = "eventBackground";
+    eventBackground.addEventListener("click", () =>{
+        eventDiv.style.display = "none";
+        eventBackground.style.opacity = "0";
+        eventBackground.style.display = "none";
+    })
+    eventBackground.style.display = "none"
+    document.body.appendChild(eventBackground);
+        //container
+    let eventDiv = document.createElement("div");
+    eventDiv.className = "eventContainer";
+    document.body.appendChild(eventDiv);
     eventDiv.style.display = "none";
-    eventBackground.style.opacity = "0";
-    eventBackground.style.display = "none";
-})
-eventBackground.style.display = "none"
-document.body.appendChild(eventBackground);
-    //container
-let eventDiv = document.createElement("div");
-eventDiv.className = "eventContainer";
-document.body.appendChild(eventDiv);
-eventDiv.style.display = "none";
 
 
 
@@ -4627,18 +4613,14 @@ function expectations(round){
         let predictions;
         for(let i = gameData.seasons[season].predictions.length - 1; i >= 0; i--){
             if(Number(gameData.seasons[season].predictions[i].round) <= Number(round)){
-                console.log(i)
                 predictions = gameData.seasons[season].predictions[i]
                 i = -1;
             }
         }
-        console.log(predictions)
         let standings = [];
         let standingsOrdered = [];
         predictions.standings.forEach((value) => {standingsOrdered.push(value)})
         standingsOrdered.sort(function(a, b){return b-a})
-        /* console.log(standingsOrdered)
-        console.log(predictions.standings) */
         for(let i = 0; i < standingsOrdered.length; i++){
             for(let j = 0; j < predictions.standings.length; j++){
                 if(predictions.standings[j] == standingsOrdered[i]){
@@ -4768,12 +4750,19 @@ function expectations(round){
             redoPredictions.style.width = "fit-content";
             winProbabilitiesContainer.appendChild(redoPredictions);
             redoPredictions.addEventListener("click", () => {
-                gameData.seasons[season].predictions.push(standingsFunctions.regularSeasonPredictions(gameData, round));
-                gameData = JSON.stringify(gameData);
-                sessionStorage.removeItem("gameData");
-                sessionStorage.setItem("gameData", gameData);
-                gameData = JSON.parse(gameData);
-                window.location.reload(false)
+                let loadingScreen = document.getElementsByClassName("lds-roller");
+                loadingScreen[0].style.display = "inline-block";
+                console.log(loadingScreen[0])
+                eventBackground.style.opacity = "0.5";
+                eventBackground.style.display = "block";
+                setTimeout(() => {
+                    gameData.seasons[season].predictions.push(standingsFunctions.regularSeasonPredictions(gameData, round));
+                    gameData = JSON.stringify(gameData);
+                    sessionStorage.removeItem("gameData");
+                    sessionStorage.setItem("gameData", gameData);
+                    gameData = JSON.parse(gameData);
+                    window.location.reload(false)
+                }, 10)
             })
         }
     }
@@ -4788,8 +4777,6 @@ function expectations(round){
         let standingsOrdered = [];
         predictions.standings.forEach((value) => {standingsOrdered.push(value)})
         standingsOrdered.sort(function(a, b){return b-a})
-        console.log(standingsOrdered)
-        console.log(predictions.standings)
         for(let i = 0; i < standingsOrdered.length; i++){
             for(let j = 0; j < predictions.standings.length; j++){
                 if(predictions.standings[j] == standingsOrdered[i]){
@@ -4858,7 +4845,6 @@ function expectations(round){
                 winProbabilitiesContainer.appendChild(expectations);
                 for(let k = 0; k < gameData.seasons[season].teams.allTeams.length; k++){
                     if(gameData.seasons[season].teams.allTeams[k].id == standings[i]){
-                        console.log(`${gameData.teams[standings[i]].name} / ${standings[i]}: ${gameData.seasons[season].teams.allTeams[k].power}`)
                         if(gameData.seasons[season].teams.allTeams[k].power + gameData.seasons[season].teams.allTeams[k].tradePower < 0.5){
                             expectations.innerText = "Tank Mode";
                         }
@@ -4916,8 +4902,6 @@ function tradeLog(round){
     previousTrades.appendChild(tradeLogInfo)
     if(season >= 40){
         for(let i = 0; i < gameData.seasons[season].trade.length; i++){
-            console.log(gameData.seasons[season].trade[i].round)
-            console.log(round)
             if(Number(gameData.seasons[season].trade[i].round) <= round || boolRegularSeason == false){
                 let trade = document.createElement("div");
                 previousTrades.appendChild(trade);

@@ -30,15 +30,14 @@ make divisional playoff (like nhl)
 
 Rework season choice page
 
-Draft Lottery (choice)
-
-When trade match doesnt play
-
-In team page, when choosing the last matches, do it per season (buttons)
-
 Modular rules (can change modifiers and stuff)
 
-Create loading screen for predictions
-
 Rework save file (remove unuseful things, like list of assets for trades, redo rules, ...)
+
+Strength of schedule (based on power and standings?)
+
+Colors for draft picks in team history
+
+Strength of the draft (overall and compared to the picks they had)
+
 

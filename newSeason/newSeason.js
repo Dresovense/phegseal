@@ -284,31 +284,34 @@ confirmChoicebutton.style.display = "none";
 confirmChoicebutton.innerText = "Confirm Choice";
 confirmChoicebutton.className = "teamChoice";
 confirmChoicebutton.addEventListener("click", () => {
-
-        numberOfConferences = conferencesNumber.value;
-        numberOfDivisionsPerConference = divisionsPerConferenceNumber.value;
-        divisionRounds = divisionMatches.value;
-        conferenceRounds = conferenceMatches.value;
-        interConferenceRounds = interConferenceMatches.value;
-        let divsSchedule = document.getElementsByClassName("scheduleChoice");
-        for(let i = 0; i < divsSchedule.length; i++){
-            divsSchedule[i].style.display = "none";     //display
-        }
-        createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConference, divisionRounds, conferenceRounds, interConferenceRounds);   //changer endroit ou c'est fait
-        newSeason.postSeasonSchedule.rules.numberOfMatchesPerTeam = numberOfGamesPerTeam(newSeason);
-        gameData.seasons.push(newSeason);
-        gameData.seasons[gameData.seasons.length - 1].predictions.push(regularSeasonPrediction(gameData, 0));
-        gameData = updateTradeWillingness(gameData);
-        //save data + go to season
-        fs.writeFile('saves/data.json', JSON.stringify(gameData, null, 4), function(err) {
-            if(err){
-                return console.log(err);
+        let loadingScreen = document.getElementsByClassName("lds-roller");
+        loadingScreen[0].style.display = "inline-block";
+        setTimeout(() => {
+            numberOfConferences = conferencesNumber.value;
+            numberOfDivisionsPerConference = divisionsPerConferenceNumber.value;
+            divisionRounds = divisionMatches.value;
+            conferenceRounds = conferenceMatches.value;
+            interConferenceRounds = interConferenceMatches.value;
+            let divsSchedule = document.getElementsByClassName("scheduleChoice");
+            for(let i = 0; i < divsSchedule.length; i++){
+                divsSchedule[i].style.display = "none";     //display
             }
-        });
-        console.log(gameData)
-        gameData = JSON.stringify(gameData);
-        sessionStorage.setItem("gameData", gameData);
-        location.href = "../startGame/startGame.html";
+            createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConference, divisionRounds, conferenceRounds, interConferenceRounds);   //changer endroit ou c'est fait
+            newSeason.postSeasonSchedule.rules.numberOfMatchesPerTeam = numberOfGamesPerTeam(newSeason);
+            gameData.seasons.push(newSeason);
+            gameData.seasons[gameData.seasons.length - 1].predictions.push(regularSeasonPrediction(gameData, 0));
+            gameData = updateTradeWillingness(gameData);
+            //save data + go to season
+            fs.writeFile('saves/data.json', JSON.stringify(gameData, null, 4), function(err) {
+                if(err){
+                    return console.log(err);
+                }
+            });
+            console.log(gameData)
+            gameData = JSON.stringify(gameData);
+            sessionStorage.setItem("gameData", gameData);
+            location.href = "../startGame/startGame.html";
+        }, 1);
     
 });
 document.body.appendChild(confirmChoicebutton);
@@ -2355,7 +2358,7 @@ function createDraftClass(teams){
 
     //joueurs disponibles dans la draft class
     for(let i = 0; i < 10000; i++){
-        let potential = Math.ceil(Math.pow(randn_bm(), 2.60) * 140);
+        let potential = Math.ceil(Math.pow(randn_bm(), 2.51) * 140);
         let developpmentYears = Math.floor(randn_bm() * 8);
         if(potential < 30){
             potential = 30;
@@ -2385,7 +2388,7 @@ function createDraftClass(teams){
         }
     })
 
-    for(let i = 0; i < 30; i++){
+    for(let i = 0; i < 75; i++){
         let random_player = draftClass.splice(Math.floor(Math.random() * 150), 1);
         let random_place = Math.floor(Math.random() * 150);
         draftClass.splice(random_place, 0, random_player[0]);
