@@ -66,7 +66,7 @@ function printTeam(team, container){
         let expectationsDiv1 = document.createElement("div");
         let expectations;
         if(gameData.teams[team].power + gameData.teams[team].tradePower < 0.5){
-            expectations = "Tank Mode";
+            expectations = "Tanking";
         }
         else if(gameData.teams[team].power + gameData.teams[team].tradePower < 0.8){
             expectations = "None";

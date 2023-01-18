@@ -4232,7 +4232,7 @@ button.addEventListener("click", () => {
         divisionStandingsChoice.style.display = "none";
     }
     
-    expectations(select.value);
+    printPowerRankings(select.value);
     tradeLog(select.value);
 });
 
@@ -4298,8 +4298,7 @@ previousRound.addEventListener("click", () =>{
         leagueStandingsChoice.style.display = "none";
         divisionStandingsChoice.style.display = "none";
     }
-    
-    expectations(select.value);
+    printPowerRankings(select.value);
     tradeLog(select.value);
 });
 seasonContainer.appendChild(previousRound);
@@ -4408,7 +4407,7 @@ nextRound.addEventListener("click", () => {
         leagueStandingsChoice.style.display = "none";
         divisionStandingsChoice.style.display = "none";
     }
-    expectations(select.value);
+    printPowerRankings(select.value);
     tradeLog(select.value);
 });
 seasonContainer.appendChild(nextRound);
@@ -4595,7 +4594,7 @@ let leftSide = document.createElement("div");
 leftSide.className = "season_leftSide";
 gameContents.appendChild(leftSide);
 
-let winProbabilitiesContainer = document.createElement("div");
+/* let winProbabilitiesContainer = document.createElement("div");
 leftSide.appendChild(winProbabilitiesContainer)
 expectations(select.value);
 function expectations(round){
@@ -4700,7 +4699,7 @@ function expectations(round){
                 for(let k = 0; k < gameData.seasons[season].teams.allTeams.length; k++){
                     if(gameData.seasons[season].teams.allTeams[k].id == standings[i]){
                         if(gameData.seasons[season].teams.allTeams[k].power < 0.5){
-                            expectations.innerText = "Tank Mode";
+                            expectations.innerText = "Tanking";
                         }
                         else if(gameData.seasons[season].teams.allTeams[k].power < 0.8){
                             expectations.innerText = "None";
@@ -4846,7 +4845,7 @@ function expectations(round){
                 for(let k = 0; k < gameData.seasons[season].teams.allTeams.length; k++){
                     if(gameData.seasons[season].teams.allTeams[k].id == standings[i]){
                         if(gameData.seasons[season].teams.allTeams[k].power + gameData.seasons[season].teams.allTeams[k].tradePower < 0.5){
-                            expectations.innerText = "Tank Mode";
+                            expectations.innerText = "Tanking";
                         }
                         else if(gameData.seasons[season].teams.allTeams[k].power + gameData.seasons[season].teams.allTeams[k].tradePower < 0.8){
                             expectations.innerText = "None";
@@ -4889,11 +4888,363 @@ function expectations(round){
             }
         }
     }
+} */
+
+function powerRankingsF(round){
+    let powerRankings = []
+    //order power rankings: standings, power, recent form
+    for(let i = 0; i < gameData.seasons[season].teams.allTeams.length; i++){
+        let teamId = gameData.seasons[season].teams.allTeams[i].id;
+
+        //point of team + last 10 games:
+        let teamPoints = 0;
+        let teamLast10Matches = [];
+        let fiveMatches = 0;
+        for(let j = round - 1; j >= 0; j--){
+            for(let l = 0; l < gameData.seasons[season].schedule[j].games.length; l++){
+                if(gameData.seasons[season].schedule[j].games[l].team1Id == teamId){
+                    if(gameData.seasons[season].schedule[j].games[l].team1Goals > gameData.seasons[season].schedule[j].games[l].team2Goals){
+                        teamLast10Matches.push({result: "V", place: "H", round: j, game: l})
+                        if(fiveMatches < 5){
+                            teamPoints += 3;
+                            fiveMatches++;
+                        }
+                        else{
+                            teamPoints += 3 * (j + 4) / round;
+                        }
+                    }
+                    else if(gameData.seasons[season].schedule[j].games[l].team1Goals == gameData.seasons[season].schedule[j].games[l].team2Goals){
+                        teamLast10Matches.push({result: "D", place: "H", round: j, game: l})
+                        if(fiveMatches < 5){
+                            teamPoints += 1;
+                            fiveMatches++;
+                        }
+                        else{
+                            teamPoints += 1 * (j + 4) / round;
+                        }
+                    }
+                    else if(gameData.seasons[season].schedule[j].games[l].team1Goals < gameData.seasons[season].schedule[j].games[l].team2Goals){
+                        if(fiveMatches < 5){
+                            fiveMatches++;
+                        }
+                        teamLast10Matches.push({result: "L", place: "H", round: j, game: l})
+                    }
+                }
+                else if(gameData.seasons[season].schedule[j].games[l].team2Id == teamId){
+                    if(gameData.seasons[season].schedule[j].games[l].team1Goals > gameData.seasons[season].schedule[j].games[l].team2Goals){
+                        teamLast10Matches.push({result: "L", place: "A", round: j, game: l})
+                        if(fiveMatches < 5){
+                            fiveMatches++;
+                        }
+                    }
+                    else if(gameData.seasons[season].schedule[j].games[l].team1Goals == gameData.seasons[season].schedule[j].games[l].team2Goals){
+                        if(fiveMatches < 5){
+                            fiveMatches++;
+                            teamPoints += 1;
+                        }
+                        else{
+                            teamPoints += 1 * (j + 4) / round;
+                        }
+                        teamLast10Matches.push({result: "D", place: "A", round: j, game: l})
+                    }
+                    else if(gameData.seasons[season].schedule[j].games[l].team1Goals < gameData.seasons[season].schedule[j].games[l].team2Goals){
+                        if(fiveMatches < 5){
+                            fiveMatches++;
+                            teamPoints += 3;
+                        }
+                        else{
+                            teamPoints += 3 * (j + 4) / round;
+                        }
+                        teamLast10Matches.push({result: "V", place: "A", round: j, game: l})
+                    }
+                }
+            }
+        }
+        console.log(teamPoints)
+        teamPoints /= teamLast10Matches.length;
+        let teamPower = gameData.seasons[season].teams.allTeams[i].power
+        teamPoints *= Math.pow(teamPower - 1, 3) + 1;
+
+        if(teamLast10Matches.length > 10){
+            teamLast10Matches.length = 10;
+        }
+
+        powerRankings.push({id: teamId, points: teamPoints, last10Matches: teamLast10Matches});
+    }
+    console.log(powerRankings)
+    //reorder powerRankings by power:
+    powerRankings.sort(function(left, right){
+        if(left.points > right.points){
+            return -1;
+        }
+        else{
+            return 1;
+        }
+    });
+
+    return powerRankings;
 }
 
+function printPowerRankings(round){
+    if(boolRegularSeason == false){
+        round = gameData.seasons[season].schedule.length - 1
+    }
+
+    powerRankingsContainer.innerHTML = "";
+
+    let powerRankings = powerRankingsF(round);
+
+    let previousPowerRankings
+    if(round > 0){
+        previousPowerRankings = powerRankingsF(round - 1)
+    }
+    else{
+        previousPowerRankings = powerRankings;
+    }
+
+    let powerRankingsTitle = document.createElement("h3");
+    powerRankingsTitle.innerText = "Power Rankings";
+    powerRankingsTitle.style.textAlign = "center";
+    powerRankingsContainer.appendChild(powerRankingsTitle);
+
+    let powerRankingsGrid = document.createElement("div");
+    powerRankingsGrid.className = "season_powerRankingsGrid";
+    powerRankingsContainer.appendChild(powerRankingsGrid);
+    //print power rankings:
+    for(let i = -1; i < gameData.seasons[season].teams.allTeams.length; i++){
+        if(i == -1){
+            //Changement
+            let changement = document.createElement("div");
+            changement.innerText = "Chg";
+            changement.className = "season_powerRankingsElement";
+            powerRankingsGrid.appendChild(changement)
+
+            //Number
+            let number = document.createElement("div");
+            number.innerText = "Pos";
+            number.style.backgroundColor = "lightgray"
+            number.className = "season_powerRankingsElement";
+            powerRankingsGrid.appendChild(number)
+
+            //Team + Logo
+            let team = document.createElement("div")
+            team.innerText = "Team";
+            team.className = "season_powerRankingsElement";
+            powerRankingsGrid.appendChild(team);
+
+            //Last 10 Games
+            let last10Games = document.createElement("div")
+            last10Games.innerText = "Last 10 Games";
+            last10Games.style.backgroundColor = "lightgray"
+            last10Games.className = "season_powerRankingsElement";
+            powerRankingsGrid.appendChild(last10Games);
+
+            //Record
+            let record = document.createElement("div")
+            record.innerText = "Record";
+            record.className = "season_powerRankingsElement";
+            powerRankingsGrid.appendChild(record);
+
+            //Expectations
+            let expectations = document.createElement("div")
+            expectations.innerText = "Expectations";
+            expectations.style.backgroundColor = "lightgray"
+            expectations.className = "season_powerRankingsElement";
+            powerRankingsGrid.appendChild(expectations);
+        }
+        else{
+            //Changement
+            let changement = document.createElement("div");
+            changement.className = "season_powerRankingsElement";
+            powerRankingsGrid.appendChild(changement);
+            
+            let teamIndexPreviousRound
+            for(let j = 0; j < previousPowerRankings.length; j++){
+                if(previousPowerRankings[j].id == powerRankings[i].id){
+                    teamIndexPreviousRound = j
+                }
+            }
+
+            if(teamIndexPreviousRound > i){
+                changement.innerText = `${teamIndexPreviousRound - i}`;
+                changement.style.backgroundColor = "green";
+            }
+            else if(teamIndexPreviousRound < i){
+                changement.innerText = `${i - teamIndexPreviousRound}`;
+                changement.style.backgroundColor = "red";
+            }
+
+            //Number
+            let number = document.createElement("div");
+            number.innerText = i + 1;
+            number.style.backgroundColor = "lightgray"
+            number.className = "season_powerRankingsElement";
+            powerRankingsGrid.appendChild(number)
+
+            //Team + Logo
+            let team = document.createElement("div");
+            team.className = "season_powerRankingsElement";
+            team.innerText = gameData.teams[powerRankings[i].id].name;
+            team.addEventListener("click", () => { //go to team page
+                let gameDataJson = JSON.stringify(gameData);
+                sessionStorage.setItem("gameData", gameDataJson);
+                sessionStorage.setItem("team", powerRankings[i].id);
+                location.href = "../team/team.html";
+            });
+            powerRankingsGrid.appendChild(team);
+                //logo of team
+                let logo = document.createElement("img"); 
+                logo.className = "logo";
+                logo.id = "logo";
+                logo.src = ".." + gameData.teams[powerRankings[i].id].logo + ".png";
+                team.appendChild(logo); 
+            
+            //Last 10 games
+            let last10Games = document.createElement("div")
+            last10Games.style.backgroundColor = "lightgray"
+            last10Games.className = "season_powerRankingsElement";
+            powerRankingsGrid.appendChild(last10Games);
+
+            for(let j = powerRankings[i].last10Matches.length - 1; j >= 0; j--){
+                let match = document.createElement("div");
+                match.className = "season_powerRankingsElementMatch";
+                last10Games.appendChild(match)
+
+                if(powerRankings[i].last10Matches[j].result == "V"){
+                    match.innerText = "V";
+                    match.style.backgroundColor = "lightgreen";
+                }
+                else if(powerRankings[i].last10Matches[j].result == "D"){
+                    match.innerText = "D";
+                    match.style.backgroundColor = "orange";
+                }
+                else if(powerRankings[i].last10Matches[j].result == "L"){
+                    match.innerText = "L";
+                    match.style.backgroundColor = "red";
+                }
+
+                let round = powerRankings[i].last10Matches[j].round;
+                let game = powerRankings[i].last10Matches[j].game;
+                //hover --> popup showing the match:
+                let hoverup = document.createElement("div");
+                hoverup.className = "season_powerRankingsHoverup";
+                match.appendChild(hoverup);
+                    //Round:
+                    let hoverupRound = document.createElement("div");
+                    hoverupRound.innerText = `Round ${round + 1}`;
+                    hoverup.appendChild(hoverupRound)
+                    //Match:
+                    let hoverupMatch = document.createElement("div");
+                    hoverupMatch.className = "season_powerRankingsHoverupMatch";
+                    hoverup.appendChild(hoverupMatch);
+                        //logo1:
+                        let hoverupLogo1 = document.createElement("img");
+                        hoverupLogo1.src = ".." + gameData.teams[gameData.seasons[season].schedule[round].games[game].team1Id].logo + ".png"
+                        hoverupLogo1.className = "logo";
+                        hoverupMatch.appendChild(hoverupLogo1);
+                        //team1:
+                        let hoverupTeam1 = document.createElement("div");
+                        hoverupTeam1.innerText = gameData.teams[gameData.seasons[season].schedule[round].games[game].team1Id].shortName;
+                        hoverupTeam1.className = "season_powerRankingsHoverupMatchElement"
+                        if(gameData.seasons[season].schedule[round].games[game].team1Id == powerRankings[i].id){
+                            hoverupTeam1.style.fontWeight = "bold"
+                        }
+                        hoverupMatch.appendChild(hoverupTeam1);
+                        //result1:
+                        let hoverupResult1 = document.createElement("div");
+                        hoverupResult1.innerText = gameData.seasons[season].schedule[round].games[game].team1Goals;
+                        hoverupResult1.className = "season_powerRankingsHoverupMatchElement"
+                        hoverupMatch.appendChild(hoverupResult1);
+                        //VS:
+                        let hoverupVS = document.createElement("div");
+                        hoverupVS.innerText = "VS";
+                        hoverupMatch.appendChild(hoverupVS);
+                        hoverupVS.className = "season_powerRankingsHoverupMatchElement"
+                        //result2:
+                        let hoverupResult2 = document.createElement("div");
+                        hoverupResult2.innerText = gameData.seasons[season].schedule[round].games[game].team2Goals;
+                        hoverupResult2.className = "season_powerRankingsHoverupMatchElement"
+                        hoverupMatch.appendChild(hoverupResult2);
+                        //team2:
+                        let hoverupTeam2 = document.createElement("div");
+                        hoverupTeam2.innerText = gameData.teams[gameData.seasons[season].schedule[round].games[game].team2Id].shortName;
+                        hoverupTeam2.className = "season_powerRankingsHoverupMatchElement"
+                        if(gameData.seasons[season].schedule[round].games[game].team2Id == powerRankings[i].id){
+                            hoverupTeam2.style.fontWeight = "bold"
+                        }
+                        hoverupMatch.appendChild(hoverupTeam2);
+                        //logo2:
+                        let hoverupLogo2 = document.createElement("img");
+                        hoverupLogo2.src = ".." + gameData.teams[gameData.seasons[season].schedule[round].games[game].team2Id].logo + ".png"
+                        hoverupLogo2.className = "logo";
+                        hoverupMatch.appendChild(hoverupLogo2);
+
+            }
+
+            //record:
+            let record = document.createElement("div")
+            record.className = "season_powerRankingsElement";
+            powerRankingsGrid.appendChild(record);
+            let victories = 0;
+            let draws = 0;
+            let losses = 0;
+            for(let j = 0; j < powerRankings[i].last10Matches.length; j++){
+                if(powerRankings[i].last10Matches[j].result == "V"){
+                    victories++;
+                }
+                else if(powerRankings[i].last10Matches[j].result == "D"){
+                    draws++;
+                }
+                else if(powerRankings[i].last10Matches[j].result == "L"){
+                    losses++;
+                }
+            }
+            record.innerText = `${victories}-${draws}-${losses}`;
+            
+            //Expectations
+            let expectations = document.createElement("div")
+            expectations.style.backgroundColor = "lightgray"
+            expectations.className = "season_powerRankingsElement";
+            powerRankingsGrid.appendChild(expectations);
+            for(let k = 0; k < gameData.seasons[season].teams.allTeams.length; k++){
+                if(gameData.seasons[season].teams.allTeams[k].id == powerRankings[i].id){
+                    if(gameData.seasons[season].teams.allTeams[k].power < 0.5){
+                        expectations.innerText = "Tanking";
+                    }
+                    else if(gameData.seasons[season].teams.allTeams[k].power < 0.8){
+                        expectations.innerText = "None";
+                    }
+                    else if(gameData.seasons[season].teams.allTeams[k].power < 1){
+                        expectations.innerText = "Be competitive";
+                    }
+                    else if(gameData.seasons[season].teams.allTeams[k].power < 1.1){
+                        expectations.innerText = "Playoff Team";
+                    }
+                    else if(gameData.seasons[season].teams.allTeams[k].power < 1.25){
+                        expectations.innerText = "Dark horse"
+                    }
+                    else if(gameData.seasons[season].teams.allTeams[k].power < 1.6){
+                        expectations.innerText = "Contender"
+                    }
+                    else{
+                        expectations.innerText = "Favourite";
+                    }
+                }
+            }
+        }
+    }
+}
+
+let powerRankingsContainer = document.createElement("div");
+powerRankingsContainer.className = "season_powerRankingsContainer"
+leftSide.appendChild(powerRankingsContainer)
+printPowerRankings(select.value);
+
+
+
+
 leftSide.appendChild(previousTrades);
-    //previous trades:
-    
+    //previous trades:    
     tradeLog(select.value);
 function tradeLog(round){
     previousTrades.innerHTML = ""

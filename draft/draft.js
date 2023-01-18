@@ -330,6 +330,9 @@ nextPick.addEventListener("click", () => {
         nextPick.style.display = "none";
         endDraft();
     }
+    let gameDataJson = JSON.stringify(gameData);
+    sessionStorage.removeItem("gameData");
+    sessionStorage.setItem("gameData", gameDataJson);
 })
 document.body.appendChild(nextPick);
 
@@ -466,12 +469,12 @@ function pick(currentPick, currentRound){
     }
     gameData.seasons[season].draft.picks.push(pick);
     if(pick.potential >= 90){
-        pick.potential *= 1.5
+        gameData.teams[draft[currentRound][currentPick - currentRound * draftOrder.length]].projectedPowerNextSeasons[pick.developpmentYears] += pick.potential * 1.5;
     }
     else if(pick.potential >= 80){
-        pick.potential *= 1.25
+        gameData.teams[draft[currentRound][currentPick - currentRound * draftOrder.length]].projectedPowerNextSeasons[pick.developpmentYears] += pick.potential * 1.25;
     }
-    if(pick.potential >= 50){
+    else if(pick.potential >= 50){
         gameData.teams[draft[currentRound][currentPick - currentRound * draftOrder.length]].projectedPowerNextSeasons[pick.developpmentYears] += pick.potential;
     }
 }

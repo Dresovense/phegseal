@@ -106,8 +106,7 @@ h3{
     text-align: center;
     margin-left: 2px;
     margin-right: 2px;
-    padding-left: 2px;
-    padding-right: 2px;
+    width: 18px;
     border: 1px black solid;
     border-radius: 5px;
     font-style: normal;
@@ -131,19 +130,74 @@ h3{
     width: 670px;
 }
 
-.season_leftSide{
-    width: 650px;
-}
-
 .season_gameContents{
     display: flex;
 }
 
 .previousTrades{
-    margin-left: 110px;
+    margin-left: 70px;
     margin-top: 10px;
-    height: 238px;
+    height: 210px;
     overflow-y: auto;
+}
+
+.season_powerRankingsGrid{
+    display: inline-grid;
+    grid-auto-flow: row;
+    grid-template-columns: 30px 30px 230px 290px 60px 120px;
+}
+.season_powerRankingsElement{
+    border: 1px solid black;
+    width: auto;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+}
+.season_powerRankingsElementMatch{
+    display: inline-block;
+    text-align: center;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    width: 18px;
+    height: 20px;
+    border: 1px black solid;
+    border-radius: 5px;
+    font-style: normal;
+    font-weight: normal;
+}
+.season_powerRankingsContainer{
+    margin-left: 70px;
+    height: 511px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.season_powerRankingsHoverup{
+    display: none;
+    position: relative;
+    min-width: 240px;
+    max-width: 300px;
+    width: fit-content;
+    height: 45px;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid;
+    right: 120px;
+    bottom: 68px;
+}
+
+.season_powerRankingsElementMatch:hover > div{
+    display: block;
+}
+
+.season_powerRankingsHoverupMatch{
+    display: inline-flex;
+}
+
+.season_powerRankingsHoverupMatchElement{
+    margin: 5px;
 }
 
 
