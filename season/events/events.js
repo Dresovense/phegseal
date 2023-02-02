@@ -64,7 +64,7 @@ module.exports = {
         }
         
         //trade value:
-        let tradeValue = [60,30,10,7,5,4,2]
+        let tradeValue = [50,30,10,7,5,4,2]
 
         //assets of buying team:
         let assets = [];
@@ -90,7 +90,7 @@ module.exports = {
 
 
         //select how much power will be echanged (based on random, how much trade value buyer team still has, ...)
-        let powerToBeEchanged = randn_bm() * (totalAmountOfTradeValue * 0.0004 - 0.06) //min = 0.02, max = 0.15, depends on total trade value
+        let powerToBeEchanged = randn_bm() * (totalAmountOfTradeValue * 0.0004 - 0.04) //min = 0.02, max = 0.15, depends on total trade value
         let valueOfPowerChanged = powerToBeEchanged * 1125 - 10;
 
         if(valueOfPowerChanged < 5){

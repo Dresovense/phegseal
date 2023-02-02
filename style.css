@@ -47,11 +47,9 @@ select{
 }
 
 .gridContainer{
-    margin: 10px;
-    margin-top: 20px;
-    max-height: 350px;
+    max-height: 720px;
     overflow: auto;
-    width: 660px;
+    width: 775px;
 }
 
 #divMatch{
@@ -125,9 +123,9 @@ h3{
 }
 
 .gamesDiv{
-    max-height: 228px;
     overflow: auto;
     width: 670px;
+    height: 570px;
 }
 
 .season_gameContents{
@@ -167,11 +165,13 @@ h3{
     font-style: normal;
     font-weight: normal;
 }
-.season_powerRankingsContainer{
+
+.season_leftSideContainers{
     margin-left: 70px;
-    height: 511px;
+    max-height: 720px;
     overflow-y: auto;
     overflow-x: hidden;
+    width: 775px;
 }
 
 .season_powerRankingsHoverup{
@@ -198,6 +198,15 @@ h3{
 
 .season_powerRankingsHoverupMatchElement{
     margin: 5px;
+}
+
+.season_leftSideButtons{
+    margin-top: 50px;
+    margin-left: 70px;
+}
+
+.season_leftSideButton{
+    width: 140px;
 }
 
 
@@ -285,12 +294,11 @@ h3{
 .recordsFlex{
     display: inline-flex;
     flex-wrap: wrap;
-    max-height: 580px;
     overflow: auto;
 }
 
 .pastSeasonWinnerUI{
-    max-height: 378px;
+    max-height: 630px;
     width: 470px;
     overflow: auto;
 }
@@ -313,7 +321,7 @@ h3{
 }
 
 .recordUI{
-    max-height: 378px;
+    max-height: 630px;
     width: 270px;
     overflow: auto;
 }
@@ -389,6 +397,7 @@ h3{
 .team_teamInfosSquare{
     border: 1px solid black;
     text-align: center;
+    overflow-y: auto;
 }
 
 .team_otherInfoFlex{
@@ -455,8 +464,7 @@ h3{
 }
 
 .team_previousYearsSquare{
-    border-left: black 1px solid;
-    border-right: black 1px solid;
+    border: black 1px solid;
 }
 
 .team_previousMatchesContainers{
@@ -531,7 +539,9 @@ h3{
 
 .seasonPanel_winProbabilitiesRowSquare{
     display: flex;
-    align-items: center;
+    text-align: center;
+    border: 1px solid;
+    justify-content: center;
 }
 
 /*event.js*/

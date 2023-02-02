@@ -36,7 +36,7 @@ function printTeam(team, container){
             teamDate1.innerText = "None";
         }
         else{
-            teamDate1.innerText = gameData.seasons[gameData.teams[team].date].date;
+            teamDate1.innerText = `${gameData.seasons[gameData.teams[team].date].date} (${gameData.seasons.length - gameData.teams[team].date})`;
         }
         teamDate1.className = "team_teamInfosSquare";
         teamInfos.appendChild(teamDate1);
@@ -83,8 +83,11 @@ function printTeam(team, container){
         else if(gameData.teams[team].power + gameData.teams[team].tradePower < 1.6){
             expectations = "Contender"
         }
+        else if(gameData.teams[team].power + gameData.teams[team].tradePower < 2){
+            expectations = "Favourite"
+        }
         else{
-            expectations = "Favourite";
+            expectations = "Broken";
         }
         expectationsDiv1.innerText = expectations;
         expectationsDiv1.className = "team_teamInfosSquare";
@@ -230,7 +233,7 @@ function printTeam(team, container){
                 previousYears.appendChild(regularSeason);
                 if(teamChoiceScope == "league"){
                     let league = document.createElement("div");
-                    league.innerText = `${teamPlaceLeague}th overall`;
+                    league.innerText = `${teamPlaceLeague}th overall (${gameData.seasons[i].teams.allTeams.length})`;
                     regularSeason.appendChild(league);
                     let points = document.createElement("div");
                     points.innerText = `(${teamPoints} pts)`;
@@ -238,10 +241,10 @@ function printTeam(team, container){
                 }
                 else if(teamChoiceScope == "conference"){
                     let league = document.createElement("div");
-                    league.innerText = `${teamPlaceLeague}th overall`;
+                    league.innerText = `${teamPlaceLeague}th overall (${gameData.seasons[i].teams.allTeams.length})`;
                     regularSeason.appendChild(league);
                     let conference = document.createElement("div");
-                    conference.innerText = `${teamPlaceConference}th conference`;
+                    conference.innerText = `${teamPlaceConference}th conference (${gameData.seasons[i].teams.conference[0].teamsInConference.length})`;
                     regularSeason.appendChild(conference);
                     let points = document.createElement("div");
                     points.innerText = `(${teamPoints} pts)`;
@@ -249,13 +252,13 @@ function printTeam(team, container){
                 }
                 else{
                     let league = document.createElement("div");
-                    league.innerText = `${teamPlaceLeague}th overall`;
+                    league.innerText = `${teamPlaceLeague}th overall (${gameData.seasons[i].teams.allTeams.length})`;
                     regularSeason.appendChild(league);
                     let conference = document.createElement("div");
-                    conference.innerText = `${teamPlaceConference}th conference`;
+                    conference.innerText = `${teamPlaceConference}th conference (${gameData.seasons[i].teams.conference[0].teamsInConference.length})`;
                     regularSeason.appendChild(conference);
                     let division = document.createElement("div");
-                    division.innerText = `${teamPlaceDivision}th division`;
+                    division.innerText = `${teamPlaceDivision}th division (${gameData.seasons[i].teams.conference[0].divisions[0].teams.length})`;
                     regularSeason.appendChild(division);
                     let points = document.createElement("div");
                     points.innerText = `(${teamPoints} pts)`;
@@ -396,10 +399,54 @@ function printTeam(team, container){
                     
                 }
     
-                if(i % 2 == 1){
-                    year.style.backgroundColor = "lightgray";
-                    regularSeason.style.backgroundColor = "lightgray";
-                    playoff.style.backgroundColor = "lightgray";
+                //coloring
+                if(i < 28){
+                    if(i % 2 == 1){
+                        year.style.backgroundColor = "lightgray"
+                        regularSeason.style.backgroundColor = "lightgray"
+                        playoff.style.backgroundColor = "lightgray"
+                    }
+                }
+                else{
+                    for(let j = 0; j < gameData.seasons[i].teams.allTeams.length; j++){
+                            if(gameData.seasons[i].teams.allTeams[j].id == team){
+                                if(gameData.seasons[i].teams.allTeams[j].power < 0.5){      //tanking
+                                    year.style.backgroundColor = "hsl(0,100%,68%)"
+                                    regularSeason.style.backgroundColor = "hsl(0,100%,68%)"
+                                    playoff.style.backgroundColor = "hsl(0,100%,68%)"
+                                }
+                                else if(gameData.seasons[i].teams.allTeams[j].power < 0.8){ //none
+                                    year.style.backgroundColor = "hsl(10,58%,64%)"
+                                    regularSeason.style.backgroundColor = "hsl(10,58%,64%)"
+                                    playoff.style.backgroundColor = "hsl(10,58%,64%)"
+                                }
+                                else if(gameData.seasons[i].teams.allTeams[j].power < 1){   //be competitive
+                                    year.style.backgroundColor = "hsl(27,58%,64%)"
+                                    regularSeason.style.backgroundColor = "hsl(27,58%,64%)"
+                                    playoff.style.backgroundColor = "hsl(27,58%,64%)"
+                                }
+                                else if (gameData.seasons[i].teams.allTeams[j].power < 1.10){   //playoff team
+                                    year.style.backgroundColor = "hsl(52,58%,64%)"
+                                    regularSeason.style.backgroundColor = "hsl(52,58%,64%)"
+                                    playoff.style.backgroundColor = "hsl(52,58%,64%)"
+                                }
+                                else if(gameData.seasons[i].teams.allTeams[j].power < 1.25){    //dark horse
+                                    year.style.backgroundColor = "hsl(80,58%,64%)"
+                                    regularSeason.style.backgroundColor = "hsl(80,58%,64%)"
+                                    playoff.style.backgroundColor = "hsl(80,58%,64%)"
+                                }
+                                else if(gameData.seasons[i].teams.allTeams[j].power < 1.6){     //contender
+                                    year.style.backgroundColor = "hsl(100,58%,64%)"
+                                    regularSeason.style.backgroundColor = "hsl(100,58%,64%)"
+                                    playoff.style.backgroundColor = "hsl(100,58%,64%)"
+                                }
+                                else{                                                           //favourite
+                                    year.style.backgroundColor = "hsl(143,58%,64%)"
+                                    regularSeason.style.backgroundColor = "hsl(143,58%,64%)"
+                                    playoff.style.backgroundColor = "hsl(143,58%,64%)"
+                                }
+                            }
+                    }
                 }
             }
         }

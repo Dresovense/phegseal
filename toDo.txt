@@ -7,8 +7,6 @@ Link to team history when you click on them
 
 Records (All-time + team)
 
-Power Rankings
-
 Rivalries (change with time)
 
 Interesting things happening in the round
@@ -32,12 +30,17 @@ Rework season choice page
 
 Modular rules (can change modifiers and stuff)
 
-Rework save file (remove unuseful things, like list of assets for trades, redo rules, ...)
-
 Strength of schedule (based on power and standings?)
 
 Colors for draft picks in team history
 
 Strength of the draft (overall and compared to the picks they had)
+
+Rework a bit powerRankings
+
+
+
+
+Clean Up Code + rework save file
 
 

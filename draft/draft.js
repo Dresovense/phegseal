@@ -93,12 +93,16 @@ if(gameData.seasons[season].draft.completed == "no"){
         if(gameData.seasons[season].draft.draftLottery.length == 0){
             //odds: (each team has one more lottery "ball" than the one bellow them in the standings)
             let odds = [];
-            let numberOfLotteryBalls = 0;
-            for(let i = lastYearStandings.length - 1; i >= lastYearStandings.length - numberOfTeamsOutOfPlayoffs; i--){
-                for(let j = 0; j < numberOfTeamsOutOfPlayoffs - numberOfLotteryBalls; j++){
-                    odds.push(lastYearStandings[i].id);
+            let numberOfLotteryBalls = 1;
+            let maxodds = 0;
+            for(let i = lastYearStandings.length - 1; i >= 0; i--){
+                if(!gameData.seasons[season].postSeasonSchedule.teamsInPlayoffs.includes(lastYearStandings[i].id)){
+                    for(let j = 0; j < numberOfLotteryBalls; j++){
+                        odds.push(lastYearStandings[i].id);
+                    }
+                    maxodds = numberOfLotteryBalls;
+                    numberOfLotteryBalls += 2
                 }
-                numberOfLotteryBalls++
             }
             let totalNumberOfOdds = odds.length;
             console.log(odds)
@@ -134,13 +138,15 @@ if(gameData.seasons[season].draft.completed == "no"){
 
             //print Event:
             let eventDescription = `The ${gameData.seasons[season].endDate} draft lottery has occurred. These were the odds:\n`;
-            numberOfLotteryBalls = 0;
-            for(let i = lastYearStandings.length - 1; i >= lastYearStandings.length - numberOfTeamsOutOfPlayoffs; i--){
+            numberOfLotteryBalls = 1;
+            for(let i = lastYearStandings.length - 1; i >= 0; i--){
                 console.log(numberOfTeamsOutOfPlayoffs)
                 console.log(numberOfLotteryBalls)
-                    eventDescription += `- ${gameData.teams[lastYearStandings[i].id].name}: ${((numberOfTeamsOutOfPlayoffs - numberOfLotteryBalls) / totalNumberOfOdds * 100).toFixed(2).replace(/[.,]00$/, "")} %\n`
+                if(!gameData.seasons[season].postSeasonSchedule.teamsInPlayoffs.includes(lastYearStandings[i].id)){
+                    eventDescription += `- ${gameData.teams[lastYearStandings[i].id].name}: ${((maxodds) / totalNumberOfOdds * 100).toFixed(2).replace(/[.,]00$/, "")} %\n`
+                    maxodds -= 2
+                }
                 
-                numberOfLotteryBalls++
             }
             let eventEffects = `\n\nThe lottery picked:\n`;
             for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.rules.draftLotteryNumberOfSpots; i++){
@@ -469,12 +475,12 @@ function pick(currentPick, currentRound){
     }
     gameData.seasons[season].draft.picks.push(pick);
     if(pick.potential >= 90){
-        gameData.teams[draft[currentRound][currentPick - currentRound * draftOrder.length]].projectedPowerNextSeasons[pick.developpmentYears] += pick.potential * 1.5;
-    }
-    else if(pick.potential >= 80){
         gameData.teams[draft[currentRound][currentPick - currentRound * draftOrder.length]].projectedPowerNextSeasons[pick.developpmentYears] += pick.potential * 1.25;
     }
-    else if(pick.potential >= 50){
+    else if(pick.potential >= 80){
+        gameData.teams[draft[currentRound][currentPick - currentRound * draftOrder.length]].projectedPowerNextSeasons[pick.developpmentYears] += pick.potential * 1.125;
+    }
+    else if(pick.potential >= 55){
         gameData.teams[draft[currentRound][currentPick - currentRound * draftOrder.length]].projectedPowerNextSeasons[pick.developpmentYears] += pick.potential;
     }
 }
@@ -502,9 +508,9 @@ function endDraft(){
         }
 
 
-        //reduce current talent (-0.1 to 0.3 drop, gauss drop)
+        //reduce current talent 
         console.log(gameData.teams[i].name + " before " + gameData.teams[i].power);
-        let drop = randn_bm() * (0.5 + gameData.teams[i].seasonsAbove1/20) - 0.10 - (0.07 * gameData.teams[i].seasonsBelow1);
+        let drop = randn_bm() * (0.7 + gameData.teams[i].seasonsAbove1/20) - 0.10 - (0.07 * gameData.teams[i].seasonsBelow1);
         gameData.teams[i].power -= drop;
         console.log(gameData.teams[i].name + " drop " + drop);
         //push new talent
@@ -517,7 +523,7 @@ function endDraft(){
         gameData.teams[i].projectedPowerNextSeasons.push(0);
         //change of potential in the next seasons
         for(let j = 0; j < 7; j++){
-            let dropPotential = randn_bm() * 90 - 28;
+            let dropPotential = randn_bm() * 100 - 28;
             gameData.teams[i].projectedPowerNextSeasons[j] -= dropPotential;
         }
         //add minimal strength:

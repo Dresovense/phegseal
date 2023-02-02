@@ -19,15 +19,22 @@ let homeAwayFactor = "All";
 let endDate = gameData.seasons[season].endDate;
 let startDate = parseInt(gameData.seasons[season].endDate) - 1;
 let seasonTitle = document.createElement("h3");
-seasonTitle.innerText = startDate + "-" + endDate + " Season";
+seasonTitle.innerText = `${startDate}-${endDate} Season (${gameData.seasons.length})`
 seasonContainer.appendChild(seasonTitle);
+
+let standingsContainerContainer = document.createElement("div");
+let standingsContainer = document.createElement("div");
+let boolTradeLog = false;
+let boolPowerRankings = false;
+let boolPredictions = false;
+let boolStandings = true;
  
 const conferenceNumber = gameData.seasons[season].teams.conference.length;
 const divisionNumber = gameData.seasons[season].teams.conference[0].divisions.length;
 
 
 let previousTrades = document.createElement("div");
-previousTrades.className = "previousTrades";
+previousTrades.className = "season_leftSideContainers"
 
 let lastYearWinner
 if(season <= 12 && season != 0){
@@ -2256,8 +2263,7 @@ function layOutPostSeason(gameData, season){
     }
 }
 
-function gamesRound (gameData, season, round){    
-    gamesDiv.style.maxHeight = "228px"; 
+function gamesRound (gameData, season, round){   
     let matches = gameData.seasons[season].schedule[round].games;
     let teams = gameData.teams;
 
@@ -2401,7 +2407,9 @@ function gamesRound (gameData, season, round){
                     inputGoalsTeam2.value = result[1];
                     gameButton.dispatchEvent(new Event("click"))
                 }
-                tradeLog(select.value)
+                if(boolTradeLog == true){
+                    tradeLog(select.value)
+                }
                 let gameDataJson = JSON.stringify(gameData);
                 sessionStorage.setItem("gameData", gameDataJson);
             })
@@ -2567,7 +2575,9 @@ function gamesRound (gameData, season, round){
                 if(gameData.seasons[season].schedule[gameData.seasons[season].schedule.length - 1].completed == "yes"){
                     layOutPostSeason(gameData, season);
                 }
-                tradeLog(select.value);
+                if(boolTradeLog == true){
+                    tradeLog(select.value);
+                }
                 gameDataJson = JSON.stringify(gameData);
                 sessionStorage.setItem("gameData", gameDataJson);
             });
@@ -2862,7 +2872,6 @@ function gamesRound (gameData, season, round){
 }
 
 function gamesPostSeason (gameData, season, round){    
-    gamesDiv.style.maxHeight = "420px"; 
     if(season <= 11){
         let matchups = gameData.seasons[season].postSeasonSchedule[round].matchups;
         let teams = gameData.teams;
@@ -4074,6 +4083,12 @@ seasonContainer.appendChild(select);
 selectionOptions(gameData, season);
 select[select.length - 1].selected = "selected";
 
+
+let standingsTitle = document.createElement("h3");
+standingsTitle.innerText = "Standings";
+standingsTitle.style.textAlign = "center";
+standingsContainerContainer.appendChild(standingsTitle)
+
 //conferences/divisions
 let divisionsFactor = "league";
 
@@ -4112,7 +4127,7 @@ if(conferenceNumber > 1){
         conferenceStandingsChoice.style.display = "none";
         divisionsFactor = "conference";
     });
-    seasonContainer.appendChild(conferenceStandingsChoice);
+    standingsContainerContainer.appendChild(conferenceStandingsChoice);
 }
 if(divisionNumber > 1){
     divisionStandingsChoice.innerText = "Division";
@@ -4148,13 +4163,17 @@ if(divisionNumber > 1){
         conferenceStandingsChoice.style.display = "inline-block";
         divisionsFactor = "division";
     });
-    seasonContainer.appendChild(divisionStandingsChoice);
+    standingsContainerContainer.appendChild(divisionStandingsChoice);
 }
 if(divisionNumber > 1 || conferenceNumber > 1){
     leagueStandingsChoice.innerText = "League";
     leagueStandingsChoice.style.display = "none";
     leagueStandingsChoice.addEventListener("click", () =>{
         standingsContainer.innerHTML = "";
+        
+        let leagueName = document.createElement("div");
+        leagueName.innerText = `League`;
+        standingsContainer.appendChild(leagueName);
         //league Standings
         let teamChoice = gameData.seasons[season].teams.allTeams;
         if(homeAwayFactor == "All"){
@@ -4175,7 +4194,7 @@ if(divisionNumber > 1 || conferenceNumber > 1){
         conferenceStandingsChoice.style.display = "inline-block";
         divisionsFactor = "league";
     });
-    seasonContainer.appendChild(leagueStandingsChoice);
+    standingsContainerContainer.appendChild(leagueStandingsChoice);
 }
 
 let round = select.value;
@@ -4186,9 +4205,6 @@ seasonContainer.appendChild(button);
 let gamesDiv = document.createElement("div");
 gamesDiv.className = "gamesDiv";
 seasonContainer.appendChild(gamesDiv);
-let standingsContainer = document.createElement("div");
-standingsContainer.className = "gridContainer";
-seasonContainer.appendChild(standingsContainer);
 
 let eventDispatched = false;
 button.addEventListener("click", () => {
@@ -4202,11 +4218,13 @@ button.addEventListener("click", () => {
     standingsAwayButton.style.display = "inline-block";
     round = select.value;
     if(round < gameData.seasons[season].schedule.length){
-        let teamChoice = gameData.seasons[season].teams.allTeams;
-        let teams = [];
-        teams = standings(gameData, teamChoice, season, round, sortingType);
-        let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
-        printStandings(teams, placeTeams);
+        if(boolStandings == true){
+            let teamChoice = gameData.seasons[season].teams.allTeams;
+            let teams = [];
+            teams = standings(gameData, teamChoice, season, round, sortingType);
+            let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
+            printStandings(teams, placeTeams);
+        }
         gamesRound(gameData, season, round);
         boolRegularSeason = true;
         standingsHomeButton.style.display = "inline-block";
@@ -4215,9 +4233,6 @@ button.addEventListener("click", () => {
         divisionStandingsChoice.style.display = "inline-block";
         if(eventDispatched == false){
             conferenceStandingsChoice.dispatchEvent(new Event("click"));
-        }
-        else{
-            eventDispatched == false;
         }
     }
     else{
@@ -4232,8 +4247,15 @@ button.addEventListener("click", () => {
         divisionStandingsChoice.style.display = "none";
     }
     
-    printPowerRankings(select.value);
-    tradeLog(select.value);
+    if(boolPredictions == true){
+        expectations(select.value);
+    }
+    if(boolPowerRankings == true){
+        printPowerRankings(select.value);
+    }
+    if(boolTradeLog == true){
+        tradeLog(select.value);
+    }
 });
 
 let previousRound = document.createElement("button");
@@ -4272,11 +4294,13 @@ previousRound.addEventListener("click", () =>{
     divisionStandingsChoice.style.display = "inline-block";
     if(round < gameData.seasons[season].schedule.length){
         //if(conferenceNumber == 1 && divisionNumber == 1){
-            let teamChoice = gameData.seasons[season].teams.allTeams;
-            let teams = [];
-            teams = standings(gameData, teamChoice, season, round, sortingType);
-            let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
-            printStandings(teams, placeTeams);
+            if(boolStandings == true){
+                let teamChoice = gameData.seasons[season].teams.allTeams;
+                let teams = [];
+                teams = standings(gameData, teamChoice, season, round, sortingType);
+                let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
+                printStandings(teams, placeTeams);
+            }
             gamesRound(gameData, season, round);
             boolRegularSeason = true;
             standingsHomeButton.style.display = "inline-block";
@@ -4298,8 +4322,16 @@ previousRound.addEventListener("click", () =>{
         leagueStandingsChoice.style.display = "none";
         divisionStandingsChoice.style.display = "none";
     }
-    printPowerRankings(select.value);
-    tradeLog(select.value);
+
+    if(boolPredictions == true){
+        expectations(select.value)
+    }
+    if(boolPowerRankings == true){
+        printPowerRankings(select.value);
+    }
+    if(boolTradeLog == true){
+        tradeLog(select.value);
+    }
 });
 seasonContainer.appendChild(previousRound);
 
@@ -4382,11 +4414,13 @@ nextRound.addEventListener("click", () => {
     standingsAwayButton.style.display = "inline-block";
     if(round < gameData.seasons[season].schedule.length){
         //if(conferenceNumber == 1 && divisionNumber == 1){
-            let teamChoice = gameData.seasons[season].teams.allTeams;
-            let teams = [];
-            teams = standings(gameData, teamChoice, season, round, sortingType);
-            let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
-            printStandings(teams, placeTeams);
+            if(boolStandings == true){
+                let teamChoice = gameData.seasons[season].teams.allTeams;
+                let teams = [];
+                teams = standings(gameData, teamChoice, season, round, sortingType);
+                let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
+                printStandings(teams, placeTeams);
+            }
             gamesRound(gameData, season, round);
             boolRegularSeason = true;
             standingsHomeButton.style.display = "inline-block";
@@ -4407,18 +4441,28 @@ nextRound.addEventListener("click", () => {
         leagueStandingsChoice.style.display = "none";
         divisionStandingsChoice.style.display = "none";
     }
-    printPowerRankings(select.value);
-    tradeLog(select.value);
+
+    if(boolPredictions == true){
+        expectations(select.value);
+    }
+    if(boolPowerRankings == true){
+        printPowerRankings(select.value);
+    }
+    if(boolTradeLog == true){
+        tradeLog(select.value);
+    }
 });
 seasonContainer.appendChild(nextRound);
 
 if(select.value < gameData.seasons[season].schedule.length){
     //if(conferenceNumber == 1 && divisionNumber == 1){
-        let teamChoice = gameData.seasons[season].teams.allTeams;
-        let teams = [];
-        teams = standings(gameData, teamChoice, season, round, sortingType);
-        let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
-        printStandings(teams, placeTeams)
+        if(boolStandings == true){
+            let teamChoice = gameData.seasons[season].teams.allTeams;
+            let teams = [];
+            teams = standings(gameData, teamChoice, season, round, sortingType);
+            let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
+            printStandings(teams, placeTeams)
+        }
         gamesRound(gameData, season, round);
         boolRegularSeason = true;
         homeAwayFactor = "All";
@@ -4444,6 +4488,9 @@ standingsHomeButton.addEventListener("click", () =>{
     standingsContainer.innerHTML = "";
     //if(conferenceNumber == 1 && divisionNumber == 1){
         if(divisionsFactor == "league"){
+            let leagueName = document.createElement("div");
+            leagueName.innerText = `League`;
+            standingsContainer.appendChild(leagueName);
             let teamChoice = gameData.seasons[season].teams.allTeams;
             let teams = standingsHome(gameData, teamChoice, season, round, "Pts%");
             printStandingsHome(teams);
@@ -4476,13 +4523,16 @@ standingsHomeButton.addEventListener("click", () =>{
         homeAwayFactor = "Home";
     //}
 });
-seasonContainer.appendChild(standingsHomeButton);
+standingsContainerContainer.appendChild(standingsHomeButton);
 
 standingsAwayButton.innerText = "Away";
 standingsAwayButton.addEventListener("click", () =>{
     standingsContainer.innerHTML = "";
     //if(conferenceNumber == 1 && divisionNumber == 1){
         if(divisionsFactor == "league"){
+            let leagueName = document.createElement("div");
+            leagueName.innerText = `League`;
+            standingsContainer.appendChild(leagueName);
             let teamChoice = gameData.seasons[season].teams.allTeams;
             let teams = standingsAway(gameData, teamChoice, season, round, "Pts%");
             printStandingsAway(teams);
@@ -4515,7 +4565,7 @@ standingsAwayButton.addEventListener("click", () =>{
         homeAwayFactor = "Away";
     //}
 });
-seasonContainer.appendChild(standingsAwayButton);
+standingsContainerContainer.appendChild(standingsAwayButton);
 
 standingsAllButton.innerText = "All";
 standingsAllButton.style.display = "none";
@@ -4523,6 +4573,9 @@ standingsAllButton.addEventListener("click", () => {
     standingsContainer.innerHTML = "";
     //if(conferenceNumber == 1 && divisionNumber == 1){
         if(divisionsFactor == "league"){
+            let leagueName = document.createElement("div");
+            leagueName.innerText = `League`;
+            standingsContainer.appendChild(leagueName);
             let teamChoice = gameData.seasons[season].teams.allTeams;
             let teams = standings(gameData, teamChoice, season, round, sortingType);
             let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
@@ -4558,7 +4611,7 @@ standingsAllButton.addEventListener("click", () => {
         homeAwayFactor = "All";
     //}
 });
-seasonContainer.appendChild(standingsAllButton);
+standingsContainerContainer.appendChild(standingsAllButton);
 
 if(boolRegularSeason == false){
     standingsAllButton.style.display = "none";
@@ -4594,20 +4647,125 @@ let leftSide = document.createElement("div");
 leftSide.className = "season_leftSide";
 gameContents.appendChild(leftSide);
 
-/* let winProbabilitiesContainer = document.createElement("div");
-leftSide.appendChild(winProbabilitiesContainer)
-expectations(select.value);
+let leftSideButtons = document.createElement("div");
+leftSideButtons.className = "season_leftSideButtons";
+leftSide.appendChild(leftSideButtons);
+
+let buttonLeftSideStandings = document.createElement("button");
+buttonLeftSideStandings.innerText = "Standings";
+buttonLeftSideStandings.style.display = "inline-block";
+buttonLeftSideStandings.className = "season_leftSideButton";
+leftSideButtons.appendChild(buttonLeftSideStandings);
+buttonLeftSideStandings.addEventListener("click", () => {
+    powerRankingsContainer.innerHTML = "";
+    standingsContainerContainer.style.display = "block";
+    standingsContainer.innerHTML = "";
+    seasonProbabilitiesContainer.innerHTML = "";
+    previousTrades.innerHTML = "";
+    boolTradeLog = false;
+    boolStandings = true;
+    boolPowerRankings = false;
+    boolPredictions = false;
+
+    if(boolRegularSeason == true){
+        let teamChoice = gameData.seasons[season].teams.allTeams;
+        let teams = [];
+        teams = standings(gameData, teamChoice, season, round, sortingType);
+        let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
+        printStandings(teams, placeTeams);
+        standingsHomeButton.style.display = "inline-block";
+        standingsAwayButton.style.display = "inline-block";
+        conferenceStandingsChoice.style.display = "inline-block";
+        divisionStandingsChoice.style.display = "inline-block";
+        if(eventDispatched == false){
+            conferenceStandingsChoice.dispatchEvent(new Event("click"));
+        }
+    }
+})
+
+let buttonLeftSidePR = document.createElement("button");
+buttonLeftSidePR.innerText = "Power Rankings";
+buttonLeftSidePR.className = "season_leftSideButton";
+buttonLeftSidePR.style.display = "inline-block";
+leftSideButtons.appendChild(buttonLeftSidePR);
+buttonLeftSidePR.addEventListener("click", () => {
+    powerRankingsContainer.innerHTML = "";
+    standingsContainerContainer.style.display = "none";
+    seasonProbabilitiesContainer.innerHTML = "";
+    previousTrades.innerHTML = "";
+    standingsContainer.innerHTML = "";
+    boolTradeLog = false;
+    boolStandings = false;
+    boolPowerRankings = true;
+    boolPredictions = false;
+    printPowerRankings(select.value);
+})
+
+let buttonLeftSideSP = document.createElement("button");
+buttonLeftSideSP.innerText = "Season Predictions";
+buttonLeftSideSP.style.display = "inline-block";
+buttonLeftSideSP.className = "season_leftSideButton";
+leftSideButtons.appendChild(buttonLeftSideSP);
+buttonLeftSideSP.addEventListener("click", () => {
+    powerRankingsContainer.innerHTML = "";
+    standingsContainerContainer.style.display = "none";
+    seasonProbabilitiesContainer.innerHTML = "";
+    previousTrades.innerHTML = "";
+    standingsContainer.innerHTML = "";
+    boolTradeLog = false;
+    boolStandings = false;
+    boolPowerRankings = false;
+    boolPredictions = true;
+    expectations(select.value);
+})
+
+let buttonLeftSideTL = document.createElement("button");
+buttonLeftSideTL.innerText = "Trade Log";
+buttonLeftSideTL.style.display = "inline-block";
+buttonLeftSideTL.className = "season_leftSideButton";
+leftSideButtons.appendChild(buttonLeftSideTL);
+buttonLeftSideTL.addEventListener("click", () => {
+    standingsContainer.innerHTML = "";
+    standingsContainerContainer.style.display = "none";
+    powerRankingsContainer.innerHTML = "";
+    seasonProbabilitiesContainer.innerHTML = "";
+    previousTrades.innerHTML = "";
+    boolTradeLog = true;
+    boolStandings = false;
+    boolPowerRankings = false;
+    boolPredictions = false;
+    tradeLog(select.value);
+})
+
+standingsContainerContainer.className = "season_leftSideContainers";
+leftSide.appendChild(standingsContainerContainer);
+
+
+
+
+standingsContainer.className = "gridContainer";
+standingsContainerContainer.appendChild(standingsContainer);
+
+
+let seasonProbabilitiesContainer = document.createElement("div");
+seasonProbabilitiesContainer.className = "season_leftSideContainers"
+leftSide.appendChild(seasonProbabilitiesContainer)
+
 function expectations(round){
-    winProbabilitiesContainer.innerHTML = "";
+    seasonProbabilitiesContainer.innerHTML = "";
+
+    let expectationsTitle = document.createElement("h3");
+    expectationsTitle.innerText = "Season Predictions";
+    expectationsTitle.style.textAlign = "center";
+    seasonProbabilitiesContainer.appendChild(expectationsTitle)
     //expectations:
     if(season > 46){
-        winProbabilitiesContainer.style.display = "grid";
-        winProbabilitiesContainer.style.gridTemplateColumns = "50px 250px 90px 90px 120px 120px";
-        winProbabilitiesContainer.style.maxHeight = "400px";
-        winProbabilitiesContainer.style.overflowY = "auto";
-        winProbabilitiesContainer.style.width = "fit-content"
-        winProbabilitiesContainer.style.marginLeft = "110px";
-        winProbabilitiesContainer.style.marginTop = "100px";
+        let container = document.createElement("div");
+        seasonProbabilitiesContainer.appendChild(container)
+        container.style.display = "grid";
+        container.style.gridTemplateColumns = "50px 250px 90px 90px 120px 120px";
+        container.style.overflowY = "auto";
+        container.style.width = "fit-content"
 
         let predictions;
         for(let i = gameData.seasons[season].predictions.length - 1; i >= 0; i--){
@@ -4632,38 +4790,38 @@ function expectations(round){
                 let place = document.createElement("div");
                 place.innerText = "Pos";
                 place.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(place);
+                container.appendChild(place);
 
                 let team = document.createElement("div")
                 team.innerText = "Team";
                 team.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(team);
+                container.appendChild(team);
 
                 let playoffOdds = document.createElement("div")
                 playoffOdds.innerText = "Playoff odds:";
                 playoffOdds.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(playoffOdds);
+                container.appendChild(playoffOdds);
 
                 let firstOverallOdds = document.createElement("div")
                 firstOverallOdds.innerText = "1st overall odds:";
                 firstOverallOdds.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(firstOverallOdds);
+                container.appendChild(firstOverallOdds);
 
                 let expectations = document.createElement("div")
                 expectations.innerText = "Expectations:";
                 expectations.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(expectations);
+                container.appendChild(expectations);
 
                 let playoffsLastYear = document.createElement("div")
                 playoffsLastYear.innerText = "Playoffs Last Year:";
                 playoffsLastYear.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(playoffsLastYear);
+                container.appendChild(playoffsLastYear);
             }
             else{
                 let place = document.createElement("div");
                 place.innerText = i + 1;
                 place.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(place);
+                container.appendChild(place);
 
                 let teamName = document.createElement("div");
                 teamName.className = "seasonPanel_winProbabilitiesRowSquare";
@@ -4675,7 +4833,7 @@ function expectations(round){
                     sessionStorage.setItem("team", standings[i]);
                     location.href = "../team/team.html";
                 });
-                winProbabilitiesContainer.appendChild(teamName);
+                container.appendChild(teamName);
                 //logo of team
                 let logo = document.createElement("img"); 
                 logo.className = "logo";
@@ -4686,16 +4844,16 @@ function expectations(round){
                 let playoffOdds = document.createElement("div")
                 playoffOdds.innerText = predictions.playoffs[standings[i]] / 5 + "%";
                 playoffOdds.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(playoffOdds);
+                container.appendChild(playoffOdds);
 
                 let firstOverallOdds = document.createElement("div")
                 firstOverallOdds.innerText = predictions.lose[standings[i]] / 5 + "%";
                 firstOverallOdds.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(firstOverallOdds);
+                container.appendChild(firstOverallOdds);
 
                 let expectations = document.createElement("div")
                 expectations.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(expectations);
+                container.appendChild(expectations);
                 for(let k = 0; k < gameData.seasons[season].teams.allTeams.length; k++){
                     if(gameData.seasons[season].teams.allTeams[k].id == standings[i]){
                         if(gameData.seasons[season].teams.allTeams[k].power < 0.5){
@@ -4730,7 +4888,7 @@ function expectations(round){
                     }
                 }
                 playoffsLastYear.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(playoffsLastYear);
+                container.appendChild(playoffsLastYear);
 
                 if(i % 2 == 0){
                     place.style.backgroundColor = "lightgray";
@@ -4747,7 +4905,7 @@ function expectations(round){
             let redoPredictions = document.createElement("button");
             redoPredictions.innerText = "Reevaluate predictions";
             redoPredictions.style.width = "fit-content";
-            winProbabilitiesContainer.appendChild(redoPredictions);
+            seasonProbabilitiesContainer.appendChild(redoPredictions);
             redoPredictions.addEventListener("click", () => {
                 let loadingScreen = document.getElementsByClassName("lds-roller");
                 loadingScreen[0].style.display = "inline-block";
@@ -4766,10 +4924,10 @@ function expectations(round){
         }
     }
     else if(season > 32){
-        winProbabilitiesContainer.style.display = "grid";
-        winProbabilitiesContainer.style.gridTemplateColumns = "50px 250px 90px 120px 120px";
-        winProbabilitiesContainer.style.marginLeft = "110px";
-        winProbabilitiesContainer.style.marginTop = "100px";
+        seasonProbabilitiesContainer.style.display = "grid";
+        seasonProbabilitiesContainer.style.gridTemplateColumns = "50px 250px 90px 120px 120px";
+        seasonProbabilitiesContainer.style.marginLeft = "110px";
+        seasonProbabilitiesContainer.style.marginTop = "100px";
 
         let predictions = gameData.seasons[season].predictions;
         let standings = [];
@@ -4788,33 +4946,33 @@ function expectations(round){
                 let place = document.createElement("div");
                 place.innerText = "Pos";
                 place.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(place);
+                seasonProbabilitiesContainer.appendChild(place);
 
                 let team = document.createElement("div")
                 team.innerText = "Team";
                 team.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(team);
+                seasonProbabilitiesContainer.appendChild(team);
 
                 let playoffOdds = document.createElement("div")
                 playoffOdds.innerText = "Playoff odds:";
                 playoffOdds.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(playoffOdds);
+                seasonProbabilitiesContainer.appendChild(playoffOdds);
 
                 let expectations = document.createElement("div")
                 expectations.innerText = "Expectations:";
                 expectations.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(expectations);
+                seasonProbabilitiesContainer.appendChild(expectations);
 
                 let playoffsLastYear = document.createElement("div")
                 playoffsLastYear.innerText = "Playoffs Last Year:";
                 playoffsLastYear.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(playoffsLastYear);
+                seasonProbabilitiesContainer.appendChild(playoffsLastYear);
             }
             else{
                 let place = document.createElement("div");
                 place.innerText = i + 1;
                 place.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(place);
+                seasonProbabilitiesContainer.appendChild(place);
 
                 let teamName = document.createElement("div");
                 teamName.className = "seasonPanel_winProbabilitiesRowSquare";
@@ -4826,7 +4984,7 @@ function expectations(round){
                     sessionStorage.setItem("team", standings[i]);
                     location.href = "../team/team.html";
                 });
-                winProbabilitiesContainer.appendChild(teamName);
+                seasonProbabilitiesContainer.appendChild(teamName);
                 //logo of team
                 let logo = document.createElement("img"); 
                 logo.className = "logo";
@@ -4837,11 +4995,11 @@ function expectations(round){
                 let playoffOdds = document.createElement("div")
                 playoffOdds.innerText = predictions.playoffs[standings[i]] / 10 + "%";
                 playoffOdds.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(playoffOdds);
+                seasonProbabilitiesContainer.appendChild(playoffOdds);
 
                 let expectations = document.createElement("div")
                 expectations.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(expectations);
+                seasonProbabilitiesContainer.appendChild(expectations);
                 for(let k = 0; k < gameData.seasons[season].teams.allTeams.length; k++){
                     if(gameData.seasons[season].teams.allTeams[k].id == standings[i]){
                         if(gameData.seasons[season].teams.allTeams[k].power + gameData.seasons[season].teams.allTeams[k].tradePower < 0.5){
@@ -4876,7 +5034,7 @@ function expectations(round){
                     }
                 }
                 playoffsLastYear.className = "seasonPanel_winProbabilitiesRowSquare";
-                winProbabilitiesContainer.appendChild(playoffsLastYear);
+                seasonProbabilitiesContainer.appendChild(playoffsLastYear);
 
                 if(i % 2 == 0){
                     place.style.backgroundColor = "lightgray";
@@ -4888,7 +5046,7 @@ function expectations(round){
             }
         }
     }
-} */
+}
 
 function powerRankingsF(round){
     let powerRankings = []
@@ -4960,10 +5118,9 @@ function powerRankingsF(round){
                 }
             }
         }
-        console.log(teamPoints)
         teamPoints /= teamLast10Matches.length;
-        let teamPower = gameData.seasons[season].teams.allTeams[i].power
-        teamPoints *= Math.pow(teamPower - 1, 3) + 1;
+        /* let teamPower = gameData.seasons[season].teams.allTeams[i].power
+        teamPoints *= (Math.pow(teamPower - 1, 3) + 1)/2; */
 
         if(teamLast10Matches.length > 10){
             teamLast10Matches.length = 10;
@@ -4971,7 +5128,6 @@ function powerRankingsF(round){
 
         powerRankings.push({id: teamId, points: teamPoints, last10Matches: teamLast10Matches});
     }
-    console.log(powerRankings)
     //reorder powerRankings by power:
     powerRankings.sort(function(left, right){
         if(left.points > right.points){
@@ -4981,7 +5137,7 @@ function powerRankingsF(round){
             return 1;
         }
     });
-
+    console.log(powerRankings)
     return powerRankings;
 }
 
@@ -5236,27 +5392,23 @@ function printPowerRankings(round){
 }
 
 let powerRankingsContainer = document.createElement("div");
-powerRankingsContainer.className = "season_powerRankingsContainer"
+powerRankingsContainer.className = "season_leftSideContainers"
 leftSide.appendChild(powerRankingsContainer)
-printPowerRankings(select.value);
-
-
-
 
 leftSide.appendChild(previousTrades);
-    //previous trades:    
-    tradeLog(select.value);
+    
 function tradeLog(round){
     previousTrades.innerHTML = ""
-    let tradeLogInfo = document.createElement("div");
-    tradeLogInfo.innerText = "Trade Log:";
+    let tradeLogInfo = document.createElement("h3");
+    tradeLogInfo.innerText = "Trade Log";
+    tradeLogInfo.style.textAlign = "center";
     previousTrades.appendChild(tradeLogInfo)
     if(season >= 40){
         for(let i = 0; i < gameData.seasons[season].trade.length; i++){
             if(Number(gameData.seasons[season].trade[i].round) <= round || boolRegularSeason == false){
                 let trade = document.createElement("div");
                 previousTrades.appendChild(trade);
-                trade.innerText = `Trade between ${gameData.teams[gameData.seasons[season].trade[i].buyer].name} and ${gameData.teams[gameData.seasons[season].trade[i].seller].name} (round ${gameData.seasons[season].trade[i].round})`;
+                trade.innerText = `- Trade between ${gameData.teams[gameData.seasons[season].trade[i].buyer].name} and ${gameData.teams[gameData.seasons[season].trade[i].seller].name} (round ${gameData.seasons[season].trade[i].round})`;
                 trade.addEventListener("click", () => {
                     let eventDescription = `A trade has occurred between ${gameData.teams[gameData.seasons[season].trade[i].buyer].name} and ${gameData.teams[gameData.seasons[season].trade[i].seller].name}.`;
                     let eventEffects = `${gameData.teams[gameData.seasons[season].trade[i].seller].name} receives:\n`
@@ -5281,3 +5433,9 @@ function tradeLog(round){
         }
     }
 }
+
+if(boolRegularSeason == false){
+    standingsContainerContainer.style.display = "none";
+    printPowerRankings(select.value);
+}
+

@@ -2358,11 +2358,8 @@ function createDraftClass(teams){
 
     //joueurs disponibles dans la draft class
     for(let i = 0; i < 10000; i++){
-        let potential = Math.ceil(Math.pow(randn_bm(), 2.51) * 140);
+        let potential = randomPotential();
         let developpmentYears = Math.floor(randn_bm() * 8);
-        if(potential < 30){
-            potential = 30;
-        }
         let randomName = firstName.data[Math.floor(Math.random() * firstName.data.length)] + " " + lastName.data[Math.floor(Math.random() * lastName.data.length)];
         draftClass.push({
             potential: potential,
@@ -2421,4 +2418,16 @@ function randn_bm() {
     num = num / 10.0 + 0.5; // Translate to 0 -> 1
     if (num > 1 || num < 0) return randn_bm() // resample between 0 and 1
     return num
+}
+
+//potentiel random
+function randomPotential(){
+    let odds = [0.1,0.2,0.3,0.41,0.52,0.63,0.74,0.9,0.978,0.981,0.984,0.987,0.99,0.993,0.996,0.998,0.999,0.9999,0.99995,1]
+    let random = Math.random()
+    for(let j = 0; j < odds.length; j++){
+        if(random < odds[j]){
+            let potential = Math.random() * 5 + j * 5;
+            return Math.round(potential)
+        }    
+    }
 }
