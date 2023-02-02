@@ -83,60 +83,72 @@ module.exports = {
         let die1Result = Math.random();
         let die2Result = Math.random();
         let result = [0,0];
-        if(die1Result < Math.pow(0.2265,powerTeam1)){
+        if(die1Result < Math.pow(0.0548,powerTeam1)){
             result[0] = "0";
         }
-        else if(die1Result >= Math.pow(0.2265,powerTeam1) && die1Result < Math.pow(0.5515,powerTeam1)){
+        else if(die1Result >= Math.pow(0.0548,powerTeam1) && die1Result < Math.pow(0.1993,powerTeam1)){
             result[0] = "1";
         }
-        else if(die1Result >= Math.pow(0.5515,powerTeam1) && die1Result < Math.pow(0.7942,powerTeam1)){
+        else if(die1Result >= Math.pow(0.1993,powerTeam1) && die1Result < Math.pow(0.4089,powerTeam1)){
             result[0] = "2";
         }
-        else if(die1Result >= Math.pow(0.7942,powerTeam1) && die1Result < Math.pow(0.9204,powerTeam1)){
+        else if(die1Result >= Math.pow(0.4089,powerTeam1) && die1Result < Math.pow(0.6347,powerTeam1)){
             result[0] = "3";
         }
-        else if(die1Result >= Math.pow(0.9204,powerTeam1) && die1Result < Math.pow(0.9731,powerTeam1)){
+        else if(die1Result >= Math.pow(0.6347,powerTeam1) && die1Result < Math.pow(0.8132,powerTeam1)){
             result[0] = "4";
         }
-        else if(die1Result >= Math.pow(0.9732,powerTeam1) && die1Result < Math.pow(0.9918,powerTeam1)){
+        else if(die1Result >= Math.pow(0.8132,powerTeam1) && die1Result < Math.pow(0.9236,powerTeam1)){
             result[0] = "5";
         }
-        else if(die1Result >= Math.pow(0.9918,powerTeam1) && die1Result < Math.pow(0.9979,powerTeam1)){
+        else if(die1Result >= Math.pow(0.9236,powerTeam1) && die1Result < Math.pow(0.9750,powerTeam1)){
             result[0] = "6";
         }
-        else if(die1Result >= Math.pow(0.9979,powerTeam1) && die1Result < Math.pow(0.9999,powerTeam1)){
+        else if(die1Result >= Math.pow(0.9750,powerTeam1) && die1Result < Math.pow(0.9922,powerTeam1)){
             result[0] = "7";
         }
-        else if(die1Result >= Math.pow(0.9999,powerTeam1)){
+        else if(die1Result >= Math.pow(0.9922,powerTeam1) && die1Result < Math.pow(0.9980,powerTeam1)){
             result[0] = "8";
         }
+        else if(die1Result >= Math.pow(0.9980,powerTeam1) && die1Result < Math.pow(0.9995,powerTeam1)){
+            result[0] = "9";
+        }
+        else if(die1Result >= Math.pow(0.9995,powerTeam1)){
+            result[0] = "10";
+        }
 
-        if(die2Result < Math.pow(0.3359,powerTeam2)){
+        if(die2Result < Math.pow(0.0697,powerTeam2)){
             result[1] = "0";
         }
-        else if(die2Result >= Math.pow(0.3359,powerTeam2) && die2Result < Math.pow(0.6835,powerTeam2)){
+        else if(die2Result >= Math.pow(0.0697,powerTeam2) && die2Result < Math.pow(0.2439,powerTeam2)){
             result[1] = "1";
         }
-        else if(die2Result >= Math.pow(0.6835,powerTeam2) && die2Result < Math.pow(0.879,powerTeam2)){
+        else if(die2Result >= Math.pow(0.2439,powerTeam2) && die2Result < Math.pow(0.4795,powerTeam2)){
             result[1] = "2";
         }
-        else if(die2Result >= Math.pow(0.879,powerTeam2) && die2Result < Math.pow(0.9604,powerTeam2)){
+        else if(die2Result >= Math.pow(0.4795,powerTeam2) && die2Result < Math.pow(0.6975,powerTeam2)){
             result[1] = "3";
         }
-        else if(die2Result >= Math.pow(0.9604,powerTeam2) && die2Result < Math.pow(0.9891,powerTeam2)){
+        else if(die2Result >= Math.pow(0.6975,powerTeam2) && die2Result < Math.pow(0.8640,powerTeam2)){
             result[1] = "4";
         }
-        else if(die2Result >= Math.pow(0.9891,powerTeam2) && die2Result < Math.pow(0.9971,powerTeam2)){
+        else if(die2Result >= Math.pow(0.8640,powerTeam2) && die2Result < Math.pow(0.9500,powerTeam2)){
             result[1] = "5";
         }
-        else if(die2Result >= Math.pow(0.9971,powerTeam2) && die2Result < Math.pow(0.9994,powerTeam2)){
+        else if(die2Result >= Math.pow(0.9500,powerTeam2) && die2Result < Math.pow(0.9837,powerTeam2)){
             result[1] = "6";
         }
-        else if(die2Result >= Math.pow(0.9994,powerTeam2) && die2Result < Math.pow(0.9998,powerTeam2)){
+        else if(die2Result >= Math.pow(0.9837,powerTeam2) && die2Result < Math.pow(0.9962,powerTeam2)){
             result[1] = "7";
         }
-        else if(die2Result >= Math.pow(0.9998,powerTeam2)){
+        else if(die2Result >= Math.pow(0.9962,powerTeam2) && die2Result < Math.pow(0.9990,powerTeam2)){
             result[1] = "8";
+        }
+        else if(die2Result >= Math.pow(0.9990,powerTeam2) && die2Result < Math.pow(0.9997,powerTeam2)){
+            result[1] = "9";
+        }
+        else if(die2Result >= Math.pow(0.9997,powerTeam2)){
+            result[1] = "10";
         }
         return result;
     }

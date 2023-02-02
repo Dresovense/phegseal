@@ -7,8 +7,6 @@ Link to team history when you click on them
 
 Records (All-time + team)
 
-Power Rankings
-
 Rivalries (change with time)
 
 Interesting things happening in the round
@@ -30,6 +28,19 @@ make divisional playoff (like nhl)
 
 Rework season choice page
 
-Prospect pool for each team, team's previous draft choices
+Modular rules (can change modifiers and stuff)
 
-Expand the playoffs (let the player choose)
+Strength of schedule (based on power and standings?)
+
+Colors for draft picks in team history
+
+Strength of the draft (overall and compared to the picks they had)
+
+Rework a bit powerRankings
+
+
+
+
+Clean Up Code + rework save file
+
+

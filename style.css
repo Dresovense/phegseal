@@ -47,11 +47,9 @@ select{
 }
 
 .gridContainer{
-    margin: 10px;
-    margin-top: 20px;
-    max-height: 350px;
+    max-height: 720px;
     overflow: auto;
-    width: 660px;
+    width: 775px;
 }
 
 #divMatch{
@@ -90,7 +88,7 @@ h3{
 }
 
 .teamNamePS{
-    width: 200px;
+    width: 180px;
     text-align: center;
     display: inline-block;
 }
@@ -106,8 +104,7 @@ h3{
     text-align: center;
     margin-left: 2px;
     margin-right: 2px;
-    padding-left: 2px;
-    padding-right: 2px;
+    width: 18px;
     border: 1px black solid;
     border-radius: 5px;
     font-style: normal;
@@ -126,13 +123,9 @@ h3{
 }
 
 .gamesDiv{
-    max-height: 228px;
     overflow: auto;
     width: 670px;
-}
-
-.season_leftSide{
-    width: 650px;
+    height: 570px;
 }
 
 .season_gameContents{
@@ -140,8 +133,80 @@ h3{
 }
 
 .previousTrades{
-    margin-left: 110px;
+    margin-left: 70px;
     margin-top: 10px;
+    height: 210px;
+    overflow-y: auto;
+}
+
+.season_powerRankingsGrid{
+    display: inline-grid;
+    grid-auto-flow: row;
+    grid-template-columns: 30px 30px 230px 290px 60px 120px;
+}
+.season_powerRankingsElement{
+    border: 1px solid black;
+    width: auto;
+    display: flex;
+    align-items:center;
+    justify-content:center;
+}
+.season_powerRankingsElementMatch{
+    display: inline-block;
+    text-align: center;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    width: 18px;
+    height: 20px;
+    border: 1px black solid;
+    border-radius: 5px;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.season_leftSideContainers{
+    margin-left: 70px;
+    max-height: 720px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 775px;
+}
+
+.season_powerRankingsHoverup{
+    display: none;
+    position: relative;
+    min-width: 240px;
+    max-width: 300px;
+    width: fit-content;
+    height: 45px;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid;
+    right: 120px;
+    bottom: 68px;
+}
+
+.season_powerRankingsElementMatch:hover > div{
+    display: block;
+}
+
+.season_powerRankingsHoverupMatch{
+    display: inline-flex;
+}
+
+.season_powerRankingsHoverupMatchElement{
+    margin: 5px;
+}
+
+.season_leftSideButtons{
+    margin-top: 50px;
+    margin-left: 70px;
+}
+
+.season_leftSideButton{
+    width: 140px;
 }
 
 
@@ -229,12 +294,11 @@ h3{
 .recordsFlex{
     display: inline-flex;
     flex-wrap: wrap;
-    max-height: 580px;
     overflow: auto;
 }
 
 .pastSeasonWinnerUI{
-    max-height: 378px;
+    max-height: 630px;
     width: 470px;
     overflow: auto;
 }
@@ -257,7 +321,7 @@ h3{
 }
 
 .recordUI{
-    max-height: 378px;
+    max-height: 630px;
     width: 270px;
     overflow: auto;
 }
@@ -325,19 +389,22 @@ h3{
 
 .team_teamInfos{
     display: grid;
-    grid-template-columns: 150px 150px;
+    grid-template-columns: 150px 200px;
     margin-left: 10px;
+    height: 170px;
 }
 
 .team_teamInfosSquare{
     border: 1px solid black;
     text-align: center;
+    overflow-y: auto;
 }
 
 .team_otherInfoFlex{
     display: inline-flex;
+    width: fit-content;
+    margin: auto;
     margin-top: 10px;
-    margin-left: 10px;
 }
 
 .team_previousYearsContainer{
@@ -347,16 +414,47 @@ h3{
     overflow: auto;
 }
 
+.team_picksPerYearContainer{
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
 .team_matchesContainers{
     width: 315px;
     height: 400px;
     border: 1px black solid;
 }
 
-.team_records{
+.team_drafts{
     width: 315px;
     height: 400px;
     border: 1px black solid;
+}
+
+.team_draftInfo{
+    height: 360px;
+    overflow-y: auto;
+}
+
+.team_noDraft{
+    margin: auto;
+    width: fit-content;
+    margin-top: 5px;
+}
+
+.team_teamTitle{
+    text-align: center;
+}
+
+.team_draftClass{
+    display: grid;
+    grid-template-columns: 50px 60px 150px 30px;
+    margin-left: 11px;
+    margin-right: 11px;
+}
+
+.team_draftedPlayer{
+    text-align: center;
 }
 
 .team_previousYears{
@@ -366,8 +464,7 @@ h3{
 }
 
 .team_previousYearsSquare{
-    border-left: black 1px solid;
-    border-right: black 1px solid;
+    border: black 1px solid;
 }
 
 .team_previousMatchesContainers{
@@ -386,6 +483,41 @@ h3{
     height: 100px;
     overflow: auto;
     overflow-x: hidden;
+}
+
+.team_lastFiveMatches{
+    height: 100px;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.team_prospectPoolContainer{
+    width: 280px;
+    height: 400px;
+    border: 1px black solid;
+}
+
+.team_prospectPoolGrid{
+    display: grid;
+    grid-template-columns: 50px 200px;
+    width: fit-content;
+    margin: auto;
+}
+
+.team_prospectPoolElement{
+    text-align: center;
+}
+
+.team_teamLogoPicks{
+    max-height: 20px;
+}
+
+.team_roundPicks{
+    display: inline-flex;
+}
+
+.team_teamParenthesis{
+    display: inline-block;
 }
 
 /* teamChoice.js */
@@ -407,7 +539,9 @@ h3{
 
 .seasonPanel_winProbabilitiesRowSquare{
     display: flex;
-    align-items: center;
+    text-align: center;
+    border: 1px solid;
+    justify-content: center;
 }
 
 /*event.js*/
@@ -441,4 +575,92 @@ h3{
 .event_eventContainee{
     margin-left: 10px;
     margin-top: 10px;
+}
+
+/* loader */
+.lds-roller {
+  display: none;
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  top: 50%;
+  left: 44.5%;
+}
+.lds-roller div {
+  animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  transform-origin: 40px 40px;
+}
+.lds-roller div:after {
+  content: " ";
+  display: block;
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #3399ff;
+  margin: -4px 0 0 -4px;
+}
+.lds-roller div:nth-child(1) {
+  animation-delay: -0.036s;
+}
+.lds-roller div:nth-child(1):after {
+  top: 63px;
+  left: 63px;
+}
+.lds-roller div:nth-child(2) {
+  animation-delay: -0.072s;
+}
+.lds-roller div:nth-child(2):after {
+  top: 68px;
+  left: 56px;
+}
+.lds-roller div:nth-child(3) {
+  animation-delay: -0.108s;
+}
+.lds-roller div:nth-child(3):after {
+  top: 71px;
+  left: 48px;
+}
+.lds-roller div:nth-child(4) {
+  animation-delay: -0.144s;
+}
+.lds-roller div:nth-child(4):after {
+  top: 72px;
+  left: 40px;
+}
+.lds-roller div:nth-child(5) {
+  animation-delay: -0.18s;
+}
+.lds-roller div:nth-child(5):after {
+  top: 71px;
+  left: 32px;
+}
+.lds-roller div:nth-child(6) {
+  animation-delay: -0.216s;
+}
+.lds-roller div:nth-child(6):after {
+  top: 68px;
+  left: 24px;
+}
+.lds-roller div:nth-child(7) {
+  animation-delay: -0.252s;
+}
+.lds-roller div:nth-child(7):after {
+  top: 63px;
+  left: 17px;
+}
+.lds-roller div:nth-child(8) {
+  animation-delay: -0.288s;
+}
+.lds-roller div:nth-child(8):after {
+  top: 56px;
+  left: 12px;
+}
+@keyframes lds-roller {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

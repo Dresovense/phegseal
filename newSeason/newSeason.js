@@ -95,6 +95,44 @@ wildCardsPerConference.min = "0";
 wildCardsPerConference.className = "scheduleChoice";
 document.body.appendChild(wildCardsPerConference);
 
+let divNumberOfPlayoffMatches = document.createElement("div");
+divNumberOfPlayoffMatches.className = "scheduleChoice";
+divNumberOfPlayoffMatches.innerText = "Number of matches during the playoffs";
+document.body.appendChild(divNumberOfPlayoffMatches);
+let numberOfPlayoffMatches = document.createElement("input");
+numberOfPlayoffMatches.type = "number";
+numberOfPlayoffMatches.min = "3";
+numberOfPlayoffMatches.className = "scheduleChoice";
+document.body.appendChild(numberOfPlayoffMatches);
+
+let divDraftLottery = document.createElement("div");
+divDraftLottery.className = "scheduleChoice";
+divDraftLottery.innerText = "Draft Lottery:";
+document.body.appendChild(divDraftLottery);
+let selectDraftLottery = document.createElement("select");
+selectDraftLottery.className = "scheduleChoice";
+document.body.appendChild(selectDraftLottery);
+let draftLotteryYes = document.createElement("option");
+draftLotteryYes.innerText = "Yes";
+draftLotteryYes.value = true;
+draftLotteryYes.className = "scheduleChoice";
+selectDraftLottery.appendChild(draftLotteryYes);
+let draftLotteryNo = document.createElement("option");
+draftLotteryNo.innerText = "No";
+draftLotteryNo.value = false;
+draftLotteryNo.className = "scheduleChoice";
+selectDraftLottery.appendChild(draftLotteryNo);
+
+let divLotterySpots = document.createElement("div");
+divLotterySpots.className = "scheduleChoice";
+divLotterySpots.innerText = "Number of spots determined by the lottery:";
+document.body.appendChild(divLotterySpots);
+let lotterySpots = document.createElement("input");
+lotterySpots.type = "number";
+lotterySpots.min = "0";
+lotterySpots.className = "scheduleChoice";
+document.body.appendChild(lotterySpots);
+
 let divplayOffOrganisation = document.createElement("div");
 divplayOffOrganisation.className = "scheduleChoice";
 divplayOffOrganisation.innerText = "Playoff Seeding:";
@@ -203,17 +241,6 @@ for(let i = 0; i < gameData.teams.length; i++){
         }
     }
     team.addEventListener("click", () => {
-        /* if(!teamList.includes(i)){
-            teamList.push(i);
-            team.style.backgroundColor = "lightblue";
-        }
-        else{
-            const index = teamList.indexOf(i);
-            if (index > -1){
-                teamList.splice(index, 1);
-                team.style.backgroundColor = "white";
-            }
-        } */
         if(teamList[0].includes(i)){
             const index = teamList[0].indexOf(i);
             if(index > -1){
@@ -257,31 +284,34 @@ confirmChoicebutton.style.display = "none";
 confirmChoicebutton.innerText = "Confirm Choice";
 confirmChoicebutton.className = "teamChoice";
 confirmChoicebutton.addEventListener("click", () => {
-
-        numberOfConferences = conferencesNumber.value;
-        numberOfDivisionsPerConference = divisionsPerConferenceNumber.value;
-        divisionRounds = divisionMatches.value;
-        conferenceRounds = conferenceMatches.value;
-        interConferenceRounds = interConferenceMatches.value;
-        let divsSchedule = document.getElementsByClassName("scheduleChoice");
-        for(let i = 0; i < divsSchedule.length; i++){
-            divsSchedule[i].style.display = "none";     //display
-        }
-        createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConference, divisionRounds, conferenceRounds, interConferenceRounds);   //changer endroit ou c'est fait
-        newSeason.postSeasonSchedule.rules.numberOfMatchesPerTeam = numberOfGamesPerTeam(newSeason);
-        gameData.seasons.push(newSeason);
-        gameData = regularSeasonPrediction(gameData);
-        gameData = updateTradeWillingness(gameData);
-        //save data + go to season
-        fs.writeFile('saves/data.json', JSON.stringify(gameData, null, 4), function(err) {
-            if(err){
-                return console.log(err);
+        let loadingScreen = document.getElementsByClassName("lds-roller");
+        loadingScreen[0].style.display = "inline-block";
+        setTimeout(() => {
+            numberOfConferences = conferencesNumber.value;
+            numberOfDivisionsPerConference = divisionsPerConferenceNumber.value;
+            divisionRounds = divisionMatches.value;
+            conferenceRounds = conferenceMatches.value;
+            interConferenceRounds = interConferenceMatches.value;
+            let divsSchedule = document.getElementsByClassName("scheduleChoice");
+            for(let i = 0; i < divsSchedule.length; i++){
+                divsSchedule[i].style.display = "none";     //display
             }
-        });
-        console.log(gameData)
-        gameData = JSON.stringify(gameData);
-        sessionStorage.setItem("gameData", gameData);
-        location.href = "../startGame/startGame.html";
+            createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConference, divisionRounds, conferenceRounds, interConferenceRounds);   //changer endroit ou c'est fait
+            newSeason.postSeasonSchedule.rules.numberOfMatchesPerTeam = numberOfGamesPerTeam(newSeason);
+            gameData.seasons.push(newSeason);
+            gameData.seasons[gameData.seasons.length - 1].predictions.push(regularSeasonPrediction(gameData, 0));
+            gameData = updateTradeWillingness(gameData);
+            //save data + go to season
+            fs.writeFile('saves/data.json', JSON.stringify(gameData, null, 4), function(err) {
+                if(err){
+                    return console.log(err);
+                }
+            });
+            console.log(gameData)
+            gameData = JSON.stringify(gameData);
+            sessionStorage.setItem("gameData", gameData);
+            location.href = "../startGame/startGame.html";
+        }, 1);
     
 });
 document.body.appendChild(confirmChoicebutton);
@@ -319,7 +349,9 @@ let newSeason = {
             "teamsQualifiedPerDivision": "",
             "wildCardsPerConference": "",
             "playOffOrganisation": "",
-            "numberOfMatchesPerTeam": ""
+            "numberOfMatchesPerTeam": "",
+            "draftLottery": "",
+            "draftLotteryNumberOfSpots": ""
         },
         "conference": [],
         "finals": [],
@@ -1839,18 +1871,14 @@ let newSeason = {
         "picks": [],
         "currentRound": 0,
         "currentPick": 0,
-        "draftClass": []
+        "draftClass": [],
+        "draftLottery": []
     },
-    "predictions":{
-        "win": [],
-        "lose": [],
-        "standings": [],
-        "playoffs": []
-    },
+    "predictions":[],
     trade:[]
 };
 
-function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConference, divisionRounds, conferenceRounds, interConferenceRounds, postSeasonRounds){
+function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConference, divisionRounds, conferenceRounds, interConferenceRounds){
     allTeams = [];
     for(let i = 1; i < teamList.length; i++){
         for(let j = 0; j < teamList[1].length; j++){
@@ -1922,12 +1950,16 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
 
     newSeason.schedule = shuffleArray(newSeason.schedule);
 
+    newSeason.postSeasonSchedule.rules.draftLottery = selectDraftLottery.value;
+    newSeason.postSeasonSchedule.rules.draftLotteryNumberOfSpots = lotterySpots.value;
+
     //post-season       A CHANGER¨!!!!!!!
 
     newSeason.postSeasonSchedule.rules.postSeasonTeams = postSeasonTeamsChoice.value;
     newSeason.postSeasonSchedule.rules.teamsQualifiedPerDivision = teamsQualifiedPerDivision.value;
     newSeason.postSeasonSchedule.rules.wildCardsPerConference = wildCardsPerConference.value;
     newSeason.postSeasonSchedule.rules.playOffOrganisation = select.value;
+    newSeason.postSeasonSchedule.rules.numberOfPlayoffMatches = numberOfPlayoffMatches.value;
 
     let teamsInPlayOffPerConference = postSeasonTeamsChoice.value / conferencesNumber.value;
     let postSeasonConferenceRounds = Math.log2(teamsInPlayOffPerConference);
@@ -1945,7 +1977,7 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
                     "loser": "",
                     "completed": "no"
                 }
-                for(let k = 0; k < 3; k++){
+                for(let k = 0; k < numberOfPlayoffMatches.value; k++){
                     let matches = {
                         "team1Id": "",
                         "team2Id": "",
@@ -2013,7 +2045,7 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
                     "loser": "",
                     "completed": "no"
                 }
-                for(let k = 0; k < 3; k++){
+                for(let k = 0; k < numberOfPlayoffMatches.value; k++){
                     let matches = {
                         "team1Id": "",
                         "team2Id": "",
@@ -2030,6 +2062,8 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
         }
         newSeason.postSeasonSchedule.finals = finalsSchedule;
     }
+
+
     //teams
     let conferencesName = document.getElementsByClassName("conference");
     let divisionName = document.getElementsByClassName("division");
@@ -2068,7 +2102,7 @@ function createSchedule(teamList, numberOfConferences, numberOfDivisionsPerConfe
         newSeason.teams.conference.push(conference);
     }
     //draftClass
-    newSeason.draft.draftClass = createDraftClass();
+    newSeason.draft.draftClass = createDraftClass(allTeams.length);
 }
 
 function roundRobin (teamList, numberRounds){
@@ -2230,7 +2264,15 @@ function numberOfGamesPerTeam(newSeason){
     return numberOfMatches
 }
 
-function regularSeasonPrediction(gameData){
+function regularSeasonPrediction(gameData, round){
+    let predictions = {
+        "win": [],
+        "lose": [],
+        "standings": [],
+        "playoffs": [],
+        "round": round
+    }
+
     let team_predictions_win = []
     let team_predictions_lose = []
     let team_predictions_playoffs = []
@@ -2241,9 +2283,9 @@ function regularSeasonPrediction(gameData){
         team_predictions_playoffs.push(0);
         team_predictions_standings.push(0);
     }
-    for(let i = 0; i < 1000; i++){
+    for(let i = 0; i < 500; i++){
         let gameDataTest = JSON.parse(JSON.stringify(gameData));
-        for(let j = 0; j < gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule.length; j++){
+        for(let j = round; j < gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule.length; j++){
             for(k = 0; k < gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games.length; k++){
                 result = dice.diceRoll(gameData.teams[gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games[k].team1Id].power,gameData.teams[gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games[k].team2Id].power)
                 gameDataTest.seasons[gameDataTest.seasons.length - 1].schedule[j].games[k].team1Goals = result[0];
@@ -2272,11 +2314,11 @@ function regularSeasonPrediction(gameData){
         team_predictions_win[teams[0].id] += 1;
         team_predictions_lose[teams[teams.length - 1].id] += 1;
     }
-    gameData.seasons[gameData.seasons.length - 1].predictions.win = team_predictions_win;
-    gameData.seasons[gameData.seasons.length - 1].predictions.lose = team_predictions_lose;
-    gameData.seasons[gameData.seasons.length - 1].predictions.playoffs = team_predictions_playoffs;
-    gameData.seasons[gameData.seasons.length - 1].predictions.standings = team_predictions_standings;
-    return gameData
+    predictions.win = team_predictions_win;
+    predictions.lose = team_predictions_lose;
+    predictions.playoffs = team_predictions_playoffs;
+    predictions.standings = team_predictions_standings;
+    return predictions
 }
 
 function updateTradeWillingness(gameData){
@@ -2300,7 +2342,7 @@ function updateTradeWillingness(gameData){
     return gameData;
 }
 
-function createDraftClass(){
+function createDraftClass(teams){
     let firstName = JSON.parse(fs.readFileSync('nameDb/firstName.json', "utf-8", function (err,data) {
         if (err) {
           return console.log(err);
@@ -2311,12 +2353,12 @@ function createDraftClass(){
             return console.log(err);
           }
       }));
-      
+
     let draftClass = [];
 
     //joueurs disponibles dans la draft class
-    for(let i = 0; i < 2000; i++){
-        let potential = Math.ceil(Math.pow(randn_bm() + 0.155, 1.75) * 100);
+    for(let i = 0; i < 10000; i++){
+        let potential = randomPotential();
         let developpmentYears = Math.floor(randn_bm() * 8);
         let randomName = firstName.data[Math.floor(Math.random() * firstName.data.length)] + " " + lastName.data[Math.floor(Math.random() * lastName.data.length)];
         draftClass.push({
@@ -2325,7 +2367,7 @@ function createDraftClass(){
             name: randomName
         });
     }
-    
+
     draftClass.sort(function(left,right){
         if(left.potential > right.potential){
             return -1;
@@ -2342,12 +2384,26 @@ function createDraftClass(){
             }
         }
     })
-    
-    for(let i = 0; i < 50; i++){
+
+    for(let i = 0; i < 75; i++){
         let random_player = draftClass.splice(Math.floor(Math.random() * 150), 1);
         let random_place = Math.floor(Math.random() * 150);
         draftClass.splice(random_place, 0, random_player[0]);
     }
+
+    for(let i = 0; i < 200; i++){
+        let random_player = draftClass.splice(Math.floor(Math.random() * 250) + 30, 1);
+        let random_place = Math.floor(Math.random() * 250) + 30;
+        draftClass.splice(random_place, 0, random_player[0]);
+    }
+
+    for(let i = 0; i < 200; i++){
+        let random_player = draftClass.splice(Math.floor(Math.random() * 10000) + 50, 1);
+        let random_place = Math.floor(Math.random() * 10000) + 50;
+        draftClass.splice(random_place, 0, random_player[0]);
+    }
+
+    draftClass.length = teams * 7;
 
     return draftClass;
 }
@@ -2362,4 +2418,16 @@ function randn_bm() {
     num = num / 10.0 + 0.5; // Translate to 0 -> 1
     if (num > 1 || num < 0) return randn_bm() // resample between 0 and 1
     return num
+}
+
+//potentiel random
+function randomPotential(){
+    let odds = [0.1,0.2,0.3,0.41,0.52,0.63,0.74,0.9,0.978,0.981,0.984,0.987,0.99,0.993,0.996,0.998,0.999,0.9999,0.99995,1]
+    let random = Math.random()
+    for(let j = 0; j < odds.length; j++){
+        if(random < odds[j]){
+            let potential = Math.random() * 5 + j * 5;
+            return Math.round(potential)
+        }    
+    }
 }

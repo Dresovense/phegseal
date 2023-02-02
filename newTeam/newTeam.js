@@ -55,7 +55,7 @@ confirmChoicebutton.addEventListener("click", () => {
         shortName: shortName.value,
         logo: teamLogo.value,
         color: teamColor.value,
-        date: gameData.seasons.length - 1,
+        date: gameData.seasons.length,
         town: teamTown.value,
         stadiumName: teamStadium.value,
         stadiumAttendence: teamStadiumAttendance.value,
@@ -66,10 +66,15 @@ confirmChoicebutton.addEventListener("click", () => {
                 rivalryStrength: ""
             }
         ],
+        teamPlacement: {
+            left: "50px",
+            top: "50px"
+        },
         records:{
 
         },
-        power: "0.8",
+        power: Math.random() * 0.5 + 0.5,
+        tradePower: 0,
         seasonsAbove1: "0",
         seasonsBelow1: "0",
         projectedPowerNextSeasons: [
