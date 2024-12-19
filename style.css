@@ -47,7 +47,6 @@ select{
 }
 
 .gridContainer{
-    max-height: 720px;
     overflow: auto;
     width: 775px;
 }
@@ -168,7 +167,7 @@ h3{
 
 .season_leftSideContainers{
     margin-left: 70px;
-    max-height: 720px;
+    max-height: 650px;
     overflow-y: auto;
     overflow-x: hidden;
     width: 775px;
@@ -322,10 +321,20 @@ h3{
 
 .recordUI{
     max-height: 630px;
+    width: 360px;
+    overflow: auto;
+}
+.recordUISeason{
+    max-height: 630px;
     width: 270px;
     overflow: auto;
 }
 .gridRowRecords{
+    display: inline-grid;
+    grid-auto-flow: column;
+    grid-template-columns: 200px 50px 100px;
+}
+.gridRowRecordsSeason{
     display: inline-grid;
     grid-auto-flow: column;
     grid-template-columns: 200px 50px;
@@ -357,8 +366,10 @@ h3{
 
 .draftGrid{
     margin-top: 20px;
+    overflow: scroll;
+    height: 750px;
     display: inline-grid;
-    grid-template-columns: 50px 100px 200px 200px 50px;
+    grid-template-columns: 50px 100px 200px 200px 150px;
 }
 .draftGridSquare{
     border: 1px solid black;
@@ -469,7 +480,7 @@ h3{
 
 .team_previousMatchesContainers{
     display: grid;
-    grid-template-columns: 55px 60px 25px 30px 25px 60px 55px;
+    grid-template-columns: 10px 40px 60px 25px 30px 25px 60px 40px;
 }
 
 .team_previousMatchesContainersSquare{
@@ -480,13 +491,13 @@ h3{
 }
 
 .team_nextFiveMatches{
-    height: 100px;
+    height: 135px;
     overflow: auto;
     overflow-x: hidden;
 }
 
 .team_lastFiveMatches{
-    height: 100px;
+    height: 135px;
     overflow: auto;
     overflow-x: hidden;
 }

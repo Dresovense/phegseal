@@ -408,7 +408,7 @@ module.exports = {
             for(let j = 0; j < teams.length; j++){
                 team_predictions_standings[teams[j].id] += teams.length - j;
                 for(k = 0; k < conferences.length; k++){
-                    if(conferences[k] < gameDataTest.seasons[gameDataTest.seasons.length - 1].postSeasonSchedule.rules.teamsQualifiedPerDivision){
+                    if(conferences[k] < gameDataTest.seasons[gameDataTest.seasons.length - 1].postSeasonSchedule.rules.teamsQualifiedPerDivision * 2){ //a enlever le 2 du code
                         for(let l = 0; l < gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.conference[k].teamsInConference.length; l++){
                             if(teams[j].id == gameDataTest.seasons[gameDataTest.seasons.length - 1].teams.conference[k].teamsInConference[l].id){
                                 conferences[k] += 1
@@ -484,34 +484,34 @@ function count(gameData, season, round, teamId, countType){
     for(let i = 0; i <= round; i++){
         for(let j = 0; j < schedule[i].games.length; j++){
             if(schedule[i].games[j].team1Id == teamId && schedule[i].games[j].team1Goals != ""){
-                if(schedule[i].games[j].team1Goals > schedule[i].games[j].team2Goals){
+                if(Number(schedule[i].games[j].team1Goals) > Number(schedule[i].games[j].team2Goals)){
                     victoriesHome++;
                 }
-                else if(schedule[i].games[j].team1Goals == schedule[i].games[j].team2Goals){
+                else if(Number(schedule[i].games[j].team1Goals) == Number(schedule[i].games[j].team2Goals)){
                     tiesHome++;
                 }
-                else if(schedule[i].games[j].team1Goals < schedule[i].games[j].team2Goals){
+                else if(Number(schedule[i].games[j].team1Goals) < Number(schedule[i].games[j].team2Goals)){
                     defeatsHome++;
                 }
                 goalsScoredHome += parseInt(schedule[i].games[j].team1Goals);
                 goalsAgainstHome += parseInt(schedule[i].games[j].team2Goals);
-                if(schedule[i].games[j].team2Goals == 0){
+                if(Number(schedule[i].games[j].team2Goals == 0)){
                     shutoutsHome++;
                 }
             }
             else if(schedule[i].games[j].team2Id == teamId && schedule[i].games[j].team1Goals != ""){
-                if(schedule[i].games[j].team1Goals > schedule[i].games[j].team2Goals){
+                if(Number(schedule[i].games[j].team1Goals) > Number(schedule[i].games[j].team2Goals)){
                     defeatsAway++;
                 }
-                else if(schedule[i].games[j].team1Goals == schedule[i].games[j].team2Goals){
+                else if(Number(schedule[i].games[j].team1Goals) == Number(schedule[i].games[j].team2Goals)){
                     tiesAway++;
                 }
-                else if(schedule[i].games[j].team1Goals < schedule[i].games[j].team2Goals){
+                else if(Number(schedule[i].games[j].team1Goals) < Number(schedule[i].games[j].team2Goals)){
                     victoriesAway++;
                 }
                 goalsScoredAway += parseInt(schedule[i].games[j].team2Goals);
                 goalsAgainstAway += parseInt(schedule[i].games[j].team1Goals);
-                if(schedule[i].games[j].team1Goals == 0){
+                if(Number(schedule[i].games[j].team1Goals == 0)){
                     shutoutsAway++;
                 }
             }

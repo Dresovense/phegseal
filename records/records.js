@@ -45,6 +45,28 @@ recordsFunctions.pastWinners(gameData, pastWinnersArray, pastWinnersNode);
 
 recordsFunctions.makeRecordUI(gameData, gameData.records.postSeason.titles.mostTitles, false, recordsFlex);
 
+/* //playoffDrought
+let titleDraughtArray = [];
+for(let i = 0; i < gameData.teams.length; i++){
+    for(let i = 0; i < gameData.records.postSeason.titles.mostTitles.teams.length; i++){
+        if(gameData.records.postSeason.titles.mostTitles.teams[i].teamId == team){
+            lastSeason = gameData.records.postSeason.titles.mostTitles.teams[i].seasonsId[gameData.records.postSeason.titles.mostTitles.teams[i].seasonsId.length - 1];
+        }
+    }
+    titleDraughtArray.push({teamId: i, seasons: gameData.seasons.length - 1 - gameData.teams[team].date});
+}
+
+let titleDraughtNode = document.createElement("div");
+titleDraughtNode.style.marginRight = "20px";
+titleDraughtNode.style.paddingLeft = "10px";
+recordsFlex.appendChild(titleDraughtNode)
+let nameTitleDraught = document.createElement("div");
+nameTitleDraught.innerText = "Title Draught";
+nameTitleDraught.style.width = "250px";
+nameTitleDraught.style.textAlign = "center";
+titleDraughtNode.appendChild(nameTitleDraught)
+recordsFunctions.pastWinners(gameData, titleDraughtArray, titleDraughtNode); */
+
 
 //choose records for season:
 let selectionDiv = document.createElement("div");
@@ -66,4 +88,11 @@ recordsSeasonButton.addEventListener("click", () => {
     location.href = "./recordsSeason.html";
 });
 selectionDiv.appendChild(recordsSeasonButton);
+
+let recordsAllTimeButton = document.createElement("button");
+recordsAllTimeButton.innerText = "All Time Records"
+recordsAllTimeButton.addEventListener("click", () => {
+    location.href = "./recordsAllTime.html";
+});
+selectionDiv.appendChild(recordsAllTimeButton);
 

@@ -212,10 +212,10 @@ module.exports = {
                 let tradeModifier = Math.random() * gameData.teams[i].power * 1.5;
                 //expectation:
                 if(gameData.teams[i].power < 0.8){
-                    tradeModifier -= 0.3
+                    tradeModifier += 0.1
                 }
                 else if(gameData.teams[i].power < 1){
-                    tradeModifier += 0.1
+                    tradeModifier += 0.2
                 }
                 else if (gameData.teams[i].power < 1.10){
                     tradeModifier += 0.3

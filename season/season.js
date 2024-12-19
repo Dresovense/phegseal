@@ -4,6 +4,7 @@ const recordsPostSeason = require("./recordsPostSeason.js");
 const recordsSeason = require("./recordsSeason.js");
 const events = require("./events/events.js")
 const standingsFunctions = require("../functions/standings.js");
+const { testAllTimeRecords } = require("./recordsAllTime.js");
 let gameData = JSON.parse(sessionStorage.getItem("gameData"));
 let season = sessionStorage.getItem("season");
 
@@ -19,7 +20,7 @@ let homeAwayFactor = "All";
 let endDate = gameData.seasons[season].endDate;
 let startDate = parseInt(gameData.seasons[season].endDate) - 1;
 let seasonTitle = document.createElement("h3");
-seasonTitle.innerText = `${startDate}-${endDate} Season (${gameData.seasons.length})`
+seasonTitle.innerText = `${startDate}-${endDate} Season (${season})`
 seasonContainer.appendChild(seasonTitle);
 
 let standingsContainerContainer = document.createElement("div");
@@ -28,6 +29,7 @@ let boolTradeLog = false;
 let boolPowerRankings = false;
 let boolPredictions = false;
 let boolStandings = true;
+
  
 const conferenceNumber = gameData.seasons[season].teams.conference.length;
 const divisionNumber = gameData.seasons[season].teams.conference[0].divisions.length;
@@ -42,6 +44,10 @@ if(season <= 12 && season != 0){
 }
 else if(season > 11){
     lastYearWinner = gameData.seasons[season - 1].postSeasonSchedule.finals[gameData.seasons[season - 1].postSeasonSchedule.finals.length - 1].matchups[0].winner;
+}
+let lastYearPlayoffs
+if(season > 11){
+    lastYearPlayoffs = gameData.seasons[season - 1].postSeasonSchedule.teamsInPlayoffs
 }
 
 let sortingType = "Pts";
@@ -63,34 +69,34 @@ function count(gameData, season, round, teamId, countType){
     for(let i = 0; i <= round; i++){
         for(let j = 0; j < schedule[i].games.length; j++){
             if(schedule[i].games[j].team1Id == teamId && schedule[i].games[j].team1Goals != ""){
-                if(schedule[i].games[j].team1Goals > schedule[i].games[j].team2Goals){
+                if(Number(schedule[i].games[j].team1Goals) > Number(schedule[i].games[j].team2Goals)){
                     victoriesHome++;
                 }
-                else if(schedule[i].games[j].team1Goals == schedule[i].games[j].team2Goals){
+                else if(Number(schedule[i].games[j].team1Goals) == Number(schedule[i].games[j].team2Goals)){
                     tiesHome++;
                 }
-                else if(schedule[i].games[j].team1Goals < schedule[i].games[j].team2Goals){
+                else if(Number(schedule[i].games[j].team1Goals) < Number(schedule[i].games[j].team2Goals)){
                     defeatsHome++;
                 }
                 goalsScoredHome += parseInt(schedule[i].games[j].team1Goals);
                 goalsAgainstHome += parseInt(schedule[i].games[j].team2Goals);
-                if(schedule[i].games[j].team2Goals == 0){
+                if(Number(schedule[i].games[j].team2Goals) == 0){
                     shutoutsHome++;
                 }
             }
             else if(schedule[i].games[j].team2Id == teamId && schedule[i].games[j].team1Goals != ""){
-                if(schedule[i].games[j].team1Goals > schedule[i].games[j].team2Goals){
+                if(Number(schedule[i].games[j].team1Goals) > Number(schedule[i].games[j].team2Goals)){
                     defeatsAway++;
                 }
-                else if(schedule[i].games[j].team1Goals == schedule[i].games[j].team2Goals){
+                else if(Number(schedule[i].games[j].team1Goals) == Number(schedule[i].games[j].team2Goals)){
                     tiesAway++;
                 }
-                else if(schedule[i].games[j].team1Goals < schedule[i].games[j].team2Goals){
+                else if(Number(schedule[i].games[j].team1Goals) < Number(schedule[i].games[j].team2Goals)){
                     victoriesAway++;
                 }
                 goalsScoredAway += parseInt(schedule[i].games[j].team2Goals);
                 goalsAgainstAway += parseInt(schedule[i].games[j].team1Goals);
-                if(schedule[i].games[j].team1Goals == 0){
+                if(Number(schedule[i].games[j].team1Goals) == 0){
                     shutoutsAway++;
                 }
             }
@@ -280,7 +286,7 @@ function standings (gameData, teamChoice, season, round, sortingType){
             }
         });
     }
-    else if(sortingType == "SO"){
+    else if(sortingType == "CS"){
         teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
             if(left.shutouts() > right.shutouts()){
                 return -1;
@@ -620,7 +626,7 @@ function standingsHome (gameData, teamChoice, season, round, sortingType){
             }
         });
     }
-    else if(sortingType == "SO"){
+    else if(sortingType == "CS"){
         teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
             if(left.shutoutsHome > right.shutoutsHome){
                 return -1;
@@ -960,7 +966,7 @@ function standingsAway (gameData, teamChoice, season, round, sortingType){
             }
         });
     }
-    else if(sortingType == "SO"){
+    else if(sortingType == "CS"){
         teams.sort(function(left,right){    //ca marche (-1 = true? et 1 = false?)
             if(left.shutoutsAway > right.shutoutsAway){
                 return -1;
@@ -1173,7 +1179,7 @@ function outOfPlayOffs(gameData, season, round){
 
 function teamsPlayOffBound (gameData, season, round){
     let teamListPlayOffBound = [];
-    if(season <= 11){
+    if(season <= 11 && gameData.seasons[0].endDate != 1){
         let numberOfTeamsInPlayOffs = gameData.seasons[season].postSeasonSchedule[0].matchups.length * 2;
         let playOfTeamsPerDivision = numberOfTeamsInPlayOffs / (conferenceNumber * divisionNumber);
         for(let i = 0; i < playOfTeamsPerDivision; i++){
@@ -1223,7 +1229,7 @@ function teamsPlayOffBound (gameData, season, round){
 
 function teamsPlayOffBoundStandings (gameData, season, round){
     let teamListPlayOffBound = [];
-    if(season <= 11){
+    if(season <= 11 && gameData.seasons[0].endDate != 1){
         let numberOfTeamsInPlayOffs = gameData.seasons[season].postSeasonSchedule[0].matchups.length * 2;
         let playOfTeamsPerDivision = numberOfTeamsInPlayOffs / (conferenceNumber * divisionNumber);
         for(let i = 0; i < playOfTeamsPerDivision; i++){
@@ -1463,18 +1469,18 @@ function printStandings(teams, placeTeams){
             shutouts.className = "gridsquare";
             shutouts.id = "shutouts";
             shutouts.addEventListener("click", () => {
-                if(sortingType == "SO"){
+                if(sortingType == "CS"){
                     sortingType = "SO1";
                     eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
                 else{
-                    sortingType = "SO";
+                    sortingType = "CS";
                     eventDispatched = true;
                     button.dispatchEvent(new Event("click"));
                 }
             })
-            shutouts.innerText = "SO";
+            shutouts.innerText = "CS";
             standingsRow.appendChild(shutouts); 
             //pace of team
             let pace = document.createElement("div");
@@ -1618,6 +1624,12 @@ function printStandings(teams, placeTeams){
                 lastYearWinnerLogo.src = "../graphics/trophy/trophy.png";
                 name.appendChild(lastYearWinnerLogo);  
             }
+            if(lastYearPlayoffs.includes(teams[i].id)){
+                let lastYearPlayoffsDiv = document.createElement("div");
+                lastYearPlayoffsDiv.innerText = "P";
+                lastYearPlayoffsDiv.style.font = "bold"
+                name.appendChild(lastYearPlayoffsDiv); 
+            }
             //games of team
             let games = document.createElement("div");
             games.className = "gridsquare";
@@ -1670,7 +1682,7 @@ function printStandings(teams, placeTeams){
             shutouts.id = "shutouts";
             shutouts.innerText = teams[i].shutouts();
             standingsRow.appendChild(shutouts); 
-            if(season >= 12){
+            //if(season >= 12){
                 //pace of team
                 let numberOfMatches = gameData.seasons[season].schedule.length - (gameData.seasons[season].teams.allTeams.length % 2) * (gameData.seasons[season].schedule.length / gameData.seasons[season].teams.allTeams.length)
                 let numberOfMatchesPerTeam = numberOfMatches
@@ -1683,7 +1695,7 @@ function printStandings(teams, placeTeams){
                 pace.id = "pace";
                 pace.innerText = (teams[i].points() / (teams[i].gamesPlayed()) * numberOfMatchesPerTeam).toFixed(0);
                 standingsRow.appendChild(pace); 
-            }
+            //}
             //pointPercentage of team
             let pointPercentage = document.createElement("div");
             pointPercentage.className = "gridsquare";
@@ -1780,7 +1792,7 @@ function printStandingsHome(teams){
             let shutouts = document.createElement("div");
             shutouts.className = "gridsquare";
             shutouts.id = "shutouts";
-            shutouts.innerText = "SO";
+            shutouts.innerText = "CS";
             standingsRow.appendChild(shutouts); 
             //points of team
             let points = document.createElement("div");
@@ -1868,6 +1880,12 @@ function printStandingsHome(teams){
                 lastYearWinnerLogo.id = "logo";
                 lastYearWinnerLogo.src = "../graphics/trophy/trophy.png";
                 name.appendChild(lastYearWinnerLogo);  
+            }
+            if(lastYearPlayoffs.includes(teams[i].id)){
+                let lastYearPlayoffsDiv = document.createElement("div");
+                lastYearPlayoffsDiv.innerText = "P";
+                lastYearPlayoffsDiv.style.font = "bold"
+                name.appendChild(lastYearPlayoffsDiv); 
             }
             //games of team
             let games = document.createElement("div");
@@ -2017,7 +2035,7 @@ function printStandingsAway(teams){
             let shutouts = document.createElement("div");
             shutouts.className = "gridsquare";
             shutouts.id = "shutouts";
-            shutouts.innerText = "SO";
+            shutouts.innerText = "CS";
             standingsRow.appendChild(shutouts); 
             //points of team
             let points = document.createElement("div");
@@ -2105,6 +2123,12 @@ function printStandingsAway(teams){
                 lastYearWinnerLogo.id = "logo";
                 lastYearWinnerLogo.src = "../graphics/trophy/trophy.png";
                 name.appendChild(lastYearWinnerLogo);  
+            }
+            if(lastYearPlayoffs.includes(teams[i].id)){
+                let lastYearPlayoffsDiv = document.createElement("div");
+                lastYearPlayoffsDiv.innerText = "P";
+                lastYearPlayoffsDiv.style.font = "bold"
+                name.appendChild(lastYearPlayoffsDiv); 
             }
             //games of team
             let games = document.createElement("div");
@@ -2854,11 +2878,11 @@ function gamesRound (gameData, season, round){
             TeamLogoImg2.className = "teamLogo";
             team2LogoContainer.appendChild(TeamLogoImg2);
 
-            if(matches[i].team1Goals > matches[i].team2Goals){
+            if(Number(matches[i].team1Goals) > Number(matches[i].team2Goals)){
                 divTeam1.style.fontWeight = "bold";
                 divTeam2.style.fontStyle = "italic";
             }
-            else if (matches[i].team1Goals < matches[i].team2Goals){
+            else if (Number(matches[i].team1Goals) < Number(matches[i].team2Goals)){
                 divTeam2.style.fontWeight = "bold";
                 divTeam1.style.fontStyle = "italic";
             }
@@ -2872,7 +2896,7 @@ function gamesRound (gameData, season, round){
 }
 
 function gamesPostSeason (gameData, season, round){    
-    if(season <= 11){
+    if(season <= 11 && gameData.seasons[0].endDate != 1){
         let matchups = gameData.seasons[season].postSeasonSchedule[round].matchups;
         let teams = gameData.teams;
     
@@ -2985,10 +3009,10 @@ function gamesPostSeason (gameData, season, round){
                                 let team2Wins = 0;
                                 for(let k = 0; k < 3; k++){
                                     if(k % 2 == 0){
-                                        if(matchups[i].games[k].team1Goals > matchups[i].games[k].team2Goals){
+                                        if(Number(matchups[i].games[k].team1Goals) > Number(matchups[i].games[k].team2Goals)){
                                             team1Wins++;
                                         }
-                                        else if(matchups[i].games[k].team1Goals < matchups[i].games[k].team2Goals){
+                                        else if(Number(matchups[i].games[k].team1Goals) < Number(matchups[i].games[k].team2Goals)){
                                             team2Wins++;
                                         }
                                         else{
@@ -3001,10 +3025,10 @@ function gamesPostSeason (gameData, season, round){
                                         }
                                     }
                                     else{
-                                        if(matchups[i].games[k].team1Goals > matchups[i].games[k].team2Goals){
+                                        if(Number(matchups[i].games[k].team1Goals) > Number(matchups[i].games[k].team2Goals)){
                                             team2Wins++;
                                         }
-                                        else if(matchups[i].games[k].team1Goals < matchups[i].games[k].team2Goals){
+                                        else if(Number(matchups[i].games[k].team1Goals) < Number(matchups[i].games[k].team2Goals)){
                                             team1Wins++;
                                         }
                                         else{
@@ -3159,16 +3183,16 @@ function gamesPostSeason (gameData, season, round){
                     TeamLogoImg2.className = "teamLogo";
                     team2LogoContainer.appendChild(TeamLogoImg2);
     
-                    if(matchups[i].games[j].team1Goals > matchups[i].games[j].team2Goals){
+                    if(Number(matchups[i].games[j].team1Goals) > Number(matchups[i].games[j].team2Goals)){
                         divTeam1.style.fontWeight = "bold";
                         divTeam2.style.fontStyle = "italic";
                     }
-                    else if (matchups[i].games[j].team1Goals < matchups[i].games[j].team2Goals){
+                    else if (Number(matchups[i].games[j].team1Goals) < Number(matchups[i].games[j].team2Goals)){
                         divTeam2.style.fontWeight = "bold";
                         divTeam1.style.fontStyle = "italic";
                     }
                     else{
-                        if(matchups[i].games[j].team1GoalsAddTime > matchups[i].games[j].team2GoalsAddTime){
+                        if(Number(matchups[i].games[j].team1GoalsAddTime) > Number(matchups[i].games[j].team2GoalsAddTime)){
                             divTeam1.style.fontWeight = "bold";
                             divTeam2.style.fontStyle = "italic";
                         }
@@ -3338,10 +3362,10 @@ function gamesPostSeason (gameData, season, round){
                                             let team2Wins = 0;
                                             for(let k = 0; k < gameData.seasons[season].postSeasonSchedule.rules.numberOfPlayoffMatches; k++){
                                                 if(k % 2 == 0){
-                                                    if(conferenceMatchups[i].games[k].team1Goals > conferenceMatchups[i].games[k].team2Goals){
+                                                    if(Number(conferenceMatchups[i].games[k].team1Goals) > Number(conferenceMatchups[i].games[k].team2Goals)){
                                                         team1Wins++;
                                                     }
-                                                    else if(conferenceMatchups[i].games[k].team1Goals < conferenceMatchups[i].games[k].team2Goals){
+                                                    else if(Number(conferenceMatchups[i].games[k].team1Goals) < Number(conferenceMatchups[i].games[k].team2Goals)){
                                                         team2Wins++;
                                                     }
                                                     else{
@@ -3354,10 +3378,10 @@ function gamesPostSeason (gameData, season, round){
                                                     }
                                                 }
                                                 else{
-                                                    if(conferenceMatchups[i].games[k].team1Goals > conferenceMatchups[i].games[k].team2Goals){
+                                                    if(Number(conferenceMatchups[i].games[k].team1Goals) > Number(conferenceMatchups[i].games[k].team2Goals)){
                                                         team2Wins++;
                                                     }
-                                                    else if(conferenceMatchups[i].games[k].team1Goals < conferenceMatchups[i].games[k].team2Goals){
+                                                    else if(Number(conferenceMatchups[i].games[k].team1Goals) < Number(conferenceMatchups[i].games[k].team2Goals)){
                                                         team1Wins++;
                                                     }
                                                     else{
@@ -3535,16 +3559,16 @@ function gamesPostSeason (gameData, season, round){
                                 TeamLogoImg2.className = "teamLogo";
                                 team2LogoContainer.appendChild(TeamLogoImg2);
                 
-                                if(conferenceMatchups[i].games[j].team1Goals > conferenceMatchups[i].games[j].team2Goals){
+                                if(Number(conferenceMatchups[i].games[j].team1Goals) > Number(conferenceMatchups[i].games[j].team2Goals)){
                                     divTeam1.style.fontWeight = "bold";
                                     divTeam2.style.fontStyle = "italic";
                                 }
-                                else if (conferenceMatchups[i].games[j].team1Goals < conferenceMatchups[i].games[j].team2Goals){
+                                else if (Number(conferenceMatchups[i].games[j].team1Goals) < Number(conferenceMatchups[i].games[j].team2Goals)){
                                     divTeam2.style.fontWeight = "bold";
                                     divTeam1.style.fontStyle = "italic";
                                 }
                                 else{
-                                    if(conferenceMatchups[i].games[j].team1GoalsAddTime > conferenceMatchups[i].games[j].team2GoalsAddTime){
+                                    if(Number(conferenceMatchups[i].games[j].team1GoalsAddTime) > Number(conferenceMatchups[i].games[j].team2GoalsAddTime)){
                                         divTeam1.style.fontWeight = "bold";
                                         divTeam2.style.fontStyle = "italic";
                                     }
@@ -3710,10 +3734,10 @@ function gamesPostSeason (gameData, season, round){
                                     let team2Wins = 0;
                                     for(let k = 0; k < gameData.seasons[season].postSeasonSchedule.rules.numberOfPlayoffMatches; k++){
                                         if(k % 2 == 0){
-                                            if(finalMatchups[round].games[k].team1Goals > finalMatchups[round].games[k].team2Goals){
+                                            if(Number(finalMatchups[round].games[k].team1Goals) > Number(finalMatchups[round].games[k].team2Goals)){
                                                 team1Wins++;
                                             }
-                                            else if(finalMatchups[round].games[k].team1Goals < finalMatchups[round].games[k].team2Goals){
+                                            else if(Number(finalMatchups[round].games[k].team1Goals) < Number(finalMatchups[round].games[k].team2Goals)){
                                                 team2Wins++;
                                             }
                                             else{
@@ -3726,10 +3750,10 @@ function gamesPostSeason (gameData, season, round){
                                             }
                                         }
                                         else{
-                                            if(finalMatchups[round].games[k].team1Goals > finalMatchups[round].games[k].team2Goals){
+                                            if(Number(finalMatchups[round].games[k].team1Goals) > Number(finalMatchups[round].games[k].team2Goals)){
                                                 team2Wins++;
                                             }
-                                            else if(finalMatchups[round].games[k].team1Goals < finalMatchups[round].games[k].team2Goals){
+                                            else if(Number(finalMatchups[round].games[k].team1Goals) < Number(finalMatchups[round].games[k].team2Goals)){
                                                 team1Wins++;
                                             }
                                             else{
@@ -3779,6 +3803,9 @@ function gamesPostSeason (gameData, season, round){
                                                 }
                                             }
 
+                                        }
+                                        else{   //saison terminée
+                                            testAllTimeRecords(gameData, season)
                                         }
                                         
                                     }
@@ -3878,16 +3905,16 @@ function gamesPostSeason (gameData, season, round){
                         TeamLogoImg2.className = "teamLogo";
                         team2LogoContainer.appendChild(TeamLogoImg2);
         
-                        if(finalMatchups[round].games[j].team1Goals > finalMatchups[round].games[j].team2Goals){
+                        if(Number(finalMatchups[round].games[j].team1Goals) > Number(finalMatchups[round].games[j].team2Goals)){
                             divTeam1.style.fontWeight = "bold";
                             divTeam2.style.fontStyle = "italic";
                         }
-                        else if (finalMatchups[round].games[j].team1Goals < finalMatchups[round].games[j].team2Goals){
+                        else if (Number(finalMatchups[round].games[j].team1Goals) < Number(finalMatchups[round].games[j].team2Goals)){
                             divTeam2.style.fontWeight = "bold";
                             divTeam1.style.fontStyle = "italic";
                         }
                         else{
-                            if(finalMatchups[round].games[j].team1GoalsAddTime > finalMatchups[round].games[j].team2GoalsAddTime){
+                            if(Number(finalMatchups[round].games[j].team1GoalsAddTime) > Number(finalMatchups[round].games[j].team2GoalsAddTime)){
                                 divTeam1.style.fontWeight = "bold";
                                 divTeam2.style.fontStyle = "italic";
                             }
@@ -3974,7 +4001,7 @@ function addChampionToData(gameData, team){
 let congratulations = document.createElement("h3");
 let championsDiv = document.createElement("div");
 function printChampion (championId){
-    congratulations.innerText = `${gameData.seasons[season].date} Phegsael Football League Champions:`
+    congratulations.innerText = `${gameData.seasons[season].date} Phegsael Hockey League Champions:`
     seasonContainer.appendChild(congratulations);
 
     championsDiv.id = "championDiv";
@@ -4035,7 +4062,7 @@ function selectionOptions (gameData, season){
         }
     }
     if(gameData.seasons[season].schedule[gameData.seasons[season].schedule.length - 1].completed == "yes"){
-        if(season <= 11){
+        if(season <= 11 && gameData.seasons[0].endDate != 1){
             for(let i = 0; i < gameData.seasons[season].postSeasonSchedule.length; i++){
                 let option = document.createElement("option");
                 option.innerText = `Post-season ${i + 1} Round`;
@@ -4084,10 +4111,7 @@ selectionOptions(gameData, season);
 select[select.length - 1].selected = "selected";
 
 
-let standingsTitle = document.createElement("h3");
-standingsTitle.innerText = "Standings";
-standingsTitle.style.textAlign = "center";
-standingsContainerContainer.appendChild(standingsTitle)
+
 
 //conferences/divisions
 let divisionsFactor = "league";
@@ -4127,6 +4151,7 @@ if(conferenceNumber > 1){
         conferenceStandingsChoice.style.display = "none";
         divisionsFactor = "conference";
     });
+    divisionsFactor = "conference";
     standingsContainerContainer.appendChild(conferenceStandingsChoice);
 }
 if(divisionNumber > 1){
@@ -4153,9 +4178,9 @@ if(divisionNumber > 1){
                     let teams = standingsAway(gameData,teamChoice, season, round, "Pts%");
                     printStandingsAway(teams);
                 }
-                let br = document.createElement("br");
+                /* let br = document.createElement("br");
                 br.id ="7";
-                seasonContainer.appendChild(br);
+                seasonContainer.appendChild(br); */
             }
         }
         divisionStandingsChoice.style.display = "none";
@@ -4163,6 +4188,7 @@ if(divisionNumber > 1){
         conferenceStandingsChoice.style.display = "inline-block";
         divisionsFactor = "division";
     });
+    divisionsFactor = "division";
     standingsContainerContainer.appendChild(divisionStandingsChoice);
 }
 if(divisionNumber > 1 || conferenceNumber > 1){
@@ -4232,7 +4258,15 @@ button.addEventListener("click", () => {
         conferenceStandingsChoice.style.display = "inline-block";
         divisionStandingsChoice.style.display = "inline-block";
         if(eventDispatched == false){
-            conferenceStandingsChoice.dispatchEvent(new Event("click"));
+            if(divisionsFactor == "conference"){
+                conferenceStandingsChoice.dispatchEvent(new Event("click"));
+            }
+            else if(divisionsFactor == "division"){
+                divisionStandingsChoice.dispatchEvent(new Event("click"));
+            }
+            else if(divisionsFactor == "league"){
+                leagueStandingsChoice.dispatchEvent(new Event("click"));
+            }
         }
     }
     else{
@@ -4307,7 +4341,15 @@ previousRound.addEventListener("click", () =>{
             standingsAwayButton.style.display = "inline-block";
             conferenceStandingsChoice.style.display = "inline-block";
             divisionStandingsChoice.style.display = "inline-block";
-            conferenceStandingsChoice.dispatchEvent(new Event("click"));
+            if(divisionsFactor == "conference"){
+                conferenceStandingsChoice.dispatchEvent(new Event("click"));
+            }
+            else if(divisionsFactor == "division"){
+                divisionStandingsChoice.dispatchEvent(new Event("click"));
+            }
+            else if(divisionsFactor == "league"){
+                leagueStandingsChoice.dispatchEvent(new Event("click"));
+            }
             
         //}
     }
@@ -4339,7 +4381,7 @@ let nextRound = document.createElement("button");
 nextRound.innerText = "Next Round";
 nextRound.addEventListener("click", () => {
     if(boolRegularSeason == true){
-        if(season <= 11){
+        if(season <= 11 && gameData.seasons[0].endDate != 1){
             if(round == gameData.seasons[season].schedule.length - 1 && gameData.seasons[season].postSeasonSchedule[0].completed == "yes"){
                 boolRegularSeason = false;
                 round++;
@@ -4365,7 +4407,7 @@ nextRound.addEventListener("click", () => {
         }
     }
     else{
-        if(season <= 11){
+        if(season <= 11 && gameData.seasons[0].endDate != 1){
             if(round != gameData.seasons[season].postSeasonSchedule.length - 1 && gameData.seasons[season].postSeasonSchedule[round].completed == "yes"){
                 round += gameData.seasons[season].schedule.length;
                 round++;
@@ -4427,7 +4469,15 @@ nextRound.addEventListener("click", () => {
             standingsAwayButton.style.display = "inline-block";
             conferenceStandingsChoice.style.display = "inline-block";
             divisionStandingsChoice.style.display = "inline-block";
-            conferenceStandingsChoice.dispatchEvent(new Event("click"));
+            if(divisionsFactor == "conference"){
+                conferenceStandingsChoice.dispatchEvent(new Event("click"));
+            }
+            else if(divisionsFactor == "division"){
+                divisionStandingsChoice.dispatchEvent(new Event("click"));
+            }
+            else if(divisionsFactor == "league"){
+                leagueStandingsChoice.dispatchEvent(new Event("click"));
+            }
         //}
     }
     else{
@@ -4466,7 +4516,15 @@ if(select.value < gameData.seasons[season].schedule.length){
         gamesRound(gameData, season, round);
         boolRegularSeason = true;
         homeAwayFactor = "All";
-        conferenceStandingsChoice.dispatchEvent(new Event("click"));
+        if(divisionsFactor == "conference"){
+            conferenceStandingsChoice.dispatchEvent(new Event("click"));
+        }
+        else if(divisionsFactor == "division"){
+            divisionStandingsChoice.dispatchEvent(new Event("click"));
+        }
+        else if(divisionsFactor == "league"){
+            leagueStandingsChoice.dispatchEvent(new Event("click"));
+        }
     //}
 }
 else{
@@ -4488,32 +4546,32 @@ standingsHomeButton.addEventListener("click", () =>{
     standingsContainer.innerHTML = "";
     //if(conferenceNumber == 1 && divisionNumber == 1){
         if(divisionsFactor == "league"){
+            printStandingsHome(teams);
             let leagueName = document.createElement("div");
             leagueName.innerText = `League`;
             standingsContainer.appendChild(leagueName);
             let teamChoice = gameData.seasons[season].teams.allTeams;
             let teams = standingsHome(gameData, teamChoice, season, round, "Pts%");
-            printStandingsHome(teams);
         }
         else if(divisionsFactor == "conference"){
             for(let i = 0; i < conferenceNumber; i++){
+                printStandingsHome(teams);
                 let conferenceName = document.createElement("div");
                 conferenceName.innerText = `${gameData.seasons[season].teams.conference[i].name} Conference`;
                 standingsContainer.appendChild(conferenceName);
                 let teamChoice = gameData.seasons[season].teams.conference[i].teamsInConference;
                 let teams = standingsHome(gameData, teamChoice, season, round, "Pts%");
-                printStandingsHome(teams);
             }
         }
         else if(divisionsFactor == "division"){
             for(let i = 0; i < conferenceNumber; i++){
                 for(let j = 0; j < divisionNumber; j++){
+                    printStandingsHome(teams);
                     let divisionName = document.createElement("div");
                     divisionName.innerText = `${gameData.seasons[season].teams.conference[i].divisions[j].name} Division`;
                     standingsContainer.appendChild(divisionName);
                     let teamChoice = gameData.seasons[season].teams.conference[i].divisions[j].teams;
                     let teams = standingsHome(gameData, teamChoice, season, round, "Pts%");
-                    printStandingsHome(teams);
                 }
             }
         }
@@ -4530,32 +4588,32 @@ standingsAwayButton.addEventListener("click", () =>{
     standingsContainer.innerHTML = "";
     //if(conferenceNumber == 1 && divisionNumber == 1){
         if(divisionsFactor == "league"){
+            printStandingsAway(teams);
             let leagueName = document.createElement("div");
             leagueName.innerText = `League`;
             standingsContainer.appendChild(leagueName);
             let teamChoice = gameData.seasons[season].teams.allTeams;
             let teams = standingsAway(gameData, teamChoice, season, round, "Pts%");
-            printStandingsAway(teams);
         }
         else if(divisionsFactor == "conference"){
             for(let i = 0; i < conferenceNumber; i++){
+                printStandingsAway(teams);
                 let conferenceName = document.createElement("div");
                 conferenceName.innerText = `${gameData.seasons[season].teams.conference[i].name} Conference`;
                 standingsContainer.appendChild(conferenceName);
                 let teamChoice = gameData.seasons[season].teams.conference[i].teamsInConference;
                 let teams = standingsAway(gameData, teamChoice, season, round, "Pts%");
-                printStandingsAway(teams);
             }
         }
         else if(divisionsFactor == "division"){
             for(let i = 0; i < conferenceNumber; i++){
                 for(let j = 0; j < divisionNumber; j++){
+                    printStandingsAway(teams);
                     let divisionName = document.createElement("div");
                     divisionName.innerText = `${gameData.seasons[season].teams.conference[i].divisions[j].name} Division`;
                     standingsContainer.appendChild(divisionName);
                     let teamChoice = gameData.seasons[season].teams.conference[i].divisions[j].teams;
                     let teams = standingsAway(gameData, teamChoice, season, round, "Pts%");
-                    printStandingsAway(teams);
                 }
             }
         }
@@ -4573,35 +4631,35 @@ standingsAllButton.addEventListener("click", () => {
     standingsContainer.innerHTML = "";
     //if(conferenceNumber == 1 && divisionNumber == 1){
         if(divisionsFactor == "league"){
+            printStandings(teams, placeTeams);
             let leagueName = document.createElement("div");
             leagueName.innerText = `League`;
             standingsContainer.appendChild(leagueName);
             let teamChoice = gameData.seasons[season].teams.allTeams;
             let teams = standings(gameData, teamChoice, season, round, sortingType);
             let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
-            printStandings(teams, placeTeams);
         }
         else if(divisionsFactor == "conference"){
             for(let i = 0; i < conferenceNumber; i++){
+                printStandings(teams, placeTeams);
                 let conferenceName = document.createElement("div");
                 conferenceName.innerText = `${gameData.seasons[season].teams.conference[i].name} Conference`;
                 standingsContainer.appendChild(conferenceName);
                 let teamChoice = gameData.seasons[season].teams.conference[i].teamsInConference;
                 let teams = standings(gameData, teamChoice, season, round, sortingType);
                 let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
-                printStandings(teams, placeTeams);
             }
         }
         else if(divisionsFactor == "division"){
             for(let i = 0; i < conferenceNumber; i++){
                 for(let j = 0; j < divisionNumber; j++){
+                    printStandings(teams, placeTeams);
                     let divisionName = document.createElement("div");
                     divisionName.innerText = `${gameData.seasons[season].teams.conference[i].divisions[j].name} Division`;
                     standingsContainer.appendChild(divisionName);
                     let teamChoice = gameData.seasons[season].teams.conference[i].divisions[j].teams;
                     let teams = standings(gameData, teamChoice, season, round, sortingType);
                     let placeTeams = standings(gameData, teamChoice, season, round, "Pts");
-                    printStandings(teams, placeTeams);
                 }
             }
         }
@@ -4678,7 +4736,15 @@ buttonLeftSideStandings.addEventListener("click", () => {
         conferenceStandingsChoice.style.display = "inline-block";
         divisionStandingsChoice.style.display = "inline-block";
         if(eventDispatched == false){
-            conferenceStandingsChoice.dispatchEvent(new Event("click"));
+            if(divisionsFactor == "conference"){
+                conferenceStandingsChoice.dispatchEvent(new Event("click"));
+            }
+            else if(divisionsFactor == "division"){
+                divisionStandingsChoice.dispatchEvent(new Event("click"));
+            }
+            else if(divisionsFactor == "league"){
+                leagueStandingsChoice.dispatchEvent(new Event("click"));
+            }
         }
     }
 })
@@ -4741,10 +4807,10 @@ standingsContainerContainer.className = "season_leftSideContainers";
 leftSide.appendChild(standingsContainerContainer);
 
 
-
-
 standingsContainer.className = "gridContainer";
 standingsContainerContainer.appendChild(standingsContainer);
+
+
 
 
 let seasonProbabilitiesContainer = document.createElement("div");
@@ -5143,7 +5209,7 @@ function powerRankingsF(round){
 
 function printPowerRankings(round){
     if(boolRegularSeason == false){
-        round = gameData.seasons[season].schedule.length - 1
+        round = gameData.seasons[season].schedule.length
     }
 
     powerRankingsContainer.innerHTML = "";

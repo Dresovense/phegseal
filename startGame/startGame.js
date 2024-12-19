@@ -44,23 +44,27 @@ button.addEventListener("click", () => {
 });
 document.body.appendChild(button);
 
-let newDraftButton = document.createElement("button");
-newDraftButton.innerHTML = `${gameData.seasons[gameData.seasons.length - 1].endDate} draft`;
-newDraftButton.style.display = "none";
-newDraftButton.addEventListener("click", () => {
-  gameDataJson = JSON.stringify(gameData);
-  sessionStorage.setItem("gameData", gameDataJson);
-  sessionStorage.setItem("season", gameData.seasons.length - 1);
-  location.href = "../draft/draft.html";
-});
-document.body.appendChild(newDraftButton);
-
-//newSeason appears if the season has ended and the draft has been completed. Draft appears if the season has been completed
-let lastSeason = gameData.seasons.length - 1;
-if(gameData.seasons[lastSeason].postSeasonSchedule.finals[gameData.seasons[lastSeason].postSeasonSchedule.finals.length - 1].matchups[0].completed == "yes" && gameData.seasons[lastSeason].draft.completed == "no"){
-  newDraftButton.style.display = "block";
+if(gameData.seasons.length > 0){
+  let newDraftButton = document.createElement("button");
+  newDraftButton.innerHTML = `${gameData.seasons[gameData.seasons.length - 1].endDate} draft`;
+  newDraftButton.style.display = "none";
+  newDraftButton.addEventListener("click", () => {
+    gameDataJson = JSON.stringify(gameData);
+    sessionStorage.setItem("gameData", gameDataJson);
+    sessionStorage.setItem("season", gameData.seasons.length - 1);
+    location.href = "../draft/draft.html";
+  });
+  document.body.appendChild(newDraftButton);
+  //newSeason appears if the season has ended and the draft has been completed. Draft appears if the season has been completed
+  let lastSeason = gameData.seasons.length - 1;
+  if(gameData.seasons[lastSeason].postSeasonSchedule.finals[gameData.seasons[lastSeason].postSeasonSchedule.finals.length - 1].matchups[0].completed == "yes" && gameData.seasons[lastSeason].draft.completed == "no"){
+    newDraftButton.style.display = "block";
+  }
+  
+  if(gameData.seasons[lastSeason].draft.completed == "yes"){
+    button.style.display = "block";
+  }
 }
-
-if(gameData.seasons[lastSeason].draft.completed == "yes"){
+else{
   button.style.display = "block";
 }

@@ -14,11 +14,11 @@ document.body.appendChild(shortNameDiv);
 let shortName = document.createElement("input");
 document.body.appendChild(shortName);
 
-let teamLogoDiv = document.createElement("div");
+/* let teamLogoDiv = document.createElement("div");
 teamLogoDiv.innerText = "Logo (past directory) :";
 document.body.appendChild(teamLogoDiv);
 let teamLogo = document.createElement("input");
-document.body.appendChild(teamLogo);
+document.body.appendChild(teamLogo); */
 
 let teamColorDiv = document.createElement("div");
 teamColorDiv.innerText = "Color :";
@@ -53,7 +53,7 @@ confirmChoicebutton.addEventListener("click", () => {
     let teamObject = {
         name: teamName.value,
         shortName: shortName.value,
-        logo: teamLogo.value,
+        logo: `/graphics/logos/${teamId}`,
         color: teamColor.value,
         date: gameData.seasons.length,
         town: teamTown.value,

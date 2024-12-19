@@ -4,9 +4,18 @@ const dice = require("../season/dice.js");
 const standings = require("../functions/standings.js")
 
 let gameData = JSON.parse(sessionStorage.getItem("gameData"));
+let startDate
+let endDate
 
-let startDate = gameData.seasons[gameData.seasons.length - 1].endDate;
-let endDate = parseInt(gameData.seasons[gameData.seasons.length - 1].endDate) + 1;
+if(gameData.seasons.length == 0){
+    startDate = 0 //input startDate here
+    endDate = 1
+}
+else{
+    startDate = gameData.seasons[gameData.seasons.length - 1].endDate;
+    endDate = parseInt(gameData.seasons[gameData.seasons.length - 1].endDate) + 1;
+}
+
 let seasonTitle = document.createElement("h3");
 seasonTitle.innerText = startDate + "-" + endDate + " season configuration";
 document.body.appendChild(seasonTitle);

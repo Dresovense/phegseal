@@ -36,8 +36,8 @@ Colors for draft picks in team history
 
 Strength of the draft (overall and compared to the picks they had)
 
-Rework a bit powerRankings
-
+Switch from round based to calendar based
+    -Add "journal" once a week$
 
 
 

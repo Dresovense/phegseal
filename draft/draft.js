@@ -95,7 +95,7 @@ if(gameData.seasons[season].draft.completed == "no"){
             let odds = [];
             let numberOfLotteryBalls = 1;
             let maxodds = 0;
-            for(let i = lastYearStandings.length - 1; i >= 0; i--){
+            for(let i = 0; i < lastYearStandings.length; i++){
                 if(!gameData.seasons[season].postSeasonSchedule.teamsInPlayoffs.includes(lastYearStandings[i].id)){
                     for(let j = 0; j < numberOfLotteryBalls; j++){
                         odds.push(lastYearStandings[i].id);
@@ -177,13 +177,19 @@ if(gameData.seasons[season].draft.completed == "no"){
     }
     draftOrderFirstRound = JSON.parse(JSON.stringify(draft[0]));
 
-    console.log(draft)
         //change picks based on trades:
     for(let i = 0; i < 7; i++){ //i = round
         for(let l = 0; l < draftOrder.length; l++){ //l = pick
             for(let j = 0; j < lastYearStandings.length; j++){ //j = teams
-                if(draft[i][l] == j){
-                    draft[i][l] = gameData.teams[j].ownerOfTeamPicks[0][i]
+                if(i == 0){
+                    if(draftOrderFirstRound[l] == j){
+                        draft[i][l] = gameData.teams[j].ownerOfTeamPicks[0][i]
+                    }
+                }
+                else{
+                    if(draftOrder[l] == j){
+                        draft[i][l] = gameData.teams[j].ownerOfTeamPicks[0][i]
+                    }
                 }
             }
         }
@@ -447,7 +453,30 @@ function draftRound(round, container){
             let potential = document.createElement("div");
             potential.className = "draftGridSquare";
             if(gameData.seasons[season].draft.picks[i + (round) * draftOrder.length] != undefined){
-                potential.innerText = gameData.seasons[season].draft.picks[i + (round) * draftOrder.length].potential;
+                if(gameData.seasons[season].draft.picks[i + (round) * draftOrder.length].potential > 95){
+                    potential.innerText = "Superstar"
+                    potential.style.backgroundColor = "green"
+                }
+                else if(gameData.seasons[season].draft.picks[i + (round) * draftOrder.length].potential > 80){
+                    potential.innerText = "Elite Player"
+                    potential.style.backgroundColor = "lime"
+                }
+                else if(gameData.seasons[season].draft.picks[i + (round) * draftOrder.length].potential > 70){
+                    potential.innerText = "Good Player"
+                    potential.style.backgroundColor = "lightgreen"
+                }
+                else if(gameData.seasons[season].draft.picks[i + (round) * draftOrder.length].potential > 60){
+                    potential.innerText = "Average Player"
+                    potential.style.backgroundColor = "yellow"
+                }
+                else if(gameData.seasons[season].draft.picks[i + (round) * draftOrder.length].potential >= 55){
+                    potential.innerText = "Below Average Player"
+                    potential.style.backgroundColor = "orange"
+                }
+                else if(gameData.seasons[season].draft.picks[i + (round) * draftOrder.length].potential < 55){
+                    potential.innerText = "Miss"
+                    potential.style.backgroundColor = "red"
+                }
             }
             draftGrid.appendChild(potential);
 
@@ -456,7 +485,7 @@ function draftRound(round, container){
                 draftNumber.style.backgroundColor = "lightgray";
                 teamName.style.backgroundColor = "lightgray";
                 player.style.backgroundColor = "lightgray";
-                potential.style.backgroundColor = "lightgray";
+                //potential.style.backgroundColor = "lightgray";
                 originalTeam.style.backgroundColor = "lightgray";
             }
         }                                                                                                               
@@ -474,11 +503,11 @@ function pick(currentPick, currentRound){
         developpmentYears: draftClass[currentPick].developpmentYears
     }
     gameData.seasons[season].draft.picks.push(pick);
-    if(pick.potential >= 90){
-        gameData.teams[draft[currentRound][currentPick - currentRound * draftOrder.length]].projectedPowerNextSeasons[pick.developpmentYears] += pick.potential * 1.25;
+    if(pick.potential >= 95){
+        gameData.teams[draft[currentRound][currentPick - currentRound * draftOrder.length]].projectedPowerNextSeasons[pick.developpmentYears] += pick.potential * 1.125;
     }
     else if(pick.potential >= 80){
-        gameData.teams[draft[currentRound][currentPick - currentRound * draftOrder.length]].projectedPowerNextSeasons[pick.developpmentYears] += pick.potential * 1.125;
+        gameData.teams[draft[currentRound][currentPick - currentRound * draftOrder.length]].projectedPowerNextSeasons[pick.developpmentYears] += pick.potential * 1.05;
     }
     else if(pick.potential >= 55){
         gameData.teams[draft[currentRound][currentPick - currentRound * draftOrder.length]].projectedPowerNextSeasons[pick.developpmentYears] += pick.potential;
@@ -510,11 +539,11 @@ function endDraft(){
 
         //reduce current talent 
         console.log(gameData.teams[i].name + " before " + gameData.teams[i].power);
-        let drop = randn_bm() * (0.7 + gameData.teams[i].seasonsAbove1/20) - 0.10 - (0.07 * gameData.teams[i].seasonsBelow1);
+        let drop = randn_bm() * (0.75 + gameData.teams[i].seasonsAbove1/18) - 0.10 - (0.1 * gameData.teams[i].seasonsBelow1);
         gameData.teams[i].power -= drop;
         console.log(gameData.teams[i].name + " drop " + drop);
         //push new talent
-        let newTalent = gameData.teams[i].projectedPowerNextSeasons[0] / 2000;
+        let newTalent = gameData.teams[i].projectedPowerNextSeasons[0] / 1600;
         gameData.teams[i].power += newTalent;
         console.log(gameData.teams[i].name + " newTalent " + newTalent);
         console.log(gameData.teams[i].name + " after " + gameData.teams[i].power);
@@ -523,7 +552,7 @@ function endDraft(){
         gameData.teams[i].projectedPowerNextSeasons.push(0);
         //change of potential in the next seasons
         for(let j = 0; j < 7; j++){
-            let dropPotential = randn_bm() * 100 - 28;
+            let dropPotential = randn_bm() * 40 - 20;
             gameData.teams[i].projectedPowerNextSeasons[j] -= dropPotential;
         }
         //add minimal strength:

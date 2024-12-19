@@ -1,123 +1,299 @@
-let draftClass = [];
+let gameData = JSON.parse(sessionStorage.getItem("gameData"));
+const Standings = require("../functions/standings.js");
+const fs = require('fs');
 
-for(let i = 0; i < 10000; i++){
-    //let potential = Math.ceil(Math.pow(randn_bm(), 2.51) * 140);
-    let potential = randomPotential()
-    let developpmentYears = Math.floor(randn_bm() * 8);
-    /* if(potential < 30){
-        potential = 30;
-    } */
-   // let randomName = firstName.data[Math.floor(Math.random() * firstName.data.length)] + " " + lastName.data[Math.floor(Math.random() * lastName.data.length)];
-    draftClass.push({
-        potential: potential,
-        developpmentYears: developpmentYears,
-    //    name: randomName
+let records = gameData.records;
+
+records.regularSeason.ties.lessTies.teams = [];
+records.regularSeason.ties.lessTiesAway.teams = [];
+records.regularSeason.ties.lessTiesHome.teams = [];
+records.regularSeason.ties.mostConsecutiveTiesAway.teams = [];
+records.regularSeason.ties.mostConsecutiveTies.teams = [];
+records.regularSeason.ties.mostConsecutiveTiesHome.teams = [];
+records.regularSeason.ties.mostTies.teams = [];
+
+//Records all Time
+for(let season = 0; season < gameData.seasons.length - 1; season++){   //seasons
+    let standings = Standings.standings(gameData, gameData.seasons[season].teams.allTeams, season, gameData.seasons[season].schedule.length - 1, "L");
+    for(let team = 0; team < standings.length; team++){
+        //set records:
+            //most ties:
+            let mostTies = records.regularSeason.ties.mostTies.teams;
+            for(let recordHolder = 0; recordHolder < 10; recordHolder++){
+                if(mostTies[recordHolder]){
+                    if(mostTies[recordHolder].record < standings[team].ties()){
+                        mostTies.splice(recordHolder, 0, {teamId: standings[team].id, seasonId: season, record: standings[team].ties()});
+                        break;
+                    }
+                }
+                else{
+                    mostTies.splice(recordHolder, 0, {teamId: standings[team].id, seasonId: season, record: standings[team].ties()});
+                    break;
+                }
+            }
+            mostTies.length = 10;
+
+            //most ties Home:
+            let mostTiesHome = records.regularSeason.ties.mostTiesHome.teams;
+            for(let recordHolder = 0; recordHolder < 10; recordHolder++){
+                if(mostTiesHome[recordHolder]){
+                    if(mostTiesHome[recordHolder].record < standings[team].tiesHome){
+                        mostTiesHome.splice(recordHolder, 0, {teamId: standings[team].id, seasonId: season, record: standings[team].tiesHome});
+                        break;
+                    }
+                }
+                else{
+                    mostTiesHome.splice(recordHolder, 0, {teamId: standings[team].id, seasonId: season, record: standings[team].tiesHome});
+                    break;
+                }
+            }
+            mostTiesHome.length = 10;
+
+            //most ties Away:
+            let mostTiesAway = records.regularSeason.ties.mostTiesAway.teams;
+            for(let recordHolder = 0; recordHolder < 10; recordHolder++){
+                if(mostTiesAway[recordHolder]){
+                    if(mostTiesAway[recordHolder].record < standings[team].tiesAway){
+                        mostTiesAway.splice(recordHolder, 0, {teamId: standings[team].id, seasonId: season, record: standings[team].tiesAway});
+                        break;
+                    }
+                }
+                else{
+                    mostTiesAway.splice(recordHolder, 0, {teamId: standings[team].id, seasonId: season, record: standings[team].tiesAway});
+                    break;
+                }
+            }
+            mostTiesAway.length = 10;
+
+            //less ties:
+            let lessTies = records.regularSeason.ties.lessTies.teams;
+            for(let recordHolder = 0; recordHolder < 10; recordHolder++){
+                if(lessTies[recordHolder]){
+                    if(lessTies[recordHolder].record > standings[team].ties()){
+                        lessTies.splice(recordHolder, 0, {teamId: standings[team].id, seasonId: season, record: standings[team].ties()});
+                        break;
+                    }
+                }
+                else{
+                    lessTies.splice(recordHolder, 0, {teamId: standings[team].id, seasonId: season, record: standings[team].ties()});
+                    break;
+                }
+            }
+            lessTies.length = 10;
+
+            //less ties Home:
+            let lessTiesHome = records.regularSeason.ties.lessTiesHome.teams;
+            for(let recordHolder = 0; recordHolder < 10; recordHolder++){
+                if(lessTiesHome[recordHolder]){
+                    if(lessTiesHome[recordHolder].record > standings[team].tiesHome){
+                        lessTiesHome.splice(recordHolder, 0, {teamId: standings[team].id, seasonId: season, record: standings[team].tiesHome});
+                        break;
+                    }
+                }
+                else{
+                    lessTiesHome.splice(recordHolder, 0, {teamId: standings[team].id, seasonId: season, record: standings[team].tiesHome});
+                    break;
+                }
+            }
+            lessTiesHome.length = 10;
+
+            //less ties Away:
+            let lessTiesAway = records.regularSeason.ties.lessTiesAway.teams;
+            for(let recordHolder = 0; recordHolder < 10; recordHolder++){
+                if(lessTiesAway[recordHolder]){
+                    if(lessTiesAway[recordHolder].record > standings[team].tiesAway){
+                        lessTiesAway.splice(recordHolder, 0, {teamId: standings[team].id, seasonId: season, record: standings[team].tiesAway});
+                        break;
+                    }
+                }
+                else{
+                    lessTiesAway.splice(recordHolder, 0, {teamId: standings[team].id, seasonId: season, record: standings[team].tiesAway});
+                    break;
+                }
+            }
+            lessTiesAway.length = 10;
+
+
+            //consecutives:
+
+            let teamId = standings[team].id;
+            
+            //Most consecutive ties:
+            let consecutiveRun = []
+            for(let round = 0; round < gameData.seasons[season].schedule.length; round++){
+                for(let match = 0; match < gameData.seasons[season].schedule[round].games.length; match++){
+                    let matchInfo = gameData.seasons[season].schedule[round].games[match];
+                    if(matchInfo.team1Id == teamId){
+                        if(matchInfo.team1Goals == matchInfo.team2Goals){
+                            consecutiveRun.push(round);
+                        }
+                        else{
+                            let mostConsecutiveTies = records.regularSeason.ties.mostConsecutiveTies.teams;
+                            for(let recordHolder = 0; recordHolder < 10; recordHolder++){
+                                if(mostConsecutiveTies[recordHolder]){
+                                    if(mostConsecutiveTies[recordHolder].record < consecutiveRun.length){
+                                        mostConsecutiveTies.splice(recordHolder, 0, {teamId: teamId, seasonId: season, record: consecutiveRun.length, endRound: consecutiveRun[consecutiveRun.length - 1]});
+                                        break;
+                                    }
+                                }
+                                else{
+                                    mostConsecutiveTies.splice(recordHolder, 0, {teamId: teamId, seasonId: season, record: consecutiveRun.length, endRound: consecutiveRun[consecutiveRun.length - 1]});
+                                    break;
+                                }
+                            }
+                            mostConsecutiveTies.length = 10;
+                            consecutiveRun = [];
+                        }
+                    }
+                    else if(matchInfo.team2Id == teamId){
+                        if(matchInfo.team1Goals == matchInfo.team2Goals){
+                            consecutiveRun.push(round);
+                        }
+                        else{
+                            let mostConsecutiveTies = records.regularSeason.ties.mostConsecutiveTies.teams;
+                            for(let recordHolder = 0; recordHolder < 10; recordHolder++){
+                                if(mostConsecutiveTies[recordHolder]){
+                                    if(mostConsecutiveTies[recordHolder].record < consecutiveRun.length){
+                                        mostConsecutiveTies.splice(recordHolder, 0, {teamId: teamId, seasonId: season, record: consecutiveRun.length, endRound: consecutiveRun[consecutiveRun.length - 1]});
+                                        break;
+                                    }
+                                }
+                                else{
+                                    mostConsecutiveTies.splice(recordHolder, 0, {teamId: teamId, seasonId: season, record: consecutiveRun.length, endRound: consecutiveRun[consecutiveRun.length - 1]});
+                                    break;
+                                }
+                            }
+                            mostConsecutiveTies.length = 10;
+                            consecutiveRun = [];
+                        }
+                    }
+                }
+            }
+
+            //Most consecutive ties Home:
+            consecutiveRun = []
+            for(let round = 0; round < gameData.seasons[season].schedule.length; round++){
+                for(let match = 0; match < gameData.seasons[season].schedule[round].games.length; match++){
+                    let matchInfo = gameData.seasons[season].schedule[round].games[match];
+                    if(matchInfo.team1Id == teamId){
+                        if(matchInfo.team1Goals == matchInfo.team2Goals){
+                            consecutiveRun.push(round);
+                        }
+                        else{
+                            let mostConsecutiveTiesHome = records.regularSeason.ties.mostConsecutiveTiesHome.teams;
+                            for(let recordHolder = 0; recordHolder < 10; recordHolder++){
+                                if(mostConsecutiveTiesHome[recordHolder]){
+                                    if(mostConsecutiveTiesHome[recordHolder].record < consecutiveRun.length){
+                                        mostConsecutiveTiesHome.splice(recordHolder, 0, {teamId: teamId, seasonId: season, record: consecutiveRun.length, endRound: consecutiveRun[consecutiveRun.length - 1]});
+                                        break;
+                                    }
+                                }
+                                else{
+                                    mostConsecutiveTiesHome.splice(recordHolder, 0, {teamId: teamId, seasonId: season, record: consecutiveRun.length, endRound: consecutiveRun[consecutiveRun.length - 1]});
+                                    break;
+                                }
+                            }
+                            mostConsecutiveTiesHome.length = 10;
+                            consecutiveRun = [];
+                        }
+                    }
+                }
+            }
+
+            //Most consecutive ties away:
+            consecutiveRun = []
+            for(let round = 0; round < gameData.seasons[season].schedule.length; round++){
+                for(let match = 0; match < gameData.seasons[season].schedule[round].games.length; match++){
+                    let matchInfo = gameData.seasons[season].schedule[round].games[match];
+                    if(matchInfo.team2Id == teamId){
+                        if(matchInfo.team1Goals == matchInfo.team2Goals){
+                            consecutiveRun.push(round);
+                        }
+                        else{
+                            let mostConsecutiveTiesAway = records.regularSeason.ties.mostConsecutiveTiesAway.teams;
+                            for(let recordHolder = 0; recordHolder < 10; recordHolder++){
+                                if(mostConsecutiveTiesAway[recordHolder]){
+                                    if(mostConsecutiveTiesAway[recordHolder].record < consecutiveRun.length){
+                                        mostConsecutiveTiesAway.splice(recordHolder, 0, {teamId: teamId, seasonId: season, record: consecutiveRun.length, endRound: consecutiveRun[consecutiveRun.length - 1]});
+                                        break;
+                                    }
+                                }
+                                else{
+                                    mostConsecutiveTiesAway.splice(recordHolder, 0, {teamId: teamId, seasonId: season, record: consecutiveRun.length, endRound: consecutiveRun[consecutiveRun.length - 1]});
+                                    break;
+                                }
+                            }
+                            mostConsecutiveTiesAway.length = 10;
+                            consecutiveRun = [];
+                        }
+                    }
+                }
+            }
+
+            /* //Most consecutive no ties:
+            consecutiveRun = []
+            for(let round = 0; round < gameData.seasons[season].schedule.length; round++){
+                for(let match = 0; match < gameData.seasons[season].schedule[round].games.length; match++){
+                    let matchInfo = gameData.seasons[season].schedule[round].games[match];
+                    if(matchInfo.team1Id == teamId){
+                        if(matchInfo.team1Goals >= matchInfo.team2Goals){
+                            consecutiveRun.push(round);
+                        }
+                        else{
+                            let consecutiveNoLoseMatches = records.regularSeason.ties.consecutiveNoLoseMatches.teams;
+                            for(let recordHolder = 0; recordHolder < 10; recordHolder++){
+                                if(consecutiveNoLoseMatches[recordHolder]){
+                                    if(consecutiveNoLoseMatches[recordHolder].record < consecutiveRun.length){
+                                        consecutiveNoLoseMatches.splice(recordHolder, 0, {teamId: teamId, seasonId: season, record: consecutiveRun.length, endRound: consecutiveRun[consecutiveRun.length - 1]});
+                                        break;
+                                    }
+                                }
+                                else{
+                                    consecutiveNoLoseMatches.splice(recordHolder, 0, {teamId: teamId, seasonId: season, record: consecutiveRun.length, endRound: consecutiveRun[consecutiveRun.length - 1]});
+                                    break;
+                                }
+                            }
+                            consecutiveNoLoseMatches.length = 10;
+                            consecutiveRun = [];
+                        }
+                    }
+                    else if(matchInfo.team2Id == teamId){
+                        if(matchInfo.team1Goals <= matchInfo.team2Goals){
+                            consecutiveRun.push(round);
+                        }
+                        else{
+                            let consecutiveNoLoseMatches = records.regularSeason.ties.consecutiveNoLoseMatches.teams;
+                            for(let recordHolder = 0; recordHolder < 10; recordHolder++){
+                                if(consecutiveNoLoseMatches[recordHolder]){
+                                    if(consecutiveNoLoseMatches[recordHolder].record < consecutiveRun.length){
+                                        consecutiveNoLoseMatches.splice(recordHolder, 0, {teamId: teamId, seasonId: season, record: consecutiveRun.length, endRound: consecutiveRun[consecutiveRun.length - 1]});
+                                        break;
+                                    }
+                                }
+                                else{
+                                    consecutiveNoLoseMatches.splice(recordHolder, 0, {teamId: teamId, seasonId: season, record: consecutiveRun.length, endRound: consecutiveRun[consecutiveRun.length - 1]});
+                                    break;
+                                }
+                            }
+                            consecutiveNoLoseMatches.length = 10;
+                            consecutiveRun = [];
+                        }
+                    }
+                }
+            } */
+    }
+
+}
+
+let saveButton = document.createElement("button");
+document.body.appendChild(saveButton);
+saveButton.innerText = "Save";
+saveButton.addEventListener("click", () => {
+    fs.writeFile('../saves/data.json', JSON.stringify(gameData, null, 4), function(err) {
+        if(err){
+            return console.log(err);
+        }
     });
-}
-
-draftClass.sort(function(left,right){
-    if(left.potential > right.potential){
-        return -1;
-    }
-    else if(left.potential < right.potential){
-        return 1;
-    }
-    else{
-        if(left.developpmentYears > right.developpmentYears){
-            return 1;
-        }
-        else{
-            return -1;
-        }
-    }
+    sessionStorage.setItem("gameData", JSON.stringify(gameData));    
+    window.location.reload(false);
 })
-
-for(let i = 0; i < 70; i++){
-    let random_player = draftClass.splice(Math.floor(Math.random() * 150), 1);
-    let random_place = Math.floor(Math.random() * 150);
-    draftClass.splice(random_place, 0, random_player[0]);
-}
-
-for(let i = 0; i < 200; i++){
-    let random_player = draftClass.splice(Math.floor(Math.random() * 250) + 30, 1);
-    let random_place = Math.floor(Math.random() * 250) + 30;
-    draftClass.splice(random_place, 0, random_player[0]);
-}
-
-for(let i = 0; i < 200; i++){
-    let random_player = draftClass.splice(Math.floor(Math.random() * 10000) + 50, 1);
-    let random_place = Math.floor(Math.random() * 10000) + 50;
-    draftClass.splice(random_place, 0, random_player[0]);
-}
-
-for(let i = 0; i < 32*7; i++){
-    if(i % 32 == 0){
-        console.log("------------------------------------------------")
-    }
-    /* let randomPotential = Math.round(Math.random() * 20 - 10);
-    draftClass[i].potential += randomPotential */
-    console.log(draftClass[i])
-}
-
-function randn_bm() {
-    let u = 0, v = 0;
-    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
-    while(v === 0) v = Math.random();
-    let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
-    num = num / 10.0 + 0.5; // Translate to 0 -> 1
-    if (num > 1 || num < 0) return randn_bm() // resample between 0 and 1
-    return num
-}
-
-
-function randomPotential(){
-    let odds = [0.1,0.2,0.3,0.41,0.52,0.63,0.74,0.9,0.978,0.981,0.984,0.987,0.99,0.993,0.996,0.998,0.999,0.9999,0.99995,1]
-    let random = Math.random()
-    for(let j = 0; j < odds.length; j++){
-        if(random < odds[j]){
-            let potential = Math.random() * 5 + j * 5;
-            return Math.round(potential)
-        }    
-    }
-}
-/* let results = []
-let odds = [0.1,0.2,0.3,0.41,0.52,0.63,0.74,0.85,0.92,0.97,0.975,0.98,0.985,0.99,0.994,0.996,0.999,0.9995,0.9999,1]
-for(let i = 0; i < 10000; i++){
-    let random = Math.random();
-    for(let j = 0; j < odds.length; j++){
-        if(random < odds[j]){
-            let potential = Math.random() * 0.05 + j * 0.05;
-            results.push(potential)
-            break;
-        }
-    }
-    
-}
-results.sort();
-console.log(results)
-        //   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19
-       //    05 10 15 20 25 30 35
-       let range = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
-for(let i = 0; i < results.length; i++){
-    let index = Math.floor(results[i] * 100 / 5);
-    range[index].push(results[i]);
-}
-
-
-for(let i = 0; i < range.length; i++){
-    console.log(`${i*5} - ${(i+1)*5}: ${range[i].length} / ${range[i].length / results.length * 100}%`)
-} */
-
-
-        //   0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19
-       //    05 10 15 20 25 30 35
-/*        let range = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
-for(let i = 0; i < draftClass.length; i++){
-    let index = Math.floor(draftClass[i].potential / 5);
-    range[index].push(draftClass[i].potential);
-}
-
-
-for(let i = 0; i < range.length; i++){
-    console.log(`${i*5} - ${(i+1)*5}: ${range[i].length} / ${range[i].length / draftClass.length * 100}%`)
-} */
